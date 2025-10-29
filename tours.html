@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Tours — GNTT Packages</title>
+  <meta name="description" content="Browse filterable tour packages by region, duration, and budget with full details and enquiry." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href="https://example.com/tours.html" />
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/layout.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+</head>
+<body>
+  <header class="site-header sticky">
+    <div class="container flex-between">
+      <a href="/" class="brand"><img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" /><span>GNTT</span></a>
+      <nav class="nav">
+        <a href="/">Home</a><a href="/services.html">Services</a><a class="active" href="/tours.html">Tours</a><a href="/booking.html">Booking</a><a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 data-aos="fade-up">Tour Packages</h1>
+
+    <!-- Filters -->
+    <form id="tourFilters" class="filters" data-aos="fade-up" aria-label="Filter tours">
+      <select name="region" aria-label="Region">
+        <option value="">All Regions</option>
+        <option>Himalayas</option>
+        <option>Rajasthan</option>
+        <option>Goa</option>
+        <option>Dubai</option>
+        <option>Singapore</option>
+      </select>
+      <select name="duration" aria-label="Duration">
+        <option value="">Any Duration</option>
+        <option value="1-3">1–3 days</option>
+        <option value="4-6">4–6 days</option>
+        <option value="7+">7+ days</option>
+      </select>
+      <select name="budget" aria-label="Budget">
+        <option value="">Any Budget</option>
+        <option value="under-20000">Under ₹20,000</option>
+        <option value="20000-50000">₹20,000–₹50,000</option>
+        <option value="over-50000">Over ₹50,000</option>
+      </select>
+    </form>
+
+    <!-- Grid -->
+    <div id="toursGrid" class="grid-3">
+      <!-- Example card -->
+      <article class="card tour" tabindex="0" data-region="Himalayas" data-duration="4-6" data-budget="20000-50000" data-id="him-01" data-aos="fade-up">
+        <img src="/assets/img/tour-him-01.jpg" alt="Himalayan escape package" loading="lazy" />
+        <div class="card-body">
+          <h2>Himalayan Escape — 5D/4N</h2>
+          <p class="price">From ₹28,999</p>
+          <button class="btn primary view-details" data-id="him-01">View details</button>
+        </div>
+      </article>
+
+      <article class="card tour" tabindex="0" data-region="Goa" data-duration="1-3" data-budget="under-20000" data-id="goa-01" data-aos="fade-up" data-aos-delay="50">
+        <img src="/assets/img/tour-goa-01.jpg" alt="Goa beach getaway" loading="lazy" />
+        <div class="card-body">
+          <h2>Goa Getaway — 3D/2N</h2>
+          <p class="price">From ₹12,499</p>
+          <button class="btn primary view-details" data-id="goa-01">View details</button>
+        </div>
+      </article>
+
+      <article class="card tour" tabindex="0" data-region="Dubai" data-duration="4-6" data-budget="over-50000" data-id="dxb-01" data-aos="fade-up" data-aos-delay="100">
+        <img src="/assets/img/tour-dxb-01.jpg" alt="Dubai city highlights" loading="lazy" />
+        <div class="card-body">
+          <h2>Dubai Highlights — 5D/4N</h2>
+          <p class="price">From ₹64,999</p>
+          <button class="btn primary view-details" data-id="dxb-01">View details</button>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- Detail Overlay -->
+  <div id="tourOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="tourTitle" hidden>
+    <div class="overlay-content">
+      <button class="overlay-close" data-close aria-label="Close details">&times;</button>
+      <h2 id="tourTitle">Package Title</h2>
+
+      <!-- Gallery Swiper -->
+      <div class="swiper tour-gallery">
+        <div class="swiper-wrapper" id="tourGalleryWrapper"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev" aria-label="Prev"></div>
+        <div class="swiper-button-next" aria-label="Next"></div>
+      </div>
+
+      <div class="overlay-grid">
+        <section>
+          <h3>Itinerary</h3>
+          <ol id="tourItinerary"></ol>
+        </section>
+        <section>
+          <h3>Inclusions</h3>
+          <ul id="tourInclusions" class="checklist"></ul>
+          <h3>Exclusions</h3>
+          <ul id="tourExclusions" class="crosslist"></ul>
+        </section>
+      </div>
+
+      <div class="overlay-cta">
+        <div class="price" id="tourPrice"></div>
+        <a class="btn accent" href="/booking.html">Enquire / Book</a>
+        <a class="btn ghost" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=I%20want%20details%20for%20this%20tour">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example Trip JSON-LD (for Himalayan Escape) -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"TouristTrip",
+    "name":"Himalayan Escape — 5D/4N",
+    "itinerary":"Delhi → Manali → Solang Valley → Delhi",
+    "description":"A 5-day mountain getaway with comfortable stays and guided sightseeing.",
+    "provider":{"@type":"TravelAgency","name":"Guru Nanak Tour & Travels (GNTT)","url":"https://example.com/"},
+    "offers":{"@type":"Offer","priceCurrency":"INR","price":"28999","availability":"https://schema.org/InStock","url":"https://example.com/tours.html#him-01"}
+  }
+  </script>
+
+  <footer class="site-footer">
+    <div class="container legal">
+      <small>&copy; <span id="year"></span> GNTT.</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/aos-init.js" defer></script>
+  <script src="/assets/js/sliders.js" defer></script>
+  <script>
+    // Minimal data; plug real content later
+    const TOUR_DATA = {
+      "him-01": {
+        title: "Himalayan Escape — 5D/4N",
+        price: "From ₹28,999",
+        gallery: ["/assets/img/tour-him-01.jpg","/assets/img/tour-him-02.jpg","/assets/img/tour-him-03.jpg"],
+        itinerary: ["Day 1: Delhi → Manali overnight","Day 2: Manali local sightseeing","Day 3: Solang Valley / Atal Tunnel","Day 4: Free day & shopping","Day 5: Return"],
+        inclusions: ["Hotel + Breakfast","Local transfers","Sightseeing as per plan"],
+        exclusions: ["Flights","Personal expenses","Anything not mentioned"]
+      },
+      "goa-01": {
+        title: "Goa Getaway — 3D/2N",
+        price: "From ₹12,499",
+        gallery: ["/assets/img/tour-goa-01.jpg","/assets/img/tour-goa-02.jpg"],
+        itinerary: ["Day 1: Arrival & beach time","Day 2: North Goa tour","Day 3: Leisure & departure"],
+        inclusions: ["Hotel + Breakfast","Airport pickup/drop"],
+        exclusions: ["Flights","Lunch/Dinner"]
+      },
+      "dxb-01": {
+        title: "Dubai Highlights — 5D/4N",
+        price: "From ₹64,999",
+        gallery: ["/assets/img/tour-dxb-01.jpg","/assets/img/tour-dxb-02.jpg","/assets/img/tour-dxb-03.jpg"],
+        itinerary: ["Day 1: Arrival & Marina cruise","Day 2: City tour & Frame","Day 3: Desert safari","Day 4: Burj Khalifa & Dubai Mall","Day 5: Departure"],
+        inclusions: ["Hotel + Breakfast","Sightseeing tickets","Transfers"],
+        exclusions: ["Flights unless specified","Tourist tax"]
+      }
+    };
+
+    // Filters
+    const form = document.getElementById('tourFilters');
+    const grid = document.getElementById('toursGrid');
+    form.addEventListener('change', () => {
+      const { region, duration, budget } = Object.fromEntries(new FormData(form));
+      grid.querySelectorAll('.tour').forEach(card => {
+        const ok =
+          (!region || card.dataset.region === region) &&
+          (!duration || card.dataset.duration === duration) &&
+          (!budget || card.dataset.budget === budget);
+        card.style.display = ok ? '' : 'none';
+      });
+    });
+
+    // Overlay
+    const overlay = document.getElementById('tourOverlay');
+    const galleryWrap = document.getElementById('tourGalleryWrapper');
+    let gallerySwiper;
+
+    function openTour(id) {
+      const data = TOUR_DATA[id];
+      if (!data) return;
+      document.getElementById('tourTitle').textContent = data.title;
+      document.getElementById('tourPrice').textContent = data.price;
+      document.getElementById('tourItinerary').innerHTML = data.itinerary.map(i => `<li>${i}</li>`).join('');
+      document.getElementById('tourInclusions').innerHTML = data.inclusions.map(i => `<li>${i}</li>`).join('');
+      document.getElementById('tourExclusions').innerHTML = data.exclusions.map(i => `<li>${i}</li>`).join('');
+      galleryWrap.innerHTML = data.gallery.map(src => `<div class="swiper-slide"><img src="${src}" alt="Tour photo" loading="lazy" /></div>`).join('');
+
+      overlay.hidden = false;
+      if (gallerySwiper) gallerySwiper.destroy(true, true);
+      gallerySwiper = new Swiper('.tour-gallery', {
+        loop: true,
+        lazy: true,
+        keyboard: { enabled: true },
+        pagination: { el: '.tour-gallery .swiper-pagination', clickable: true },
+        navigation: { nextEl: '.tour-gallery .swiper-button-next', prevEl: '.tour-gallery .swiper-button-prev' },
+        slidesPerView: 1,
+        spaceBetween: 8,
+        breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+      });
+    }
+
+    document.querySelectorAll('.view-details, .card.tour').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        openTour(id);
+      });
+      el.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') openTour(e.currentTarget.dataset.id);
+      });
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target.matches('[data-close]') || e.target === overlay) overlay.hidden = true;
+    });
+    overlay.addEventListener('keydown', (e) => { if (e.key === 'Escape') overlay.hidden = true; });
+  </script>
+</body>
+</html>
