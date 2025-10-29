@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Services — GNTT</title>
+  <meta name="description" content="Ticketing, tour packages, visas, hotel & cab bookings with easy enquiries." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href="https://example.com/services.html" />
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/layout.css" />
+  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+</head>
+<body>
+  <header class="site-header sticky">
+    <div class="container flex-between">
+      <a href="/" class="brand"><img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" /><span>GNTT</span></a>
+      <nav class="nav">
+        <a href="/">Home</a><a class="active" href="/services.html">Services</a><a href="/tours.html">Tours</a><a href="/booking.html">Booking</a><a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 data-aos="fade-up">Our Services</h1>
+    <div class="grid-3">
+      <article class="card" data-aos="fade-up">
+        <h2>Air/Rail/Bus Ticketing</h2>
+        <p>Fast booking with confirmations and itinerary support.</p>
+        <button class="btn primary enquire-btn" data-service="Ticketing">Enquire</button>
+      </article>
+      <article class="card" data-aos="fade-up" data-aos-delay="50">
+        <h2>Domestic Packages</h2>
+        <p>Handpicked itineraries for every budget and season.</p>
+        <button class="btn primary enquire-btn" data-service="Domestic Packages">Enquire</button>
+      </article>
+      <article class="card" data-aos="fade-up" data-aos-delay="100">
+        <h2>International Packages</h2>
+        <p>End‑to‑end planning including visas and insurance.</p>
+        <button class="btn primary enquire-btn" data-service="International Packages">Enquire</button>
+      </article>
+      <article class="card" data-aos="fade-up">
+        <h2>Visa Assistance</h2>
+        <p>Documentation and appointment guidance.</p>
+        <button class="btn primary enquire-btn" data-service="Visa Assistance">Enquire</button>
+      </article>
+      <article class="card" data-aos="fade-up" data-aos-delay="50">
+        <h2>Hotel Bookings</h2>
+        <p>Verified stays from budget to premium.</p>
+        <button class="btn primary enquire-btn" data-service="Hotel Bookings">Enquire</button>
+      </article>
+      <article class="card" data-aos="fade-up" data-aos-delay="100">
+        <h2>Cab Bookings</h2>
+        <p>Local transfers and outstation cabs.</p>
+        <button class="btn primary enquire-btn" data-service="Cab Bookings">Enquire</button>
+      </article>
+    </div>
+  </main>
+
+  <!-- Enquiry Modal -->
+  <div class="modal" id="enquiryModal" role="dialog" aria-modal="true" aria-labelledby="enquiryTitle" hidden>
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close aria-label="Close">&times;</button>
+      <h2 id="enquiryTitle">Service Enquiry</h2>
+      <form id="serviceEnquiryForm" novalidate>
+        <input type="hidden" name="service" id="serviceField" />
+        <div class="form-row">
+          <label for="name">Full Name</label>
+          <input id="name" name="name" required autocomplete="name" />
+          <span class="error" data-for="name"></span>
+        </div>
+        <div class="form-row">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" required pattern="^[0-9]{10,15}$" inputmode="numeric" />
+          <span class="error" data-for="phone"></span>
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+          <span class="error" data-for="email"></span>
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="3"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="recaptcha-placeholder" aria-hidden="true">reCAPTCHA placeholder</div>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Send</button>
+          <button class="btn ghost" type="button" data-modal-close>Cancel</button>
+        </div>
+        <div class="toast" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container legal">
+      <small>&copy; <span id="year"></span> GNTT.</small>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/forms.js" defer></script>
+  <script src="/assets/js/aos-init.js" defer></script>
+  <script>
+    // Wire up service buttons -> modal
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('enquiryModal');
+      const serviceField = document.getElementById('serviceField');
+      const toast = modal.querySelector('.toast');
+      document.querySelectorAll('.enquire-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          serviceField.value = btn.dataset.service || '';
+          modal.hidden = false;
+          modal.querySelector('button[data-modal-close]').focus();
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target.matches('[data-modal-close]') || e.target === modal) {
+          modal.hidden = true;
+          document.body.style.overflow = '';
+        }
+      });
+      modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          modal.hidden = true;
+          document.body.style.overflow = '';
+        }
+      });
+
+      // Simple submission
+      const form = document.getElementById('serviceEnquiryForm');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const valid = window.AppForms.validate(form);
+        if (!valid) return;
+        const payload = window.AppForms.serialize(form);
+        try {
+          await window.AppForms.fakeSubmit(payload);
+          toast.textContent = 'Thanks! We will reach out soon.';
+          toast.hidden = false;
+          form.reset();
+          setTimeout(() => { toast.hidden = true; modal.hidden = true; document.body.style.overflow = ''; }, 1200);
+        } catch {
+          toast.textContent = 'Something went wrong. Please try again.';
+          toast.hidden = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
