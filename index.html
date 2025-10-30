@@ -6,36 +6,46 @@
   <meta name="description" content="GNTT offers ticketing, tour packages, visa assistance, hotel & cab bookings with responsive support. Your journey, our responsibility." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="canonical" href="https://example.com/" />
+  
   <!-- Preconnect / DNS Prefetch -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
   <link rel="preconnect" href="https://unpkg.com" />
   <link rel="dns-prefetch" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://cdn.gtranslate.net" />
+  
   <!-- Favicons -->
   <link rel="icon" href="/assets/img/favicon.ico" />
   <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="GNTT — Trusted Tours & Ticketing" />
   <meta property="og:description" content="Ticketing, packages, visas, hotels & cabs. Call or WhatsApp to plan your trip today." />
   <meta property="og:image" content="https://example.com/assets/img/og-preview.jpg" />
   <meta property="og:url" content="https://example.com/" />
+  
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="GNTT — Trusted Tours & Ticketing" />
   <meta name="twitter:description" content="Ticketing, packages, visas, hotels & cabs. Call or WhatsApp to plan your trip today." />
   <meta name="twitter:image" content="https://example.com/assets/img/og-preview.jpg" />
+  
   <!-- CSS -->
   <link rel="stylesheet" href="/assets/css/base.css" />
   <link rel="stylesheet" href="/assets/css/layout.css" />
   <link rel="stylesheet" href="/assets/css/components.css" />
+  
   <!-- Swiper CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  
   <!-- AOS CSS (CDN) -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  
   <!-- Robots/Sitemap/Humans placeholders -->
   <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
   <meta name="robots" content="index,follow" />
+  
   <!-- JSON-LD: Organization / TravelAgency -->
   <script type="application/ld+json">
   {
@@ -74,6 +84,9 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- GTranslate Widget -->
+  <div class="gtranslate_wrapper"></div>
+
   <!-- Header / Nav -->
   <header class="site-header sticky">
     <div class="container flex-between">
@@ -81,35 +94,46 @@
         <img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" loading="eager" />
         <span class="brand-text">GNTT</span>
       </a>
-      <nav class="nav" aria-label="Primary">
-        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="offcanvas" aria-label="Open menu">
+      
+      <nav class="nav desktop-nav" aria-label="Primary">
+        <a href="/" class="active">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/services.html">Services</a>
+        <a href="/tours.html">Tours</a>
+        <a href="/gallery.html">Gallery</a>
+        <a href="/booking.html">Booking</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn primary btn-sm desktop-only" href="tel:+916283315156">Call Now</a>
+        <a class="btn accent btn-sm desktop-only" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a>
+        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas" aria-label="Open menu">
           <span class="hamburger" aria-hidden="true"></span>
         </button>
-        <div id="offcanvas" class="offcanvas" role="dialog" aria-modal="true" aria-label="Mobile menu">
-          <button class="offcanvas-close" data-close aria-label="Close menu">&times;</button>
-          <ul class="nav-list" role="menu">
-            <li role="none"><a role="menuitem" href="/" class="active">Home</a></li>
-            <li role="none"><a role="menuitem" href="/about.html">About</a></li>
-            <li role="none"><a role="menuitem" href="/services.html">Services</a></li>
-            <li role="none"><a role="menuitem" href="/tours.html">Tours</a></li>
-            <li role="none"><a role="menuitem" href="/gallery.html">Gallery</a></li>
-            <li role="none"><a role="menuitem" href="/booking.html">Booking</a></li>
-            <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
-            <li role="none"><a role="menuitem" href="/privacy.html">Privacy</a></li>
-          </ul>
-          <div class="offcanvas-cta">
-            <a class="btn primary" href="tel:+916283315156">Call Now</a>
-            <a class="btn outline" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a>
-          </div>
-        </div>
-        <ul class="actions desktop-only">
-          <li><a class="btn primary" href="tel:+916283315156">Call Now</a></li>
-          <li><a class="btn outline" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a></li>
-          <li><a class="btn ghost" href="/booking.html">Enquiry/Booking</a></li>
-        </ul>
-      </nav>
+      </div>
     </div>
   </header>
+
+  <!-- Off-canvas Mobile Menu -->
+  <div id="offcanvas" class="offcanvas" role="dialog" aria-modal="true" aria-label="Mobile menu" hidden>
+    <button class="offcanvas-close" data-close aria-label="Close menu">&times;</button>
+    <ul class="nav-list" role="menu">
+      <li role="none"><a role="menuitem" href="/">Home</a></li>
+      <li role="none"><a role="menuitem" href="/about.html">About</a></li>
+      <li role="none"><a role="menuitem" href="/services.html">Services</a></li>
+      <li role="none"><a role="menuitem" href="/tours.html">Tours</a></li>
+      <li role="none"><a role="menuitem" href="/gallery.html">Gallery</a></li>
+      <li role="none"><a role="menuitem" href="/booking.html">Booking</a></li>
+      <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
+      <li role="none"><a role="menuitem" href="/privacy.html">Privacy</a></li>
+      <li role="none"><a role="menuitem" href="/terms.html">Terms</a></li>
+    </ul>
+    <div class="offcanvas-cta">
+      <a class="btn primary" href="tel:+916283315156">Call Now</a>
+      <a class="btn accent" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a>
+    </div>
+  </div>
 
   <main id="main">
     <!-- Hero Slider (Swiper) -->
@@ -119,14 +143,15 @@
           <div class="swiper-slide hero-slide">
             <picture>
               <source srcset="/assets/img/hero-1@800.webp 800w, /assets/img/hero-1@1600.webp 1600w" type="image/webp" />
-              <img src="/assets/img/hero-1.jpg" alt="Beautiful mountains tour package" loading="lazy" />
+              <img src="/assets/img/hero-1.jpg" alt="Beautiful mountains tour package" loading="eager" />
             </picture>
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
               <h1>Guru Nanak Tour & Travels</h1>
-              <p>Your journey, our responsibility.</p>
+              <p class="hero-tagline">Your journey, our responsibility.</p>
               <div class="hero-cta">
-                <a class="btn primary" href="tel:+916283315156">Call Now</a>
-                <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
+                <a class="btn primary btn-lg" href="tel:+916283315156">Call Now</a>
+                <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
+                <a class="btn ghost btn-lg" href="/booking.html">Book Now</a>
               </div>
             </div>
           </div>
@@ -134,14 +159,14 @@
             <img src="/assets/img/hero-2.jpg" alt="Family enjoying a beach holiday" loading="lazy" />
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
               <h2>Domestic & International Packages</h2>
-              <p>Flexible itineraries, great prices, reliable support.</p>
+              <p class="hero-tagline">Flexible itineraries, great prices, reliable support.</p>
             </div>
           </div>
           <div class="swiper-slide hero-slide">
             <img src="/assets/img/hero-3.jpg" alt="Airplane wing view for flight booking" loading="lazy" />
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
               <h2>Flights, Trains, Buses</h2>
-              <p>Quick ticketing with transparent fares.</p>
+              <p class="hero-tagline">Quick ticketing with transparent fares.</p>
             </div>
           </div>
         </div>
@@ -152,49 +177,104 @@
     </section>
 
     <!-- Service Highlights -->
-    <section class="services container" aria-labelledby="svc-heading">
+    <section class="section services container" aria-labelledby="svc-heading">
       <h2 id="svc-heading" data-aos="fade-up">What we offer</h2>
       <div class="grid-4">
-        <article class="card" data-aos="fade-up">
-          <img src="/assets/img/svc-ticket.jpg" alt="Ticketing service" loading="lazy" />
+        <article class="card service-card" data-aos="fade-up">
+          <div class="service-icon">🎫</div>
           <h3>Ticketing</h3>
           <p>Air, Rail & Bus ticketing with best routes and timings.</p>
+          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
         </article>
-        <article class="card" data-aos="fade-up" data-aos-delay="50">
-          <img src="/assets/img/svc-packages.jpg" alt="Tour packages" loading="lazy" />
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="50">
+          <div class="service-icon">🌍</div>
           <h3>Tour Packages</h3>
           <p>Domestic and International trips tailored to you.</p>
+          <a class="btn ghost btn-sm" href="/tours.html">Browse Tours</a>
         </article>
-        <article class="card" data-aos="fade-up" data-aos-delay="100">
-          <img src="/assets/img/svc-cab.jpg" alt="Cab bookings" loading="lazy" />
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-icon">🚗</div>
           <h3>Cab Bookings</h3>
           <p>Airport transfers and full‑day rentals.</p>
+          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
         </article>
-        <article class="card" data-aos="fade-up" data-aos-delay="150">
-          <img src="/assets/img/svc-hotel.jpg" alt="Hotel bookings" loading="lazy" />
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="150">
+          <div class="service-icon">🏨</div>
           <h3>Hotels</h3>
           <p>Budget to premium stays, verified options.</p>
+          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
         </article>
       </div>
     </section>
 
+    <!-- Page Previews -->
+    <section class="section preview-section container" aria-labelledby="previews-heading">
+      <h2 id="previews-heading" data-aos="fade-up">Explore GNTT</h2>
+      <div class="preview-grid">
+        <a class="card preview-card" href="/about.html" data-aos="zoom-in">
+          <div class="preview-icon">ℹ️</div>
+          <h3>About</h3>
+          <p>Mission, team, and milestones.</p>
+        </a>
+        <a class="card preview-card" href="/services.html" data-aos="zoom-in" data-aos-delay="50">
+          <div class="preview-icon">⚙️</div>
+          <h3>Services</h3>
+          <p>Ticketing, visas, cabs, hotels.</p>
+        </a>
+        <a class="card preview-card" href="/tours.html" data-aos="zoom-in" data-aos-delay="100">
+          <div class="preview-icon">🗺️</div>
+          <h3>Tours</h3>
+          <p>Filterable catalog with details.</p>
+        </a>
+        <a class="card preview-card" href="/gallery.html" data-aos="zoom-in" data-aos-delay="150">
+          <div class="preview-icon">📷</div>
+          <h3>Gallery</h3>
+          <p>Photos and short reels.</p>
+        </a>
+        <a class="card preview-card" href="/booking.html" data-aos="zoom-in">
+          <div class="preview-icon">📝</div>
+          <h3>Booking</h3>
+          <p>Send an enquiry instantly.</p>
+        </a>
+        <a class="card preview-card" href="/contact.html" data-aos="zoom-in" data-aos-delay="50">
+          <div class="preview-icon">📞</div>
+          <h3>Contact</h3>
+          <p>Call, WhatsApp, email, and map.</p>
+        </a>
+        <a class="card preview-card" href="/privacy.html" data-aos="zoom-in" data-aos-delay="100">
+          <div class="preview-icon">🔒</div>
+          <h3>Privacy</h3>
+          <p>How we handle your data.</p>
+        </a>
+        <a class="card preview-card" href="/terms.html" data-aos="zoom-in" data-aos-delay="150">
+          <div class="preview-icon">📄</div>
+          <h3>Terms</h3>
+          <p>Bookings, cancellations, refunds.</p>
+        </a>
+      </div>
+    </section>
+
     <!-- Reviews Slider -->
-    <section class="reviews" aria-labelledby="reviews-heading">
+    <section class="section reviews" aria-labelledby="reviews-heading">
       <div class="container">
         <h2 id="reviews-heading" data-aos="fade-up">What customers say</h2>
         <div class="swiper reviews-swiper">
           <div class="swiper-wrapper">
-            <blockquote class="swiper-slide review">
-              <p>Great experience planning our honeymoon — smooth and stress‑free!</p>
+            <blockquote class="swiper-slide review" data-aos="fade-up">
+              <p>"Great experience planning our honeymoon — smooth and stress‑free!"</p>
               <cite>— R. Singh</cite>
             </blockquote>
-            <blockquote class="swiper-slide review">
-              <p>Got the best flight deal at short notice. Highly recommended.</p>
+            <blockquote class="swiper-slide review" data-aos="fade-up">
+              <p>"Got the best flight deal at short notice. Highly recommended."</p>
               <cite>— A. Kaur</cite>
             </blockquote>
-            <blockquote class="swiper-slide review">
-              <p>Professional team and clear communication throughout.</p>
+            <blockquote class="swiper-slide review" data-aos="fade-up">
+              <p>"Professional team and clear communication throughout."</p>
               <cite>— M. Sharma</cite>
+            </blockquote>
+            <blockquote class="swiper-slide review" data-aos="fade-up">
+              <p>"Perfect Dubai trip with all arrangements handled beautifully."</p>
+              <cite>— P. Bhatia</cite>
             </blockquote>
           </div>
           <div class="swiper-pagination"></div>
@@ -203,26 +283,31 @@
     </section>
 
     <!-- Partners strip -->
-    <section class="partners" aria-label="Partners">
-      <div class="container strip">
-        <img src="/assets/img/partner-1.png" alt="Airline partner" loading="lazy" />
-        <img src="/assets/img/partner-2.png" alt="Hotel partner" loading="lazy" />
-        <img src="/assets/img/partner-3.png" alt="Travel partner" loading="lazy" />
-        <img src="/assets/img/partner-4.png" alt="Cab partner" loading="lazy" />
+    <section class="section partners" aria-label="Partners">
+      <div class="container">
+        <h3 class="partners-heading" data-aos="fade-up">Trusted Partners</h3>
+        <div class="strip" data-aos="fade-up" data-aos-delay="100">
+          <img src="/assets/img/partner-1.png" alt="Airline partner" loading="lazy" />
+          <img src="/assets/img/partner-2.png" alt="Hotel partner" loading="lazy" />
+          <img src="/assets/img/partner-3.png" alt="Travel partner" loading="lazy" />
+          <img src="/assets/img/partner-4.png" alt="Cab partner" loading="lazy" />
+        </div>
       </div>
     </section>
 
     <!-- CTA Banner -->
-    <section class="cta-banner" aria-label="Contact actions">
-      <div class="container flex-between">
-        <div>
-          <h2>Ready to plan your trip?</h2>
-          <p>Call, WhatsApp, or send an enquiry — we’ll respond quickly.</p>
-        </div>
-        <div class="cta-buttons">
-          <a class="btn primary" href="tel:+916283315156">Call Now</a>
-          <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
-          <a class="btn ghost" href="/booking.html">Enquiry/Booking</a>
+    <section class="section cta-banner" aria-label="Contact actions">
+      <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+          <div class="cta-text">
+            <h2>Ready to plan your trip?</h2>
+            <p>Call, WhatsApp, or send an enquiry — we'll respond quickly.</p>
+          </div>
+          <div class="cta-buttons">
+            <a class="btn primary btn-lg" href="tel:+916283315156">Call Now</a>
+            <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
+            <a class="btn ghost btn-lg" href="/booking.html">Enquiry/Booking</a>
+          </div>
         </div>
       </div>
     </section>
@@ -230,52 +315,71 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <div class="container grid-4">
-      <div>
-        <h3>GNTT</h3>
-        <p>Your journey, our responsibility.</p>
-        <p>Court Road near Police Station, Patti 143416, Punjab, India</p>
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="/assets/img/logo.png" alt="GNTT logo" width="100" height="30" />
+          <h3>GNTT</h3>
+        </div>
+        <p class="footer-tagline">Your journey, our responsibility.</p>
+        <p class="footer-address">Court Road near Police Station<br>Patti 143416, Punjab, India</p>
       </div>
-      <div>
+      
+      <div class="footer-col">
         <h4>Contact</h4>
-        <ul>
-          <li><a href="tel:+916283315156">+91 6283315156</a></li>
-          <li><a href="mailto:patticsc72@gmail.com">patticsc72@gmail.com</a></li>
-          <li><a href="/contact.html">Contact page</a></li>
+        <ul class="footer-links">
+          <li><a href="tel:+916283315156">📞 +91 6283315156</a></li>
+          <li><a href="mailto:patticsc72@gmail.com">✉️ patticsc72@gmail.com</a></li>
+          <li><a href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener">💬 WhatsApp Chat</a></li>
+          <li><a href="/contact.html">📍 View Map</a></li>
         </ul>
       </div>
-      <div>
+      
+      <div class="footer-col">
         <h4>Quick Links</h4>
-        <ul>
+        <ul class="footer-links">
+          <li><a href="/about.html">About Us</a></li>
           <li><a href="/services.html">Services</a></li>
           <li><a href="/tours.html">Tours</a></li>
           <li><a href="/gallery.html">Gallery</a></li>
+          <li><a href="/booking.html">Booking</a></li>
           <li><a href="/privacy.html">Privacy Policy</a></li>
           <li><a href="/terms.html">Terms of Service</a></li>
         </ul>
       </div>
-      <div>
-        <h4>Follow</h4>
+      
+      <div class="footer-col">
+        <h4>Follow Us</h4>
         <div class="socials">
           <a aria-label="Instagram" href="https://instagram.com/buy24hstore" target="_blank" rel="noopener">
-            <!-- Simple SVG icon -->
-            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm6.5-.75a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm6.5-.75a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+            </svg>
           </a>
           <a aria-label="YouTube" href="https://youtube.com/@buy24hstore" target="_blank" rel="noopener">
-            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24"><path d="M23 7s-.2-1.4-.8-2C21.6 4.2 20.8 4 20.8 4 17.4 3.6 12 3.6 12 3.6h0S6.6 3.6 3.2 4c0 0-.8.2-1.4 1C1.2 5.6 1 7 1 7S.6 9.2.6 11.4v1.2C.6 14.8 1 17 1 17s.2 1.4.8 2c.6.8 1.4 1 1.4 1 3.4.4 8.8.4 8.8.4s5.4 0 8.8-.4c0 0 .8-.2 1.4-1 .6-.6.8-2 .8-2s.4-2.2.4-4.4v-1.2C23.4 9.2 23 7 23 7zM9.8 14.6V8.8l6 2.9-6 2.9z"/></svg>
+            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 7s-.2-1.4-.8-2C21.6 4.2 20.8 4 20.8 4 17.4 3.6 12 3.6 12 3.6h0S6.6 3.6 3.2 4c0 0-.8.2-1.4 1C1.2 5.6 1 7 1 7S.6 9.2.6 11.4v1.2C.6 14.8 1 17 1 17s.2 1.4.8 2c.6.8 1.4 1 1.4 1 3.4.4 8.8.4 8.8.4s5.4 0 8.8-.4c0 0 .8-.2 1.4-1 .6-.6.8-2 .8-2s.4-2.2.4-4.4v-1.2C23.4 9.2 23 7 23 7zM9.8 14.6V8.8l6 2.9-6 2.9z"/>
+            </svg>
           </a>
           <a aria-label="Facebook" href="https://facebook.com/buy24hstore" target="_blank" rel="noopener">
-            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.4V12h2.4V9.7c0-2.4 1.4-3.7 3.5-3.7 1 0 2 .2 2 .2V8h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/></svg>
+            <svg width="24" height="24" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.4V12h2.4V9.7c0-2.4 1.4-3.7 3.5-3.7 1 0 2 .2 2 .2V8h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/>
+            </svg>
           </a>
         </div>
-        <small>Powered by Guru Nanak Tour & Travels (GNTT)</small>
+        <p class="footer-powered">Powered by<br><strong>Guru Nanak Tour & Travels</strong></p>
       </div>
     </div>
-    <div class="legal container">
-      <small>&copy; <span id="year"></span> GNTT. All rights reserved.</small>
-      <a href="/humans.txt">humans.txt</a>
-      <a href="/robots.txt">robots.txt</a>
-      <a href="/sitemap.xml">sitemap.xml</a>
+    
+    <div class="footer-bottom container">
+      <div class="legal">
+        <small>&copy; <span id="year"></span> GNTT. All rights reserved.</small>
+        <div class="legal-links">
+          <a href="/humans.txt">humans.txt</a>
+          <a href="/robots.txt">robots.txt</a>
+          <a href="/sitemap.xml">sitemap</a>
+        </div>
+      </div>
     </div>
   </footer>
 
@@ -284,6 +388,18 @@
   <!-- JS: Swiper, AOS (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+
+  <!-- GTranslate Widget Script -->
+  <script>
+    window.gtranslateSettings = {
+      "default_language":"pa",
+      "wrapper_selector":".gtranslate_wrapper",
+      "switcher_horizontal_position":"right",
+      "flag_style":"3d",
+      "alt_flags":{"en":"usa"}
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 
   <!-- App JS -->
   <script src="/assets/js/main.js" defer></script>
