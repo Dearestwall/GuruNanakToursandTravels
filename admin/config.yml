@@ -1,0 +1,58 @@
+backend:
+  name: git-gateway
+  branch: main # or master
+
+media_folder: "assets/img/uploads"
+public_folder: "assets/img/uploads"
+
+collections:
+  - name: "tours"
+    label: "Tour Packages"
+    folder: "content/tours"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Price", name: "price", widget: "number"}
+      - {label: "Duration", name: "duration", widget: "string"}
+      - {label: "Region", name: "region", widget: "string"}
+      - {label: "Description", name: "body", widget: "markdown"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Featured", name: "featured", widget: "boolean", default: false}
+
+  - name: "reviews"
+    label: "Customer Reviews"
+    folder: "content/reviews"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Customer Name", name: "name", widget: "string"}
+      - {label: "Location", name: "location", widget: "string"}
+      - {label: "Rating", name: "rating", widget: "number", min: 1, max: 5}
+      - {label: "Review", name: "body", widget: "text"}
+      - {label: "Date", name: "date", widget: "datetime"}
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "About Page"
+        name: "about"
+        file: "content/about.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Mission", name: "mission", widget: "text"}
+          - {label: "Body", name: "body", widget: "markdown"}
+      
+      - label: "Home Settings"
+        name: "home"
+        file: "content/home.yml"
+        fields:
+          - {label: "Hero Title", name: "hero_title", widget: "string"}
+          - {label: "Hero Tagline", name: "hero_tagline", widget: "string"}
+          - label: "Hero Slides"
+            name: "hero_slides"
+            widget: "list"
+            fields:
+              - {label: "Image", name: "image", widget: "image"}
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Description", name: "description", widget: "text"}
