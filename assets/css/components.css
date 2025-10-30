@@ -520,3 +520,103 @@ form textarea::placeholder {
   background: var(--accent);
   border: 2px solid var(--bg);
 }
+/* ============================================
+   STATS SECTION
+   ============================================ */
+.stats-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: #fff;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-card {
+  padding: 1.5rem;
+}
+
+.stat-number {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 1rem;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+/* ============================================
+   SECTION TITLES & SUBTITLES
+   ============================================ */
+.section-title {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+/* ============================================
+   REVIEW ENHANCEMENTS
+   ============================================ */
+.review-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+}
+
+.review-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================
+   FOOTER ENHANCEMENTS
+   ============================================ */
+.footer-hours {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.footer-badge {
+  margin-top: 1rem;
+  opacity: 0.8;
+}
+
+.footer-badge img {
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   PREVIEW CARD IMAGES
+   ============================================ */
+.preview-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+}
+
+.service-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.75rem;
+}

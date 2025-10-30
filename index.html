@@ -13,28 +13,29 @@
   <link rel="preconnect" href="https://unpkg.com" />
   <link rel="dns-prefetch" href="https://unpkg.com" />
   <link rel="preconnect" href="https://cdn.gtranslate.net" />
+  <link rel="preconnect" href="https://m.media-amazon.com" />
   
   <!-- Favicons -->
-  <link rel="icon" href="/assets/img/favicon.ico" />
-  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <link rel="icon" href="assets/img/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
   
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="GNTT — Trusted Tours & Ticketing" />
   <meta property="og:description" content="Ticketing, packages, visas, hotels & cabs. Call or WhatsApp to plan your trip today." />
-  <meta property="og:image" content="https://example.com/assets/img/og-preview.jpg" />
+  <meta property="og:image" content="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" />
   <meta property="og:url" content="https://example.com/" />
   
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="GNTT — Trusted Tours & Ticketing" />
   <meta name="twitter:description" content="Ticketing, packages, visas, hotels & cabs. Call or WhatsApp to plan your trip today." />
-  <meta name="twitter:image" content="https://example.com/assets/img/og-preview.jpg" />
+  <meta name="twitter:image" content="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" />
   
   <!-- CSS -->
-  <link rel="stylesheet" href="/assets/css/base.css" />
-  <link rel="stylesheet" href="/assets/css/layout.css" />
-  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
   
   <!-- Swiper CSS (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -43,7 +44,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
   
   <!-- Robots/Sitemap/Humans placeholders -->
-  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <link rel="sitemap" type="application/xml" href="sitemap.xml" />
   <meta name="robots" content="index,follow" />
   
   <!-- JSON-LD: Organization / TravelAgency -->
@@ -54,8 +55,8 @@
     "name":"Guru Nanak Tour & Travels (GNTT)",
     "url":"https://example.com/",
     "tagline":"Your journey, our responsibility.",
-    "logo":"https://example.com/assets/img/logo.png",
-    "image":"https://example.com/assets/img/og-preview.jpg",
+    "logo":"https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png",
+    "image":"https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png",
     "address":{
       "@type":"PostalAddress",
       "streetAddress":"Court Road near Police Station",
@@ -80,6 +81,14 @@
     }]
   }
   </script>
+
+  <style>
+    /* Inline critical CSS for faster FCP */
+    body{margin:0;font-family:system-ui,sans-serif}
+    .site-header{padding:.75rem 0}
+    .hero-slide{min-height:400px;position:relative;display:flex;align-items:center;justify-content:center}
+    .hero-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -87,166 +96,267 @@
   <!-- GTranslate Widget -->
   <div class="gtranslate_wrapper"></div>
 
-  <!-- Header / Nav -->
-  <header class="site-header sticky">
+  <!-- ============================================
+       HEADER / NAVIGATION
+       ============================================ -->
+  <header class="site-header sticky" role="banner">
     <div class="container flex-between">
-      <a href="/" class="brand">
-        <img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" loading="eager" />
+      <!-- Logo / Brand -->
+      <a href="index.html" class="brand" aria-label="GNTT Home">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT logo" width="60" height="60" loading="eager" />
         <span class="brand-text">GNTT</span>
       </a>
       
-      <nav class="nav desktop-nav" aria-label="Primary">
-        <a href="/" class="active">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/services.html">Services</a>
-        <a href="/tours.html">Tours</a>
-        <a href="/gallery.html">Gallery</a>
-        <a href="/booking.html">Booking</a>
-        <a href="/contact.html">Contact</a>
+      <!-- Desktop Navigation -->
+      <nav class="nav desktop-nav" aria-label="Primary navigation">
+        <a href="index.html" class="active" aria-current="page">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="tours.html">Tours</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
       </nav>
 
+      <!-- Header Actions -->
       <div class="header-actions">
-        <a class="btn primary btn-sm desktop-only" href="tel:+916283315156">Call Now</a>
-        <a class="btn accent btn-sm desktop-only" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a>
-        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas" aria-label="Open menu">
+        <a class="btn primary btn-sm desktop-only" href="tel:+916283315156" aria-label="Call us now">
+          📞 Call Now
+        </a>
+        <a class="btn accent btn-sm desktop-only" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+          💬 WhatsApp
+        </a>
+        
+        <!-- Mobile Menu Toggle -->
+        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas" aria-label="Open navigation menu">
           <span class="hamburger" aria-hidden="true"></span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Off-canvas Mobile Menu -->
-  <div id="offcanvas" class="offcanvas" role="dialog" aria-modal="true" aria-label="Mobile menu" hidden>
-    <button class="offcanvas-close" data-close aria-label="Close menu">&times;</button>
+  <!-- ============================================
+       OFF-CANVAS MOBILE MENU
+       ============================================ -->
+  <div id="offcanvas" class="offcanvas" role="dialog" aria-modal="true" aria-label="Mobile navigation menu" hidden>
+    <button class="offcanvas-close" data-close aria-label="Close navigation menu">&times;</button>
+    
     <ul class="nav-list" role="menu">
-      <li role="none"><a role="menuitem" href="/">Home</a></li>
-      <li role="none"><a role="menuitem" href="/about.html">About</a></li>
-      <li role="none"><a role="menuitem" href="/services.html">Services</a></li>
-      <li role="none"><a role="menuitem" href="/tours.html">Tours</a></li>
-      <li role="none"><a role="menuitem" href="/gallery.html">Gallery</a></li>
-      <li role="none"><a role="menuitem" href="/booking.html">Booking</a></li>
-      <li role="none"><a role="menuitem" href="/contact.html">Contact</a></li>
-      <li role="none"><a role="menuitem" href="/privacy.html">Privacy</a></li>
-      <li role="none"><a role="menuitem" href="/terms.html">Terms</a></li>
+      <li role="none"><a role="menuitem" href="index.html">🏠 Home</a></li>
+      <li role="none"><a role="menuitem" href="about.html">ℹ️ About</a></li>
+      <li role="none"><a role="menuitem" href="services.html">⚙️ Services</a></li>
+      <li role="none"><a role="menuitem" href="tours.html">🗺️ Tours</a></li>
+      <li role="none"><a role="menuitem" href="gallery.html">📷 Gallery</a></li>
+      <li role="none"><a role="menuitem" href="booking.html">📝 Booking</a></li>
+      <li role="none"><a role="menuitem" href="contact.html">📞 Contact</a></li>
+      <li role="none"><a role="menuitem" href="privacy.html">🔒 Privacy</a></li>
+      <li role="none"><a role="menuitem" href="terms.html">📄 Terms</a></li>
     </ul>
+    
     <div class="offcanvas-cta">
-      <a class="btn primary" href="tel:+916283315156">Call Now</a>
-      <a class="btn accent" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener" aria-label="WhatsApp Chat">WhatsApp</a>
+      <a class="btn primary" href="tel:+916283315156">📞 Call Now</a>
+      <a class="btn accent" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener">💬 WhatsApp</a>
     </div>
   </div>
 
-  <main id="main">
-    <!-- Hero Slider (Swiper) -->
-    <section class="hero">
-      <div class="swiper hero-swiper" aria-label="Hero Slider">
+  <!-- ============================================
+       MAIN CONTENT
+       ============================================ -->
+  <main id="main" role="main">
+    
+    <!-- ==========================================
+         HERO SLIDER SECTION
+         ========================================== -->
+    <section class="hero" aria-label="Welcome to GNTT">
+      <div class="swiper hero-swiper">
         <div class="swiper-wrapper">
+          
+          <!-- Slide 1 -->
           <div class="swiper-slide hero-slide">
-            <picture>
-              <source srcset="/assets/img/hero-1@800.webp 800w, /assets/img/hero-1@1600.webp 1600w" type="image/webp" />
-              <img src="/assets/img/hero-1.jpg" alt="Beautiful mountains tour package" loading="eager" />
-            </picture>
+            <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Beautiful mountains tour package" loading="eager" />
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
               <h1>Guru Nanak Tour & Travels</h1>
               <p class="hero-tagline">Your journey, our responsibility.</p>
               <div class="hero-cta">
-                <a class="btn primary btn-lg" href="tel:+916283315156">Call Now</a>
-                <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
-                <a class="btn ghost btn-lg" href="/booking.html">Book Now</a>
+                <a class="btn primary btn-lg" href="tel:+916283315156">📞 Call Now</a>
+                <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">💬 WhatsApp</a>
+                <a class="btn ghost btn-lg" href="booking.html">📝 Book Now</a>
               </div>
             </div>
           </div>
+          
+          <!-- Slide 2 -->
           <div class="swiper-slide hero-slide">
-            <img src="/assets/img/hero-2.jpg" alt="Family enjoying a beach holiday" loading="lazy" />
+            <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Family enjoying a beach holiday" loading="lazy" />
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
               <h2>Domestic & International Packages</h2>
               <p class="hero-tagline">Flexible itineraries, great prices, reliable support.</p>
+              <div class="hero-cta">
+                <a class="btn accent btn-lg" href="tours.html">Browse Tours</a>
+              </div>
             </div>
           </div>
+          
+          <!-- Slide 3 -->
           <div class="swiper-slide hero-slide">
-            <img src="/assets/img/hero-3.jpg" alt="Airplane wing view for flight booking" loading="lazy" />
+            <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Airplane wing view for flight booking" loading="lazy" />
             <div class="hero-caption" data-aos="fade-up" data-aos-duration="700">
-              <h2>Flights, Trains, Buses</h2>
+              <h2>Flights, Trains & Buses</h2>
               <p class="hero-tagline">Quick ticketing with transparent fares.</p>
+              <div class="hero-cta">
+                <a class="btn accent btn-lg" href="services.html">View Services</a>
+              </div>
             </div>
+          </div>
+          
+        </div>
+        
+        <!-- Pagination & Navigation -->
+        <div class="swiper-pagination" aria-label="Hero slider pagination"></div>
+        <div class="swiper-button-prev" aria-label="Previous slide" tabindex="0"></div>
+        <div class="swiper-button-next" aria-label="Next slide" tabindex="0"></div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SERVICE HIGHLIGHTS SECTION
+         ========================================== -->
+    <section class="section services container" aria-labelledby="svc-heading">
+      <h2 id="svc-heading" class="section-title" data-aos="fade-up">What We Offer</h2>
+      <p class="section-subtitle" data-aos="fade-up" data-aos-delay="50">Comprehensive travel solutions tailored to your needs</p>
+      
+      <div class="grid-4">
+        <!-- Service 1 -->
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="0">
+          <div class="service-icon">🎫</div>
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Ticketing service" loading="lazy" />
+          <h3>Ticketing</h3>
+          <p>Air, Rail & Bus ticketing with best routes and timings. Instant confirmation and 24/7 support.</p>
+          <a class="btn ghost btn-sm" href="services.html#ticketing">Learn More →</a>
+        </article>
+        
+        <!-- Service 2 -->
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-icon">🌍</div>
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Tour packages" loading="lazy" />
+          <h3>Tour Packages</h3>
+          <p>Domestic and International trips tailored to you. Budget-friendly to luxury options available.</p>
+          <a class="btn ghost btn-sm" href="tours.html">Browse Tours →</a>
+        </article>
+        
+        <!-- Service 3 -->
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-icon">🚗</div>
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Cab bookings" loading="lazy" />
+          <h3>Cab Bookings</h3>
+          <p>Airport transfers and full‑day rentals. Clean vehicles with professional drivers.</p>
+          <a class="btn ghost btn-sm" href="services.html#cabs">Learn More →</a>
+        </article>
+        
+        <!-- Service 4 -->
+        <article class="card service-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="service-icon">🏨</div>
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Hotel bookings" loading="lazy" />
+          <h3>Hotels</h3>
+          <p>Budget to premium stays, verified options. Best rates guaranteed with instant booking.</p>
+          <a class="btn ghost btn-sm" href="services.html#hotels">Learn More →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         DYNAMIC STATS SECTION
+         ========================================== -->
+    <section class="section stats-section" aria-label="Our achievements">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-card" data-aos="zoom-in">
+            <div class="stat-number" data-count="5000">0</div>
+            <div class="stat-label">Happy Customers</div>
+          </div>
+          <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+            <div class="stat-number" data-count="150">0</div>
+            <div class="stat-label">Tour Packages</div>
+          </div>
+          <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+            <div class="stat-number" data-count="50">0</div>
+            <div class="stat-label">Destinations</div>
+          </div>
+          <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+            <div class="stat-number" data-count="24">0</div>
+            <div class="stat-label">Hours Support</div>
           </div>
         </div>
-        <div class="swiper-pagination" aria-label="Hero pagination"></div>
-        <div class="swiper-button-prev" aria-label="Previous slide"></div>
-        <div class="swiper-button-next" aria-label="Next slide"></div>
       </div>
     </section>
 
-    <!-- Service Highlights -->
-    <section class="section services container" aria-labelledby="svc-heading">
-      <h2 id="svc-heading" data-aos="fade-up">What we offer</h2>
-      <div class="grid-4">
-        <article class="card service-card" data-aos="fade-up">
-          <div class="service-icon">🎫</div>
-          <h3>Ticketing</h3>
-          <p>Air, Rail & Bus ticketing with best routes and timings.</p>
-          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
-        </article>
-        <article class="card service-card" data-aos="fade-up" data-aos-delay="50">
-          <div class="service-icon">🌍</div>
-          <h3>Tour Packages</h3>
-          <p>Domestic and International trips tailored to you.</p>
-          <a class="btn ghost btn-sm" href="/tours.html">Browse Tours</a>
-        </article>
-        <article class="card service-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="service-icon">🚗</div>
-          <h3>Cab Bookings</h3>
-          <p>Airport transfers and full‑day rentals.</p>
-          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
-        </article>
-        <article class="card service-card" data-aos="fade-up" data-aos-delay="150">
-          <div class="service-icon">🏨</div>
-          <h3>Hotels</h3>
-          <p>Budget to premium stays, verified options.</p>
-          <a class="btn ghost btn-sm" href="/services.html">Learn More</a>
-        </article>
-      </div>
-    </section>
-
-    <!-- Page Previews -->
+    <!-- ==========================================
+         PAGE PREVIEWS SECTION
+         ========================================== -->
     <section class="section preview-section container" aria-labelledby="previews-heading">
-      <h2 id="previews-heading" data-aos="fade-up">Explore GNTT</h2>
+      <h2 id="previews-heading" class="section-title" data-aos="fade-up">Explore GNTT</h2>
+      <p class="section-subtitle" data-aos="fade-up" data-aos-delay="50">Everything you need for a perfect journey</p>
+      
       <div class="preview-grid">
-        <a class="card preview-card" href="/about.html" data-aos="zoom-in">
+        <!-- Preview 1 -->
+        <a class="card preview-card" href="about.html" data-aos="zoom-in">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="About GNTT" loading="lazy" />
           <div class="preview-icon">ℹ️</div>
-          <h3>About</h3>
+          <h3>About Us</h3>
           <p>Mission, team, and milestones.</p>
         </a>
-        <a class="card preview-card" href="/services.html" data-aos="zoom-in" data-aos-delay="50">
+        
+        <!-- Preview 2 -->
+        <a class="card preview-card" href="services.html" data-aos="zoom-in" data-aos-delay="50">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Our Services" loading="lazy" />
           <div class="preview-icon">⚙️</div>
           <h3>Services</h3>
           <p>Ticketing, visas, cabs, hotels.</p>
         </a>
-        <a class="card preview-card" href="/tours.html" data-aos="zoom-in" data-aos-delay="100">
+        
+        <!-- Preview 3 -->
+        <a class="card preview-card" href="tours.html" data-aos="zoom-in" data-aos-delay="100">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Tour Packages" loading="lazy" />
           <div class="preview-icon">🗺️</div>
           <h3>Tours</h3>
           <p>Filterable catalog with details.</p>
         </a>
-        <a class="card preview-card" href="/gallery.html" data-aos="zoom-in" data-aos-delay="150">
+        
+        <!-- Preview 4 -->
+        <a class="card preview-card" href="gallery.html" data-aos="zoom-in" data-aos-delay="150">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery" loading="lazy" />
           <div class="preview-icon">📷</div>
           <h3>Gallery</h3>
           <p>Photos and short reels.</p>
         </a>
-        <a class="card preview-card" href="/booking.html" data-aos="zoom-in">
+        
+        <!-- Preview 5 -->
+        <a class="card preview-card" href="booking.html" data-aos="zoom-in" data-aos-delay="200">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Booking" loading="lazy" />
           <div class="preview-icon">📝</div>
           <h3>Booking</h3>
           <p>Send an enquiry instantly.</p>
         </a>
-        <a class="card preview-card" href="/contact.html" data-aos="zoom-in" data-aos-delay="50">
+        
+        <!-- Preview 6 -->
+        <a class="card preview-card" href="contact.html" data-aos="zoom-in" data-aos-delay="250">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Contact Us" loading="lazy" />
           <div class="preview-icon">📞</div>
           <h3>Contact</h3>
           <p>Call, WhatsApp, email, and map.</p>
         </a>
-        <a class="card preview-card" href="/privacy.html" data-aos="zoom-in" data-aos-delay="100">
+        
+        <!-- Preview 7 -->
+        <a class="card preview-card" href="privacy.html" data-aos="zoom-in" data-aos-delay="300">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Privacy Policy" loading="lazy" />
           <div class="preview-icon">🔒</div>
           <h3>Privacy</h3>
           <p>How we handle your data.</p>
         </a>
-        <a class="card preview-card" href="/terms.html" data-aos="zoom-in" data-aos-delay="150">
+        
+        <!-- Preview 8 -->
+        <a class="card preview-card" href="terms.html" data-aos="zoom-in" data-aos-delay="350">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Terms of Service" loading="lazy" />
           <div class="preview-icon">📄</div>
           <h3>Terms</h3>
           <p>Bookings, cancellations, refunds.</p>
@@ -254,27 +364,50 @@
       </div>
     </section>
 
-    <!-- Reviews Slider -->
+    <!-- ==========================================
+         REVIEWS SLIDER SECTION
+         ========================================== -->
     <section class="section reviews" aria-labelledby="reviews-heading">
       <div class="container">
-        <h2 id="reviews-heading" data-aos="fade-up">What customers say</h2>
+        <h2 id="reviews-heading" class="section-title" data-aos="fade-up">What Customers Say</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="50">Real experiences from real travelers</p>
+        
         <div class="swiper reviews-swiper">
           <div class="swiper-wrapper">
-            <blockquote class="swiper-slide review" data-aos="fade-up">
-              <p>"Great experience planning our honeymoon — smooth and stress‑free!"</p>
-              <cite>— R. Singh</cite>
+            <!-- Review 1 -->
+            <blockquote class="swiper-slide review">
+              <div class="review-avatar">
+                <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Customer avatar" loading="lazy" />
+              </div>
+              <p>"Great experience planning our honeymoon — smooth and stress‑free! GNTT handled everything perfectly."</p>
+              <cite>⭐⭐⭐⭐⭐ — R. Singh, Amritsar</cite>
             </blockquote>
-            <blockquote class="swiper-slide review" data-aos="fade-up">
-              <p>"Got the best flight deal at short notice. Highly recommended."</p>
-              <cite>— A. Kaur</cite>
+            
+            <!-- Review 2 -->
+            <blockquote class="swiper-slide review">
+              <div class="review-avatar">
+                <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Customer avatar" loading="lazy" />
+              </div>
+              <p>"Got the best flight deal at short notice. Highly recommended for quick bookings!"</p>
+              <cite>⭐⭐⭐⭐⭐ — A. Kaur, Jalandhar</cite>
             </blockquote>
-            <blockquote class="swiper-slide review" data-aos="fade-up">
-              <p>"Professional team and clear communication throughout."</p>
-              <cite>— M. Sharma</cite>
+            
+            <!-- Review 3 -->
+            <blockquote class="swiper-slide review">
+              <div class="review-avatar">
+                <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Customer avatar" loading="lazy" />
+              </div>
+              <p>"Professional team and clear communication throughout. Will definitely book again."</p>
+              <cite>⭐⭐⭐⭐⭐ — M. Sharma, Ludhiana</cite>
             </blockquote>
-            <blockquote class="swiper-slide review" data-aos="fade-up">
-              <p>"Perfect Dubai trip with all arrangements handled beautifully."</p>
-              <cite>— P. Bhatia</cite>
+            
+            <!-- Review 4 -->
+            <blockquote class="swiper-slide review">
+              <div class="review-avatar">
+                <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Customer avatar" loading="lazy" />
+              </div>
+              <p>"Perfect Dubai trip with all arrangements handled beautifully. Exceeded expectations!"</p>
+              <cite>⭐⭐⭐⭐⭐ — P. Bhatia, Patiala</cite>
             </blockquote>
           </div>
           <div class="swiper-pagination"></div>
@@ -282,72 +415,92 @@
       </div>
     </section>
 
-    <!-- Partners strip -->
-    <section class="section partners" aria-label="Partners">
+    <!-- ==========================================
+         PARTNERS SECTION
+         ========================================== -->
+    <section class="section partners" aria-label="Our trusted partners">
       <div class="container">
         <h3 class="partners-heading" data-aos="fade-up">Trusted Partners</h3>
         <div class="strip" data-aos="fade-up" data-aos-delay="100">
-          <img src="/assets/img/partner-1.png" alt="Airline partner" loading="lazy" />
-          <img src="/assets/img/partner-2.png" alt="Hotel partner" loading="lazy" />
-          <img src="/assets/img/partner-3.png" alt="Travel partner" loading="lazy" />
-          <img src="/assets/img/partner-4.png" alt="Cab partner" loading="lazy" />
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Airline partner" loading="lazy" />
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Hotel partner" loading="lazy" />
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Travel partner" loading="lazy" />
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Cab partner" loading="lazy" />
         </div>
       </div>
     </section>
 
-    <!-- CTA Banner -->
-    <section class="section cta-banner" aria-label="Contact actions">
+    <!-- ==========================================
+         CTA BANNER SECTION
+         ========================================== -->
+    <section class="section cta-banner" aria-label="Contact us today">
       <div class="container">
         <div class="cta-content" data-aos="zoom-in">
           <div class="cta-text">
-            <h2>Ready to plan your trip?</h2>
-            <p>Call, WhatsApp, or send an enquiry — we'll respond quickly.</p>
+            <h2>Ready to Plan Your Trip?</h2>
+            <p>Call, WhatsApp, or send an enquiry — we'll respond quickly with the best options for you.</p>
           </div>
           <div class="cta-buttons">
-            <a class="btn primary btn-lg" href="tel:+916283315156">Call Now</a>
-            <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
-            <a class="btn ghost btn-lg" href="/booking.html">Enquiry/Booking</a>
+            <a class="btn primary btn-lg" href="tel:+916283315156">📞 Call Now</a>
+            <a class="btn accent btn-lg" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">💬 WhatsApp Chat</a>
+            <a class="btn ghost btn-lg" href="booking.html">📝 Enquiry/Booking</a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="site-footer" role="contentinfo">
     <div class="container footer-grid">
+      
+      <!-- Footer Column 1: Brand -->
       <div class="footer-col">
         <div class="footer-brand">
-          <img src="/assets/img/logo.png" alt="GNTT logo" width="100" height="30" />
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT logo" width="50" height="50" loading="lazy" />
           <h3>GNTT</h3>
         </div>
         <p class="footer-tagline">Your journey, our responsibility.</p>
-        <p class="footer-address">Court Road near Police Station<br>Patti 143416, Punjab, India</p>
+        <p class="footer-address">
+          Court Road near Police Station<br>
+          Patti 143416, Punjab, India
+        </p>
+        <div class="footer-hours">
+          <strong>Business Hours:</strong><br>
+          Mon–Sat: 9:00 AM – 7:00 PM<br>
+          Sunday: Closed
+        </div>
       </div>
       
+      <!-- Footer Column 2: Contact -->
       <div class="footer-col">
         <h4>Contact</h4>
         <ul class="footer-links">
           <li><a href="tel:+916283315156">📞 +91 6283315156</a></li>
           <li><a href="mailto:patticsc72@gmail.com">✉️ patticsc72@gmail.com</a></li>
           <li><a href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip" target="_blank" rel="noopener">💬 WhatsApp Chat</a></li>
-          <li><a href="/contact.html">📍 View Map</a></li>
+          <li><a href="contact.html">📍 View Map & Directions</a></li>
         </ul>
       </div>
       
+      <!-- Footer Column 3: Quick Links -->
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul class="footer-links">
-          <li><a href="/about.html">About Us</a></li>
-          <li><a href="/services.html">Services</a></li>
-          <li><a href="/tours.html">Tours</a></li>
-          <li><a href="/gallery.html">Gallery</a></li>
-          <li><a href="/booking.html">Booking</a></li>
-          <li><a href="/privacy.html">Privacy Policy</a></li>
-          <li><a href="/terms.html">Terms of Service</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Our Services</a></li>
+          <li><a href="tours.html">Tour Packages</a></li>
+          <li><a href="gallery.html">Photo Gallery</a></li>
+          <li><a href="booking.html">Book Now</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
         </ul>
       </div>
       
+      <!-- Footer Column 4: Social Media -->
       <div class="footer-col">
         <h4>Follow Us</h4>
         <div class="socials">
@@ -367,26 +520,44 @@
             </svg>
           </a>
         </div>
-        <p class="footer-powered">Powered by<br><strong>Guru Nanak Tour & Travels</strong></p>
+        <p class="footer-powered">
+          <strong>Powered by</strong><br>
+          Thrillyverse
+        </p>
+        <div class="footer-badge">
+          <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Verified travel agency" width="80" height="80" loading="lazy" />
+        </div>
       </div>
     </div>
     
+    <!-- Footer Bottom -->
     <div class="footer-bottom container">
       <div class="legal">
-        <small>&copy; <span id="year"></span> GNTT. All rights reserved.</small>
+        <small>&copy; <span id="year">2025</span> Guru Nanak Tour & Travels (GNTT). All rights reserved.</small>
         <div class="legal-links">
-          <a href="/humans.txt">humans.txt</a>
-          <a href="/robots.txt">robots.txt</a>
-          <a href="/sitemap.xml">sitemap</a>
+          <a href="humans.txt">humans.txt</a>
+          <span aria-hidden="true">|</span>
+          <a href="robots.txt">robots.txt</a>
+          <span aria-hidden="true">|</span>
+          <a href="sitemap.xml">sitemap</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <button id="toTop" class="to-top" aria-label="Back to top">↑</button>
+  <!-- Back-to-Top Button -->
+  <button id="toTop" class="to-top" aria-label="Scroll back to top">
+    ↑
+  </button>
 
-  <!-- JS: Swiper, AOS (CDN) -->
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  
+  <!-- Swiper JS (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  
+  <!-- AOS JS (CDN) -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
 
   <!-- GTranslate Widget Script -->
@@ -401,10 +572,49 @@
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 
-  <!-- App JS -->
-  <script src="/assets/js/main.js" defer></script>
-  <script src="/assets/js/forms.js" defer></script>
-  <script src="/assets/js/aos-init.js" defer></script>
-  <script src="/assets/js/sliders.js" defer></script>
+  <!-- App JavaScript -->
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/forms.js" defer></script>
+  <script src="assets/js/aos-init.js" defer></script>
+  <script src="assets/js/sliders.js" defer></script>
+  
+  <!-- Dynamic Counter Animation -->
+  <script>
+    // Animate stat numbers on scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const statNumbers = document.querySelectorAll('.stat-number');
+      const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const target = entry.target;
+            const count = parseInt(target.dataset.count);
+            let current = 0;
+            const increment = count / 50;
+            const duration = 2000;
+            const stepTime = duration / 50;
+            
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= count) {
+                target.textContent = count.toLocaleString() + (count === 24 ? '/7' : '+');
+                clearInterval(timer);
+              } else {
+                target.textContent = Math.floor(current).toLocaleString();
+              }
+            }, stepTime);
+            
+            observer.unobserve(target);
+          }
+        });
+      }, observerOptions);
+      
+      statNumbers.forEach(stat => observer.observe(stat));
+    });
+  </script>
 </body>
 </html>
