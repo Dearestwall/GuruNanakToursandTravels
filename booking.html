@@ -2,88 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Booking / Enquiry — GNTT</title>
-  <meta name="description" content="Send an enquiry or booking request with trip details, dates, and contact info." />
+  <title>Booking — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="canonical" href="https://example.com/booking.html" />
-  <link rel="stylesheet" href="/assets/css/base.css" />
-  <link rel="stylesheet" href="/assets/css/layout.css" />
-  <link rel="stylesheet" href="/assets/css/components.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
-  <meta property="og:title" content="GNTT Booking" />
-  <meta property="og:description" content="Plan your trip — fast response on WhatsApp, phone, and email." />
-  <meta property="og:image" content="https://example.com/assets/img/og-preview.jpg" />
-  <meta property="og:url" content="https://example.com/booking.html" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="gtranslate_wrapper"></div>
+
   <header class="site-header sticky">
     <div class="container flex-between">
-      <a href="/" class="brand"><img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" /><span>GNTT</span></a>
-      <nav class="nav">
-        <a href="/">Home</a><a href="/services.html">Services</a><a href="/tours.html">Tours</a><a class="active" href="/booking.html">Booking</a><a href="/contact.html">Contact</a>
+      <a href="index.html" class="brand">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
+        <span>GNTT</span>
+      </a>
+      <nav class="nav desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="booking.html" class="active">Booking</a>
+        <a href="contact.html">Contact</a>
       </nav>
+      <div class="header-actions">
+        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <h1 data-aos="fade-up">Booking / Enquiry</h1>
-    <form id="bookingForm" class="form" novalidate data-aos="fade-up">
+  <div id="offcanvas" class="offcanvas" hidden>
+    <button class="offcanvas-close" data-close>&times;</button>
+    <ul class="nav-list">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="booking.html">📝 Booking</a></li>
+      <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+  </div>
+
+  <main id="main" class="container">
+    <h1>Booking / Enquiry</h1>
+    
+    <!-- Web3Forms Integration -->
+    <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST" class="form">
+      <!-- Replace with your actual Web3Forms access key -->
+      <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+      <input type="hidden" name="subject" value="New Booking Enquiry from GNTT Website">
+      <input type="hidden" name="from_name" value="GNTT Website">
+      
       <div class="grid-2">
         <div class="form-row">
-          <label for="tripType">Trip Type</label>
-          <select id="tripType" name="tripType" required>
+          <label for="tripType">Trip Type *</label>
+          <select id="tripType" name="trip_type" required>
             <option value="">Select</option>
             <option>One Way</option>
             <option>Round Trip</option>
             <option>Multi-City</option>
             <option>Package</option>
           </select>
-          <span class="error" data-for="tripType"></span>
         </div>
+
         <div class="form-row">
-          <label for="origin">Origin</label>
-          <input id="origin" name="origin" required autocomplete="off" />
-          <span class="error" data-for="origin"></span>
+          <label for="origin">Origin *</label>
+          <input id="origin" name="origin" required />
         </div>
+
         <div class="form-row">
-          <label for="destination">Destination</label>
-          <input id="destination" name="destination" required autocomplete="off" />
-          <span class="error" data-for="destination"></span>
+          <label for="destination">Destination *</label>
+          <input id="destination" name="destination" required />
         </div>
+
         <div class="form-row">
-          <label for="startDate">Start Date</label>
-          <input id="startDate" name="startDate" type="date" required />
-          <span class="error" data-for="startDate"></span>
+          <label for="startDate">Start Date *</label>
+          <input id="startDate" name="start_date" type="date" required />
         </div>
+
         <div class="form-row">
-          <label for="endDate">End Date</label>
-          <input id="endDate" name="endDate" type="date" required />
-          <span class="error" data-for="endDate"></span>
+          <label for="endDate">End Date *</label>
+          <input id="endDate" name="end_date" type="date" required />
         </div>
+
         <div class="form-row">
-          <label for="pax">Passengers</label>
-          <input id="pax" name="pax" type="number" required min="1" max="99" />
-          <span class="error" data-for="pax"></span>
+          <label for="pax">Passengers *</label>
+          <input id="pax" name="passengers" type="number" required min="1" max="99" />
         </div>
+
         <div class="form-row">
           <label for="budget">Budget (INR)</label>
           <input id="budget" name="budget" type="number" min="0" step="500" />
-          <span class="error" data-for="budget"></span>
         </div>
+
         <div class="form-row">
-          <label for="name">Full Name</label>
-          <input id="name" name="name" required autocomplete="name" />
-          <span class="error" data-for="name"></span>
+          <label for="name">Full Name *</label>
+          <input id="name" name="name" required />
         </div>
+
         <div class="form-row">
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" required pattern="^[0-9]{10,15}$" inputmode="numeric" />
-          <span class="error" data-for="phone"></span>
+          <label for="phone">Phone *</label>
+          <input id="phone" name="phone" required pattern="[0-9]{10,15}" inputmode="numeric" />
         </div>
+
         <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="email" />
-          <span class="error" data-for="email"></span>
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" required />
         </div>
       </div>
 
@@ -93,24 +112,68 @@
       </div>
 
       <div class="form-row">
-        <div class="recaptcha-placeholder" aria-hidden="true">reCAPTCHA placeholder</div>
+        <div class="h-captcha" data-captcha="true"></div>
       </div>
 
       <div class="form-actions">
-        <button class="btn primary" type="submit">Submit</button>
-        <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">WhatsApp Chat</a>
+        <button class="btn primary" type="submit">Submit Enquiry</button>
+        <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">💬 WhatsApp Instead</a>
       </div>
-      <div class="toast" role="status" aria-live="polite" hidden></div>
+
+      <div id="result" class="toast" hidden></div>
     </form>
   </main>
 
   <footer class="site-footer">
-    <div class="container legal">
-      <small>&copy; <span id="year"></span> GNTT.</small>
-    </div>
+    <div class="container"><small>&copy; <span id="year">2025</span> GNTT</small></div>
   </footer>
 
-  <script src="/assets/js/main.js" defer></script>
-  <script src="/assets/js/forms.js" defer></script>
+  <button id="toTop" class="to-top">↑</button>
+
+  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="https://web3forms.com/client/script.js" async defer></script>
+  <script src="assets/js/main.js" defer></script>
+  
+  <script>
+    const form = document.getElementById('bookingForm');
+    const result = document.getElementById('result');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+      result.innerHTML = "Please wait...";
+      result.hidden = false;
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: json
+        });
+        const data = await response.json();
+        if (response.status == 200) {
+          result.innerHTML = "✅ Thank you! We will contact you soon.";
+          result.style.background = '#ecfdf5';
+          result.style.color = '#065f46';
+          form.reset();
+          setTimeout(() => result.hidden = true, 3000);
+        } else {
+          result.innerHTML = data.message || "❌ Something went wrong!";
+          result.style.background = '#fee2e2';
+          result.style.color = '#b91c1c';
+        }
+      } catch (error) {
+        result.innerHTML = "❌ Something went wrong!";
+        result.style.background = '#fee2e2';
+        result.style.color = '#b91c1c';
+      }
+    });
+  </script>
 </body>
 </html>

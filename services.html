@@ -5,152 +5,108 @@
   <title>Services — GNTT</title>
   <meta name="description" content="Ticketing, tour packages, visas, hotel & cab bookings with easy enquiries." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="canonical" href="https://example.com/services.html" />
-  <link rel="stylesheet" href="/assets/css/base.css" />
-  <link rel="stylesheet" href="/assets/css/layout.css" />
-  <link rel="stylesheet" href="/assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="gtranslate_wrapper"></div>
+
   <header class="site-header sticky">
     <div class="container flex-between">
-      <a href="/" class="brand"><img src="/assets/img/logo.png" alt="GNTT logo" width="120" height="36" /><span>GNTT</span></a>
-      <nav class="nav">
-        <a href="/">Home</a><a class="active" href="/services.html">Services</a><a href="/tours.html">Tours</a><a href="/booking.html">Booking</a><a href="/contact.html">Contact</a>
+      <a href="index.html" class="brand">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
+        <span class="brand-text">GNTT</span>
+      </a>
+      <nav class="nav desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html" class="active">Services</a>
+        <a href="tours.html">Tours</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
       </nav>
+      <div class="header-actions">
+        <a class="btn primary btn-sm desktop-only" href="tel:+916283315156">📞 Call</a>
+        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+      </div>
     </div>
   </header>
 
-  <main class="container">
+  <div id="offcanvas" class="offcanvas" hidden>
+    <button class="offcanvas-close" data-close>&times;</button>
+    <ul class="nav-list">
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="services.html">⚙️ Services</a></li>
+      <li><a href="tours.html">🗺️ Tours</a></li>
+      <li><a href="booking.html">📝 Booking</a></li>
+      <li><a href="contact.html">📞 Contact</a></li>
+    </ul>
+  </div>
+
+  <main id="main" class="container">
     <h1 data-aos="fade-up">Our Services</h1>
+    <p class="lead" data-aos="fade-up">Comprehensive travel solutions for every journey</p>
+
     <div class="grid-3">
+      <article class="card" id="ticketing" data-aos="fade-up">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Ticketing" loading="lazy" />
+        <h2>🎫 Air/Rail/Bus Ticketing</h2>
+        <p>Fast booking with confirmations and itinerary support. Best routes and transparent pricing.</p>
+        <a class="btn primary" href="booking.html">Book Now</a>
+      </article>
+
       <article class="card" data-aos="fade-up">
-        <h2>Air/Rail/Bus Ticketing</h2>
-        <p>Fast booking with confirmations and itinerary support.</p>
-        <button class="btn primary enquire-btn" data-service="Ticketing">Enquire</button>
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Domestic" loading="lazy" />
+        <h2>🇮🇳 Domestic Packages</h2>
+        <p>Handpicked itineraries for every budget and season across India.</p>
+        <a class="btn primary" href="tours.html">View Tours</a>
       </article>
-      <article class="card" data-aos="fade-up" data-aos-delay="50">
-        <h2>Domestic Packages</h2>
-        <p>Handpicked itineraries for every budget and season.</p>
-        <button class="btn primary enquire-btn" data-service="Domestic Packages">Enquire</button>
-      </article>
-      <article class="card" data-aos="fade-up" data-aos-delay="100">
-        <h2>International Packages</h2>
-        <p>End‑to‑end planning including visas and insurance.</p>
-        <button class="btn primary enquire-btn" data-service="International Packages">Enquire</button>
-      </article>
+
       <article class="card" data-aos="fade-up">
-        <h2>Visa Assistance</h2>
-        <p>Documentation and appointment guidance.</p>
-        <button class="btn primary enquire-btn" data-service="Visa Assistance">Enquire</button>
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="International" loading="lazy" />
+        <h2>🌍 International Packages</h2>
+        <p>End‑to‑end planning including visas and travel insurance.</p>
+        <a class="btn primary" href="tours.html">Explore Destinations</a>
       </article>
-      <article class="card" data-aos="fade-up" data-aos-delay="50">
-        <h2>Hotel Bookings</h2>
-        <p>Verified stays from budget to premium.</p>
-        <button class="btn primary enquire-btn" data-service="Hotel Bookings">Enquire</button>
+
+      <article class="card" data-aos="fade-up">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Visa" loading="lazy" />
+        <h2>📝 Visa Assistance</h2>
+        <p>Documentation guidance and appointment booking for all countries.</p>
+        <a class="btn primary" href="contact.html">Get Help</a>
       </article>
-      <article class="card" data-aos="fade-up" data-aos-delay="100">
-        <h2>Cab Bookings</h2>
-        <p>Local transfers and outstation cabs.</p>
-        <button class="btn primary enquire-btn" data-service="Cab Bookings">Enquire</button>
+
+      <article class="card" id="hotels" data-aos="fade-up">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Hotels" loading="lazy" />
+        <h2>🏨 Hotel Bookings</h2>
+        <p>Verified stays from budget to premium with best rate guarantee.</p>
+        <a class="btn primary" href="booking.html">Find Hotels</a>
+      </article>
+
+      <article class="card" id="cabs" data-aos="fade-up">
+        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Cabs" loading="lazy" />
+        <h2>🚗 Cab Bookings</h2>
+        <p>Local transfers and outstation cabs with professional drivers.</p>
+        <a class="btn primary" href="booking.html">Book Cab</a>
       </article>
     </div>
   </main>
 
-  <!-- Enquiry Modal -->
-  <div class="modal" id="enquiryModal" role="dialog" aria-modal="true" aria-labelledby="enquiryTitle" hidden>
-    <div class="modal-content">
-      <button class="modal-close" data-modal-close aria-label="Close">&times;</button>
-      <h2 id="enquiryTitle">Service Enquiry</h2>
-      <form id="serviceEnquiryForm" novalidate>
-        <input type="hidden" name="service" id="serviceField" />
-        <div class="form-row">
-          <label for="name">Full Name</label>
-          <input id="name" name="name" required autocomplete="name" />
-          <span class="error" data-for="name"></span>
-        </div>
-        <div class="form-row">
-          <label for="phone">Phone</label>
-          <input id="phone" name="phone" required pattern="^[0-9]{10,15}$" inputmode="numeric" />
-          <span class="error" data-for="phone"></span>
-        </div>
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required autocomplete="email" />
-          <span class="error" data-for="email"></span>
-        </div>
-        <div class="form-row">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="3"></textarea>
-        </div>
-        <div class="form-row">
-          <div class="recaptcha-placeholder" aria-hidden="true">reCAPTCHA placeholder</div>
-        </div>
-        <div class="form-actions">
-          <button class="btn primary" type="submit">Send</button>
-          <button class="btn ghost" type="button" data-modal-close>Cancel</button>
-        </div>
-        <div class="toast" role="status" aria-live="polite" hidden></div>
-      </form>
-    </div>
-  </div>
-
   <footer class="site-footer">
-    <div class="container legal">
-      <small>&copy; <span id="year"></span> GNTT.</small>
+    <div class="container">
+      <small>&copy; <span id="year">2025</span> GNTT. All rights reserved.</small>
     </div>
   </footer>
 
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script src="/assets/js/main.js" defer></script>
-  <script src="/assets/js/forms.js" defer></script>
-  <script src="/assets/js/aos-init.js" defer></script>
-  <script>
-    // Wire up service buttons -> modal
-    document.addEventListener('DOMContentLoaded', () => {
-      const modal = document.getElementById('enquiryModal');
-      const serviceField = document.getElementById('serviceField');
-      const toast = modal.querySelector('.toast');
-      document.querySelectorAll('.enquire-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          serviceField.value = btn.dataset.service || '';
-          modal.hidden = false;
-          modal.querySelector('button[data-modal-close]').focus();
-          document.body.style.overflow = 'hidden';
-        });
-      });
-      modal.addEventListener('click', (e) => {
-        if (e.target.matches('[data-modal-close]') || e.target === modal) {
-          modal.hidden = true;
-          document.body.style.overflow = '';
-        }
-      });
-      modal.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          modal.hidden = true;
-          document.body.style.overflow = '';
-        }
-      });
+  <button id="toTop" class="to-top">↑</button>
 
-      // Simple submission
-      const form = document.getElementById('serviceEnquiryForm');
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const valid = window.AppForms.validate(form);
-        if (!valid) return;
-        const payload = window.AppForms.serialize(form);
-        try {
-          await window.AppForms.fakeSubmit(payload);
-          toast.textContent = 'Thanks! We will reach out soon.';
-          toast.hidden = false;
-          form.reset();
-          setTimeout(() => { toast.hidden = true; modal.hidden = true; document.body.style.overflow = ''; }, 1200);
-        } catch {
-          toast.textContent = 'Something went wrong. Please try again.';
-          toast.hidden = false;
-        }
-      });
-    });
-  </script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/aos-init.js" defer></script>
 </body>
 </html>
