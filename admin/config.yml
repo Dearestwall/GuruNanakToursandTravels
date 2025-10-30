@@ -1,6 +1,6 @@
 backend:
   name: git-gateway
-  branch: main # or master
+  branch: main
 
 media_folder: "assets/img/uploads"
 public_folder: "assets/img/uploads"
@@ -10,14 +10,17 @@ collections:
     label: "Tour Packages"
     folder: "content/tours"
     create: true
-    slug: "{{slug}}"
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Price", name: "price", widget: "number"}
-      - {label: "Duration", name: "duration", widget: "string"}
-      - {label: "Region", name: "region", widget: "string"}
+      - {label: "Price (INR)", name: "price", widget: "number"}
+      - {label: "Duration", name: "duration", widget: "string", hint: "e.g., 5D/4N"}
+      - {label: "Region", name: "region", widget: "select", options: ["Himalayas", "Goa", "Rajasthan", "Dubai", "Singapore", "Other"]}
+      - {label: "Budget Range", name: "budget_range", widget: "select", options: ["under-20000", "20000-50000", "over-50000"]}
+      - {label: "Featured Image", name: "image", widget: "image"}
       - {label: "Description", name: "body", widget: "markdown"}
-      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Inclusions", name: "inclusions", widget: "list"}
+      - {label: "Exclusions", name: "exclusions", widget: "list"}
       - {label: "Featured", name: "featured", widget: "boolean", default: false}
 
   - name: "reviews"
@@ -28,22 +31,26 @@ collections:
     fields:
       - {label: "Customer Name", name: "name", widget: "string"}
       - {label: "Location", name: "location", widget: "string"}
-      - {label: "Rating", name: "rating", widget: "number", min: 1, max: 5}
-      - {label: "Review", name: "body", widget: "text"}
-      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Rating", name: "rating", widget: "number", min: 1, max: 5, value_type: "int"}
+      - {label: "Review Text", name: "body", widget: "text"}
+      - {label: "Avatar", name: "avatar", widget: "image", required: false}
+      - {label: "Date", name: "date", widget: "datetime", default: ""}
+
+  - name: "gallery"
+    label: "Photo Gallery"
+    folder: "content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Category", name: "category", widget: "select", options: ["Tours", "Hotels", "Transport", "Activities", "Other"]}
+      - {label: "Description", name: "description", widget: "text", required: false}
 
   - name: "pages"
     label: "Pages"
     files:
-      - label: "About Page"
-        name: "about"
-        file: "content/about.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Mission", name: "mission", widget: "text"}
-          - {label: "Body", name: "body", widget: "markdown"}
-      
-      - label: "Home Settings"
+      - label: "Home Page"
         name: "home"
         file: "content/home.yml"
         fields:
@@ -56,3 +63,50 @@ collections:
               - {label: "Image", name: "image", widget: "image"}
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Description", name: "description", widget: "text"}
+              - {label: "Button Text", name: "button_text", widget: "string"}
+              - {label: "Button Link", name: "button_link", widget: "string"}
+          - label: "Stats"
+            name: "stats"
+            widget: "object"
+            fields:
+              - {label: "Happy Customers", name: "customers", widget: "number", default: 5000}
+              - {label: "Tour Packages", name: "packages", widget: "number", default: 150}
+              - {label: "Destinations", name: "destinations", widget: "number", default: 50}
+      
+      - label: "About Page"
+        name: "about"
+        file: "content/about.md"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Mission Statement", name: "mission", widget: "text"}
+          - {label: "Body Content", name: "body", widget: "markdown"}
+          - label: "Team Members"
+            name: "team"
+            widget: "list"
+            fields:
+              - {label: "Name", name: "name", widget: "string"}
+              - {label: "Role", name: "role", widget: "string"}
+              - {label: "Photo", name: "photo", widget: "image"}
+              - {label: "Bio", name: "bio", widget: "text"}
+
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "Contact Information"
+        name: "contact"
+        file: "content/settings/contact.yml"
+        fields:
+          - {label: "Phone", name: "phone", widget: "string", default: "+91 6283315156"}
+          - {label: "Email", name: "email", widget: "string", default: "patticsc72@gmail.com"}
+          - {label: "WhatsApp Number", name: "whatsapp", widget: "string", default: "916283315156"}
+          - {label: "Address", name: "address", widget: "text"}
+          - {label: "Google Maps Embed URL", name: "map_embed", widget: "text"}
+      
+      - label: "Social Media"
+        name: "social"
+        file: "content/settings/social.yml"
+        fields:
+          - {label: "Instagram", name: "instagram", widget: "string", default: "https://instagram.com/buy24hstore"}
+          - {label: "YouTube", name: "youtube", widget: "string", default: "https://youtube.com/@buy24hstore"}
+          - {label: "Facebook", name: "facebook", widget: "string", default: "https://facebook.com/buy24hstore"}
+          - {label: "Website", name: "website", widget: "string", default: "https://www.buy24hstore.com"}
