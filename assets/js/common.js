@@ -1,6 +1,7 @@
 /**
  * COMMON.JS - Global Site Functionality
  * Header, Menu, Search, Scroll, Accessibility, Animations
+ * Guru Nanak Tour & Travels
  */
 
 (function() {
@@ -45,6 +46,8 @@
     };
 
     window.addEventListener('scroll', requestTick, { passive: true });
+
+    console.log('✅ Auto-hide header initialized');
   };
 
   // ============================================
@@ -93,6 +96,8 @@
         closeMenu();
       }
     });
+
+    console.log('✅ Mobile menu initialized');
   };
 
   // ============================================
@@ -144,10 +149,12 @@
         e.preventDefault();
         const query = searchInput?.value.trim();
         if (query) {
-          window.location.href = `tours.html?q=${encodeURIComponent(query)}`;
+          window.location.href = `tours/index.html?q=${encodeURIComponent(query)}`;
         }
       });
     }
+
+    console.log('✅ Search modal initialized');
   };
 
   // ============================================
@@ -172,6 +179,8 @@
 
     // Fallback: force hide after 3 seconds
     setTimeout(hideLoader, 3000);
+
+    console.log('✅ Page loader initialized');
   };
 
   // ============================================
@@ -202,6 +211,8 @@
         }
       });
     });
+
+    console.log('✅ Smooth scroll initialized');
   };
 
   // ============================================
@@ -227,6 +238,8 @@
         behavior: 'smooth'
       });
     });
+
+    console.log('✅ Back to top button initialized');
   };
 
   // ============================================
@@ -250,6 +263,8 @@
     document.querySelectorAll('.fade-in-observe').forEach(el => {
       observer.observe(el);
     });
+
+    console.log('✅ Intersection observer initialized');
   };
 
   // ============================================
@@ -272,13 +287,47 @@
         easing: 'ease-in-out',
         once: true,
         offset: 120,
-        disable: 'mobile' // Disable on mobile for performance
+        disable: window.innerWidth < 640 ? true : false
+      });
+      console.log('✅ AOS initialized');
+    }
+  };
+
+  // ============================================
+  // 10. PERFORMANCE MONITORING
+  // ============================================
+  const initPerformanceMonitoring = () => {
+    if (window.performance && window.performance.timing) {
+      window.addEventListener('load', () => {
+        const pageLoadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+        console.log(`📊 Page loaded in ${pageLoadTime}ms`);
       });
     }
   };
 
   // ============================================
-  // 10. INITIALIZE ALL
+  // 11. KEYBOARD NAVIGATION
+  // ============================================
+  const initKeyboardNavigation = () => {
+    document.addEventListener('keydown', (e) => {
+      // Alt + S: Open search
+      if (e.altKey && e.key === 's') {
+        e.preventDefault();
+        document.getElementById('searchToggle')?.click();
+      }
+
+      // Alt + M: Open menu
+      if (e.altKey && e.key === 'm') {
+        e.preventDefault();
+        document.getElementById('menuToggle')?.click();
+      }
+    });
+
+    console.log('✅ Keyboard navigation initialized');
+  };
+
+  // ============================================
+  // 12. INITIALIZE ALL
   // ============================================
   const init = () => {
     console.log('🚀 Initializing common.js...');
@@ -291,6 +340,8 @@
     initBackToTop();
     initIntersectionObserver();
     setCurrentYear();
+    initKeyboardNavigation();
+    initPerformanceMonitoring();
 
     // Initialize AOS after a brief delay
     setTimeout(initAOS, 100);
@@ -304,5 +355,15 @@
   } else {
     init();
   }
+
+  // Export for global access
+  window.commonModule = {
+    initAutoHideHeader,
+    initMobileMenu,
+    initSearchModal,
+    initPageLoader,
+    initSmoothScroll,
+    initBackToTop
+  };
 
 })();

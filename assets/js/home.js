@@ -1,6 +1,7 @@
 /**
- * HOME.JS - Home Page Specific Functionality
- * Hero Slider (2.5s), Stats Counter, Reviews Slider (4.5s)
+ * HOME.JS - Homepage Specific Functionality
+ * Hero Slider, Stats Counter, Reviews Slider, Animations
+ * Guru Nanak Tour & Travels
  */
 
 (function() {
@@ -48,6 +49,8 @@
     }, observerOptions);
 
     statNumbers.forEach(stat => observer.observe(stat));
+
+    console.log('✅ Stats counter initialized');
   };
 
   // ============================================
@@ -62,7 +65,8 @@
     const heroSwiper = document.querySelector('.hero-swiper');
     if (!heroSwiper) return;
 
-    new Swiper('.hero-swiper', {
+    // Store swiper instance globally
+    window.heroSwiperInstance = new Swiper('.hero-swiper', {
       loop: true,
       effect: 'fade',
       fadeEffect: {
@@ -88,7 +92,9 @@
         onlyInViewport: true
       },
       a11y: {
-        enabled: true
+        enabled: true,
+        prevSlideMessage: 'Previous slide',
+        nextSlideMessage: 'Next slide'
       },
       on: {
         init: function() {
@@ -107,7 +113,8 @@
     const reviewsSwiper = document.querySelector('.reviews-swiper');
     if (!reviewsSwiper) return;
 
-    new Swiper('.reviews-swiper', {
+    // Store swiper instance globally
+    window.reviewsSwiperInstance = new Swiper('.reviews-swiper', {
       loop: true,
       autoplay: {
         delay: 4500, // 4.5 seconds
@@ -180,10 +187,38 @@
     };
 
     window.addEventListener('scroll', requestParallaxTick, { passive: true });
+
+    console.log('✅ Parallax effects initialized');
   };
 
   // ============================================
-  // 5. INITIALIZE HOME PAGE
+  // 5. SCROLL REVEAL ANIMATIONS
+  // ============================================
+  const initScrollReveals = () => {
+    const elements = document.querySelectorAll('.fade-in-observe');
+    if (!elements.length) return;
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    elements.forEach(el => observer.observe(el));
+
+    console.log('✅ Scroll reveals initialized');
+  };
+
+  // ============================================
+  // 6. INITIALIZE HOME PAGE
   // ============================================
   const init = () => {
     console.log('🏠 Initializing home.js...');
@@ -192,10 +227,12 @@
     initHeroSwiper();
     initReviewsSwiper();
     initParallaxEffects();
+    initScrollReveals();
 
     console.log('✅ Home.js initialized');
   };
 
+  // Run on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
@@ -212,5 +249,13 @@
       });
     }
   });
+
+  // Export for global access
+  window.homeModule = {
+    initStatsCounter,
+    initHeroSwiper,
+    initReviewsSwiper,
+    initParallaxEffects
+  };
 
 })();
