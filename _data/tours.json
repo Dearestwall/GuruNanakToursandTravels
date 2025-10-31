@@ -4,24 +4,34 @@
     "title": "Himalayan Escape",
     "type": "Adventure",
     "featured": true,
-    "duration": {
-      "days": 5,
-      "nights": 4
-    },
+    "duration": {"days": 5, "nights": 4},
     "price": 28999,
-    "image": "/uploads/tours/himalayan-escape.jpg",
-    "gallery": [],
-    "excerpt": "Experience the breathtaking beauty of the Himalayas",
-    "description": "Explore majestic mountains, glacial lakes, and ancient monasteries...",
+    "image": "/uploads/tours/himalayan.jpg",
+    "gallery": [
+      {"image": "/uploads/tours/himalayan-1.jpg"},
+      {"image": "/uploads/tours/himalayan-2.jpg"}
+    ],
+    "excerpt": "Experience majestic mountains and glacial lakes",
+    "description": "Full detailed description here...",
     "highlights": ["Professional guides", "All meals included", "Mountain lodge stays"],
     "destinations": ["Manali", "Rohtang Pass", "Solang Valley"],
-    "inclusions": ["Hotel", "Meals", "Guide", "Transport"],
-    "exclusions": ["Travel to base", "Travel Insurance"],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Manali",
+        "description": "Arrive and settle in...",
+        "meals": "B, L, D",
+        "accommodation": "Hotel"
+      }
+    ],
+    "inclusions": ["Transport", "Meals", "Guide", "Permits"],
+    "exclusions": ["Travel insurance", "Personal expenses"],
     "best_season": "May to September",
     "difficulty": "Moderate",
     "group_size": "2-20 people",
-    "tags": ["adventure", "trekking", "mountain"],
-    "meta_description": "Himalayan trekking and adventure tour package",
+    "available_dates": ["May 1-5", "May 10-15"],
+    "tags": ["trekking", "adventure", "mountain"],
+    "meta_description": "5-day Himalayan adventure trek...",
     "seo_keywords": ["himalayan trek", "mountain adventure", "himachal tours"]
   }
 ]
