@@ -1,112 +1,587 @@
+# Netlify CMS Configuration for Guru Nanak Tour & Travels
 backend:
-  name: git-gateway
+  name: github
+  repo: your-username/GuruNanakToursandTravels  # Change this!
   branch: main
+  auth_endpoint: /api/auth
+  cms_label_prefix: "[CMS]"
 
-media_folder: "assets/img/uploads"
-public_folder: "assets/img/uploads"
+# Authentication via Netlify Identity
+auth_endpoint: /.netlify/functions/auth
 
+# Media folder for uploads
+media_folder: "uploads"
+public_folder: "/uploads"
+
+# Site URL (change to your Netlify domain)
+site_url: https://guru-nanak-tours.netlify.app
+
+# Display options
+display_url: https://guru-nanak-tours.netlify.app
+logo_url: https://i.ibb.co/wFXBHmNh/image.png
+
+# Slug configuration
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# Collections for different content types
 collections:
-  - name: "tours"
-    label: "Tour Packages"
-    folder: "content/tours"
+
+  # ==================== TOURS ====================
+  - name: tours
+    label: Tours & Packages
+    label_singular: Tour Package
+    description: "Manage tour packages and itineraries"
+    folder: "_data/tours"
     create: true
+    extension: json
+    format: json
+    slug: "{{title}}"
+    identifier_field: tour_id
+    preview_path: "tours/{{slug}}.html"
+    fields:
+      - { 
+          label: "Tour ID", 
+          name: "tour_id", 
+          widget: "string",
+          hint: "Unique identifier (auto-generated from title)"
+        }
+      - { 
+          label: "Tour Title", 
+          name: "title", 
+          widget: "string",
+          required: true,
+          hint: "e.g., Himalayan Escape, Goa Getaway"
+        }
+      - { 
+          label: "Tour Type", 
+          name: "type", 
+          widget: "select",
+          options: ["Adventure", "Beach", "City", "Cultural", "Pilgrimage", "Wildlife", "Honeymoon"],
+          default: "Adventure"
+        }
+      - { 
+          label: "Featured", 
+          name: "featured", 
+          widget: "boolean",
+          default: false,
+          hint: "Show on home page?"
+        }
+      - { 
+          label: "Duration", 
+          name: "duration", 
+          widget: "object",
+          fields:
+            - { label: "Days", name: "days", widget: "number", default: 3 }
+            - { label: "Nights", name: "nights", widget: "number", default: 2 }
+        }
+      - { 
+          label: "Price (₹)", 
+          name: "price", 
+          widget: "number",
+          hint: "Starting price in Indian Rupees"
+        }
+      - { 
+          label: "Cover Image", 
+          name: "image", 
+          widget: "image",
+          required: true,
+          media_folder: "/uploads/tours",
+          hint: "Tour cover image (1200x800px recommended)"
+        }
+      - { 
+          label: "Gallery Images", 
+          name: "gallery", 
+          widget: "list",
+          field: { label: "Image", name: "image", widget: "image" }
+        }
+      - { 
+          label: "Short Description", 
+          name: "excerpt", 
+          widget: "text",
+          hint: "Brief description (50-100 words)"
+        }
+      - { 
+          label: "Full Description", 
+          name: "description", 
+          widget: "markdown",
+          modes: ["raw", "rich_text"]
+        }
+      - { 
+          label: "Highlights", 
+          name: "highlights", 
+          widget: "list",
+          field: { label: "Highlight", name: "highlight", widget: "string" },
+          hint: "Key points of the tour"
+        }
+      - { 
+          label: "Destinations", 
+          name: "destinations", 
+          widget: "list",
+          field: { label: "Place", name: "place", widget: "string" }
+        }
+      - { 
+          label: "Itinerary", 
+          name: "itinerary", 
+          widget: "list",
+          fields:
+            - { label: "Day", name: "day", widget: "number" }
+            - { label: "Title", name: "title", widget: "string" }
+            - { label: "Description", name: "description", widget: "text" }
+            - { label: "Meals", name: "meals", widget: "string", hint: "e.g., B, L, D" }
+            - { label: "Accommodation", name: "accommodation", widget: "string" }
+      - { 
+          label: "Inclusions", 
+          name: "inclusions", 
+          widget: "list",
+          field: { label: "Item", name: "item", widget: "string" }
+        }
+      - { 
+          label: "Exclusions", 
+          name: "exclusions", 
+          widget: "list",
+          field: { label: "Item", name: "item", widget: "string" }
+        }
+      - { 
+          label: "Best Time to Visit", 
+          name: "best_season", 
+          widget: "string"
+        }
+      - { 
+          label: "Difficulty Level", 
+          name: "difficulty", 
+          widget: "select",
+          options: ["Easy", "Moderate", "Challenging", "Expert"]
+        }
+      - { 
+          label: "Group Size", 
+          name: "group_size", 
+          widget: "string",
+          hint: "e.g., 2-20 people"
+        }
+      - { 
+          label: "Available Dates", 
+          name: "available_dates", 
+          widget: "list",
+          field: { label: "Date Range", name: "date", widget: "string" }
+        }
+      - { 
+          label: "Tags", 
+          name: "tags", 
+          widget: "list",
+          field: { label: "Tag", name: "tag", widget: "string" }
+        }
+      - { 
+          label: "Meta Description", 
+          name: "meta_description", 
+          widget: "text",
+          hint: "SEO description (155 characters)"
+        }
+      - { 
+          label: "SEO Keywords", 
+          name: "seo_keywords", 
+          widget: "list",
+          field: { label: "Keyword", name: "keyword", widget: "string" }
+        }
+
+  # ==================== REVIEWS ====================
+  - name: reviews
+    label: Customer Reviews
+    label_singular: Review
+    description: "Manage customer testimonials"
+    folder: "_data/reviews"
+    create: true
+    extension: json
+    format: json
+    slug: "review-{{title}}"
+    fields:
+      - { 
+          label: "Customer Name", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "City/Location", 
+          name: "location", 
+          widget: "string"
+        }
+      - { 
+          label: "Rating", 
+          name: "rating", 
+          widget: "number",
+          min: 1,
+          max: 5,
+          default: 5,
+          hint: "1-5 stars"
+        }
+      - { 
+          label: "Review Text", 
+          name: "text", 
+          widget: "textarea",
+          required: true
+        }
+      - { 
+          label: "Tour Taken", 
+          name: "tour", 
+          widget: "string",
+          hint: "Which tour/service?"
+        }
+      - { 
+          label: "Avatar", 
+          name: "avatar", 
+          widget: "image",
+          media_folder: "/uploads/avatars"
+        }
+      - { 
+          label: "Published", 
+          name: "published", 
+          widget: "boolean",
+          default: true
+        }
+      - { 
+          label: "Date", 
+          name: "date", 
+          widget: "datetime"
+        }
+
+  # ==================== SERVICES ====================
+  - name: services
+    label: Services
+    label_singular: Service
+    description: "Manage tour services offered"
+    folder: "_data/services"
+    create: true
+    extension: json
+    format: json
+    slug: "{{title}}"
+    fields:
+      - { 
+          label: "Service Name", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "Service Icon/Emoji", 
+          name: "icon", 
+          widget: "string",
+          default: "🎫"
+        }
+      - { 
+          label: "Short Description", 
+          name: "excerpt", 
+          widget: "text"
+        }
+      - { 
+          label: "Full Description", 
+          name: "description", 
+          widget: "markdown"
+        }
+      - { 
+          label: "Service Image", 
+          name: "image", 
+          widget: "image",
+          media_folder: "/uploads/services"
+        }
+      - { 
+          label: "Features", 
+          name: "features", 
+          widget: "list",
+          field: { label: "Feature", name: "feature", widget: "string" }
+        }
+      - { 
+          label: "Price", 
+          name: "price", 
+          widget: "string",
+          hint: "e.g., Starting from ₹5000"
+        }
+      - { 
+          label: "CTA Button Text", 
+          name: "cta_text", 
+          widget: "string",
+          default: "Learn More"
+        }
+      - { 
+          label: "CTA Link", 
+          name: "cta_link", 
+          widget: "string"
+        }
+
+  # ==================== DESTINATIONS ====================
+  - name: destinations
+    label: Destinations
+    label_singular: Destination
+    description: "Popular travel destinations"
+    folder: "_data/destinations"
+    create: true
+    extension: json
+    format: json
+    slug: "{{title}}"
+    fields:
+      - { 
+          label: "Destination Name", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "Description", 
+          name: "description", 
+          widget: "textarea"
+        }
+      - { 
+          label: "Cover Image", 
+          name: "image", 
+          widget: "image",
+          media_folder: "/uploads/destinations"
+        }
+      - { 
+          label: "Highlights", 
+          name: "highlights", 
+          widget: "list",
+          field: { label: "Highlight", name: "highlight", widget: "string" }
+        }
+      - { 
+          label: "Best Seasons", 
+          name: "seasons", 
+          widget: "list",
+          field: { label: "Season", name: "season", widget: "string" }
+        }
+      - { 
+          label: "Related Tours", 
+          name: "related_tours", 
+          widget: "list",
+          field: { label: "Tour ID", name: "tour_id", widget: "string" }
+        }
+
+  # ==================== BLOG POSTS ====================
+  - name: blog
+    label: Blog & News
+    label_singular: Blog Post
+    description: "Write travel tips, news, and guides"
+    folder: "content/blog"
+    create: true
+    extension: md
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Price (INR)", name: "price", widget: "number"}
-      - {label: "Duration", name: "duration", widget: "string", hint: "e.g., 5D/4N"}
-      - {label: "Region", name: "region", widget: "select", options: ["Himalayas", "Goa", "Rajasthan", "Dubai", "Singapore", "Other"]}
-      - {label: "Budget Range", name: "budget_range", widget: "select", options: ["under-20000", "20000-50000", "over-50000"]}
-      - {label: "Featured Image", name: "image", widget: "image"}
-      - {label: "Description", name: "body", widget: "markdown"}
-      - {label: "Inclusions", name: "inclusions", widget: "list"}
-      - {label: "Exclusions", name: "exclusions", widget: "list"}
-      - {label: "Featured", name: "featured", widget: "boolean", default: false}
+      - { 
+          label: "Title", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "Date", 
+          name: "date", 
+          widget: "datetime"
+        }
+      - { 
+          label: "Featured Image", 
+          name: "image", 
+          widget: "image",
+          media_folder: "/uploads/blog"
+        }
+      - { 
+          label: "Excerpt", 
+          name: "excerpt", 
+          widget: "text"
+        }
+      - { 
+          label: "Content", 
+          name: "body", 
+          widget: "markdown"
+        }
+      - { 
+          label: "Author", 
+          name: "author", 
+          widget: "string",
+          default: "Guru Nanak Tour & Travels"
+        }
+      - { 
+          label: "Category", 
+          name: "category", 
+          widget: "select",
+          options: ["Travel Tips", "Destination Guide", "News", "Testimonials", "Culture"]
+        }
+      - { 
+          label: "Tags", 
+          name: "tags", 
+          widget: "list",
+          field: { label: "Tag", name: "tag", widget: "string" }
+        }
+      - { 
+          label: "SEO Keywords", 
+          name: "seo_keywords", 
+          widget: "string"
+        }
 
-  - name: "reviews"
-    label: "Customer Reviews"
-    folder: "content/reviews"
+  # ==================== PAGES ====================
+  - name: pages
+    label: Pages
+    label_singular: Page
+    description: "Static pages like About, Contact"
+    folder: "content/pages"
     create: true
+    extension: md
     slug: "{{slug}}"
     fields:
-      - {label: "Customer Name", name: "name", widget: "string"}
-      - {label: "Location", name: "location", widget: "string"}
-      - {label: "Rating", name: "rating", widget: "number", min: 1, max: 5, value_type: "int"}
-      - {label: "Review Text", name: "body", widget: "text"}
-      - {label: "Avatar", name: "avatar", widget: "image", required: false}
-      - {label: "Date", name: "date", widget: "datetime", default: ""}
+      - { 
+          label: "Page Title", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "Slug", 
+          name: "slug", 
+          widget: "string",
+          required: true,
+          hint: "e.g., about, contact, services"
+        }
+      - { 
+          label: "Meta Description", 
+          name: "meta_description", 
+          widget: "text"
+        }
+      - { 
+          label: "Hero Image", 
+          name: "hero_image", 
+          widget: "image",
+          media_folder: "/uploads/pages"
+        }
+      - { 
+          label: "Content", 
+          name: "body", 
+          widget: "markdown"
+        }
+      - { 
+          label: "SEO Keywords", 
+          name: "seo_keywords", 
+          widget: "list",
+          field: { label: "Keyword", name: "keyword", widget: "string" }
+        }
 
-  - name: "gallery"
-    label: "Photo Gallery"
-    folder: "content/gallery"
+  # ==================== TEAM MEMBERS ====================
+  - name: team
+    label: Team Members
+    label_singular: Team Member
+    description: "Staff and guides information"
+    folder: "_data/team"
     create: true
-    slug: "{{slug}}"
+    extension: json
+    format: json
+    slug: "{{title}}"
     fields:
-      - {label: "Title", name: "title", widget: "string"}
-      - {label: "Image", name: "image", widget: "image"}
-      - {label: "Category", name: "category", widget: "select", options: ["Tours", "Hotels", "Transport", "Activities", "Other"]}
-      - {label: "Description", name: "description", widget: "text", required: false}
+      - { 
+          label: "Name", 
+          name: "title", 
+          widget: "string",
+          required: true
+        }
+      - { 
+          label: "Position", 
+          name: "position", 
+          widget: "string"
+        }
+      - { 
+          label: "Bio", 
+          name: "bio", 
+          widget: "textarea"
+        }
+      - { 
+          label: "Photo", 
+          name: "photo", 
+          widget: "image",
+          media_folder: "/uploads/team"
+        }
+      - { 
+          label: "Phone", 
+          name: "phone", 
+          widget: "string"
+        }
+      - { 
+          label: "Email", 
+          name: "email", 
+          widget: "string"
+        }
+      - { 
+          label: "Social Links", 
+          name: "social", 
+          widget: "object",
+          fields:
+            - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+            - { label: "Instagram", name: "instagram", widget: "string" }
+            - { label: "Facebook", name: "facebook", widget: "string" }
+        }
 
-  - name: "pages"
-    label: "Pages"
+  # ==================== SITE SETTINGS ====================
+  - name: settings
+    label: Site Settings
+    label_singular: Settings
+    description: "Global site configuration"
+    folder: "_data"
+    create: false
+    extension: json
+    format: json
     files:
-      - label: "Home Page"
-        name: "home"
-        file: "content/home.yml"
+      - name: site_config
+        label: Site Configuration
+        file: "_data/site-config.json"
         fields:
-          - {label: "Hero Title", name: "hero_title", widget: "string"}
-          - {label: "Hero Tagline", name: "hero_tagline", widget: "string"}
-          - label: "Hero Slides"
-            name: "hero_slides"
-            widget: "list"
-            fields:
-              - {label: "Image", name: "image", widget: "image"}
-              - {label: "Title", name: "title", widget: "string"}
-              - {label: "Description", name: "description", widget: "text"}
-              - {label: "Button Text", name: "button_text", widget: "string"}
-              - {label: "Button Link", name: "button_link", widget: "string"}
-          - label: "Stats"
-            name: "stats"
-            widget: "object"
-            fields:
-              - {label: "Happy Customers", name: "customers", widget: "number", default: 5000}
-              - {label: "Tour Packages", name: "packages", widget: "number", default: 150}
-              - {label: "Destinations", name: "destinations", widget: "number", default: 50}
-      
-      - label: "About Page"
-        name: "about"
-        file: "content/about.md"
-        fields:
-          - {label: "Title", name: "title", widget: "string"}
-          - {label: "Mission Statement", name: "mission", widget: "text"}
-          - {label: "Body Content", name: "body", widget: "markdown"}
-          - label: "Team Members"
-            name: "team"
-            widget: "list"
-            fields:
-              - {label: "Name", name: "name", widget: "string"}
-              - {label: "Role", name: "role", widget: "string"}
-              - {label: "Photo", name: "photo", widget: "image"}
-              - {label: "Bio", name: "bio", widget: "text"}
-
-  - name: "settings"
-    label: "Site Settings"
-    files:
-      - label: "Contact Information"
-        name: "contact"
-        file: "content/settings/contact.yml"
-        fields:
-          - {label: "Phone", name: "phone", widget: "string", default: "+91 6283315156"}
-          - {label: "Email", name: "email", widget: "string", default: "patticsc72@gmail.com"}
-          - {label: "WhatsApp Number", name: "whatsapp", widget: "string", default: "916283315156"}
-          - {label: "Address", name: "address", widget: "text"}
-          - {label: "Google Maps Embed URL", name: "map_embed", widget: "text"}
-      
-      - label: "Social Media"
-        name: "social"
-        file: "content/settings/social.yml"
-        fields:
-          - {label: "Instagram", name: "instagram", widget: "string", default: "https://instagram.com/buy24hstore"}
-          - {label: "YouTube", name: "youtube", widget: "string", default: "https://youtube.com/@buy24hstore"}
-          - {label: "Facebook", name: "facebook", widget: "string", default: "https://facebook.com/buy24hstore"}
-          - {label: "Website", name: "website", widget: "string", default: "https://www.buy24hstore.com"}
+          - { 
+              label: "Site Title", 
+              name: "site_title", 
+              widget: "string"
+            }
+          - { 
+              label: "Site Tagline", 
+              name: "tagline", 
+              widget: "string"
+            }
+          - { 
+              label: "Contact Phone", 
+              name: "contact_phone", 
+              widget: "string"
+            }
+          - { 
+              label: "Contact Email", 
+              name: "contact_email", 
+              widget: "string"
+            }
+          - { 
+              label: "WhatsApp Number", 
+              name: "whatsapp_number", 
+              widget: "string"
+            }
+          - { 
+              label: "Office Address", 
+              name: "office_address", 
+              widget: "string"
+            }
+          - { 
+              label: "Office Hours", 
+              name: "office_hours", 
+              widget: "string"
+            }
+          - { 
+              label: "Social Media Links", 
+              name: "social_media", 
+              widget: "object",
+              fields:
+                - { label: "Instagram", name: "instagram", widget: "string" }
+                - { label: "YouTube", name: "youtube", widget: "string" }
+                - { label: "Facebook", name: "facebook", widget: "string" }
+                - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+          - { 
+              label: "Google Analytics ID", 
+              name: "ga_id", 
+              widget: "string"
+            }
+          - { 
+              label: "Google Business Profile", 
+              name: "google_business_id", 
+              widget: "string"
+            }

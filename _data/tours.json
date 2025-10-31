@@ -1,0 +1,27 @@
+[
+  {
+    "tour_id": "himalayan-escape",
+    "title": "Himalayan Escape",
+    "type": "Adventure",
+    "featured": true,
+    "duration": {
+      "days": 5,
+      "nights": 4
+    },
+    "price": 28999,
+    "image": "/uploads/tours/himalayan-escape.jpg",
+    "gallery": [],
+    "excerpt": "Experience the breathtaking beauty of the Himalayas",
+    "description": "Explore majestic mountains, glacial lakes, and ancient monasteries...",
+    "highlights": ["Professional guides", "All meals included", "Mountain lodge stays"],
+    "destinations": ["Manali", "Rohtang Pass", "Solang Valley"],
+    "inclusions": ["Hotel", "Meals", "Guide", "Transport"],
+    "exclusions": ["Travel to base", "Travel Insurance"],
+    "best_season": "May to September",
+    "difficulty": "Moderate",
+    "group_size": "2-20 people",
+    "tags": ["adventure", "trekking", "mountain"],
+    "meta_description": "Himalayan trekking and adventure tour package",
+    "seo_keywords": ["himalayan trek", "mountain adventure", "himachal tours"]
+  }
+]

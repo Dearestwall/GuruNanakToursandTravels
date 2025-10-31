@@ -1,0 +1,24 @@
+{
+  "name": "guru-nanak-tours",
+  "version": "1.0.0",
+  "description": "Guru Nanak Tour & Travels - Travel Agency Website",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx http-server",
+    "dev": "npx http-server -p 3000 --cors"
+  },
+  "keywords": [
+    "travel",
+    "tours",
+    "punjab",
+    "cms",
+    "netlify"
+  ],
+  "author": "Thrillyverse",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-cms-app": "^2.15.72",
+    "netlify-identity-widget": "^1.9.2"
+  }
+}

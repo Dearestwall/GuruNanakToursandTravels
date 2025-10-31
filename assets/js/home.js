@@ -1,10 +1,6 @@
 /**
- * Home Page Specific JavaScript
- * - Stats Counter Animation
- * - Enhanced Swiper Initialization
- * - Parallax Effects
- * - Dynamic Content Loading
- * @version 2.0
+ * HOME.JS - Home Page Specific Functionality
+ * Hero Slider (2.5s), Stats Counter, Reviews Slider (4.5s)
  */
 
 (function() {
@@ -15,7 +11,6 @@
   // ============================================
   const initStatsCounter = () => {
     const statNumbers = document.querySelectorAll('.stat-number');
-    
     if (!statNumbers.length) return;
 
     const observerOptions = {
@@ -26,19 +21,13 @@
     const animateCounter = (element) => {
       const target = parseInt(element.dataset.count);
       const duration = 2000; // 2 seconds
-      const increment = target / (duration / 16); // 60fps
+      const increment = target / (duration / 16); // 60 FPS
       let current = 0;
 
       const updateCounter = () => {
         current += increment;
-        
         if (current >= target) {
-          // Format final number
-          if (target === 24) {
-            element.textContent = '24/7';
-          } else {
-            element.textContent = target.toLocaleString('en-IN') + '+';
-          }
+          element.textContent = target === 24 ? '24/7' : target.toLocaleString('en-IN') + '+';
         } else {
           element.textContent = Math.floor(current).toLocaleString('en-IN');
           requestAnimationFrame(updateCounter);
@@ -62,116 +51,108 @@
   };
 
   // ============================================
-  // 2. ENHANCED SWIPER INITIALIZATION
+  // 2. HERO SWIPER (Super Fast: 2.5s)
   // ============================================
-  const initHomeSliders = () => {
+  const initHeroSwiper = () => {
     if (typeof Swiper === 'undefined') {
-      console.warn('Swiper library not loaded');
+      console.warn('⚠️ Swiper library not loaded');
       return;
     }
 
-    // Hero Slider - Fast auto-slide (4 seconds)
     const heroSwiper = document.querySelector('.hero-swiper');
-    if (heroSwiper) {
-      new Swiper('.hero-swiper', {
-        loop: true,
-        effect: 'fade',
-        fadeEffect: {
-          crossFade: true
-        },
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true
-        },
-        speed: 1200,
-        pagination: {
-          el: '.hero-swiper .swiper-pagination',
-          clickable: true,
-          dynamicBullets: true,
-          renderBullet: function (index, className) {
-            return '<span class="' + className + '" aria-label="Go to slide ' + (index + 1) + '"></span>';
-          }
-        },
-        navigation: {
-          nextEl: '.hero-swiper .swiper-button-next',
-          prevEl: '.hero-swiper .swiper-button-prev'
-        },
-        keyboard: {
-          enabled: true,
-          onlyInViewport: true
-        },
-        a11y: {
-          enabled: true,
-          prevSlideMessage: 'Previous slide',
-          nextSlideMessage: 'Next slide',
-          firstSlideMessage: 'This is the first slide',
-          lastSlideMessage: 'This is the last slide'
-        },
-        on: {
-          init: function() {
-            console.log('✅ Hero slider initialized');
-          },
-          slideChange: function() {
-            // Optional: Track slide changes for analytics
-            const activeIndex = this.realIndex + 1;
-            console.log('Hero slide changed to:', activeIndex);
-          }
-        }
-      });
-    }
+    if (!heroSwiper) return;
 
-    // Reviews Slider - Fast auto-scroll (4.5 seconds)
-    const reviewsSwiper = document.querySelector('.reviews-swiper');
-    if (reviewsSwiper) {
-      new Swiper('.reviews-swiper', {
-        loop: true,
-        autoplay: {
-          delay: 4500,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true
-        },
-        speed: 800,
-        slidesPerView: 1,
-        spaceBetween: 24,
-        pagination: {
-          el: '.reviews-swiper .swiper-pagination',
-          clickable: true,
-          dynamicBullets: true
-        },
-        keyboard: {
-          enabled: true,
-          onlyInViewport: true
-        },
-        breakpoints: {
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 28
-          },
-          1024: {
-            slidesPerView: 3,
-            spaceBetween: 32
-          },
-          1440: {
-            slidesPerView: 3,
-            spaceBetween: 40
-          }
-        },
-        on: {
-          init: function() {
-            console.log('✅ Reviews slider initialized');
-          }
+    new Swiper('.hero-swiper', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: {
+        crossFade: true
+      },
+      autoplay: {
+        delay: 2500, // 2.5 seconds
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 900,
+      pagination: {
+        el: '.hero-swiper .swiper-pagination',
+        clickable: true,
+        dynamicBullets: true
+      },
+      navigation: {
+        nextEl: '.hero-swiper .swiper-button-next',
+        prevEl: '.hero-swiper .swiper-button-prev'
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
+      },
+      a11y: {
+        enabled: true
+      },
+      on: {
+        init: function() {
+          console.log('✅ Hero swiper initialized - 2.5s autoplay');
         }
-      });
-    }
+      }
+    });
   };
 
   // ============================================
-  // 3. PARALLAX SCROLL EFFECTS
+  // 3. REVIEWS SWIPER (Moderate: 4.5s)
+  // ============================================
+  const initReviewsSwiper = () => {
+    if (typeof Swiper === 'undefined') return;
+
+    const reviewsSwiper = document.querySelector('.reviews-swiper');
+    if (!reviewsSwiper) return;
+
+    new Swiper('.reviews-swiper', {
+      loop: true,
+      autoplay: {
+        delay: 4500, // 4.5 seconds
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
+      speed: 800,
+      slidesPerView: 1,
+      spaceBetween: 24,
+      pagination: {
+        el: '.reviews-swiper .swiper-pagination',
+        clickable: true,
+        dynamicBullets: true
+      },
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 1.5,
+          spaceBetween: 20
+        },
+        1024: {
+          slidesPerView: 2.5,
+          spaceBetween: 28
+        },
+        1440: {
+          slidesPerView: 3,
+          spaceBetween: 32
+        }
+      },
+      on: {
+        init: function() {
+          console.log('✅ Reviews swiper initialized - 4.5s autoplay');
+        }
+      }
+    });
+  };
+
+  // ============================================
+  // 4. PARALLAX EFFECT ON HERO
   // ============================================
   const initParallaxEffects = () => {
     const heroSection = document.querySelector('.hero-section');
-    
     if (!heroSection) return;
 
     let ticking = false;
@@ -179,16 +160,15 @@
     const updateParallax = () => {
       const scrolled = window.pageYOffset;
       const heroHeight = heroSection.offsetHeight;
-      
+
       if (scrolled < heroHeight) {
         const activeSlide = document.querySelector('.hero-slide.swiper-slide-active img');
         if (activeSlide) {
-          // Subtle parallax effect
-          const parallaxSpeed = 0.5;
+          const parallaxSpeed = 0.3;
           activeSlide.style.transform = `translateY(${scrolled * parallaxSpeed}px) scale(1.1)`;
         }
       }
-      
+
       ticking = false;
     };
 
@@ -203,170 +183,29 @@
   };
 
   // ============================================
-  // 4. LAZY LOAD IMAGES
+  // 5. INITIALIZE HOME PAGE
   // ============================================
-  const initLazyLoading = () => {
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    
-    if ('loading' in HTMLImageElement.prototype) {
-      // Browser supports native lazy loading
-      return;
-    }
+  const init = () => {
+    console.log('🏠 Initializing home.js...');
 
-    // Fallback for older browsers
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src || img.src;
-          img.classList.add('loaded');
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-
-    lazyImages.forEach(img => imageObserver.observe(img));
-  };
-
-  // ============================================
-  // 5. SEARCH FUNCTIONALITY (HOME PAGE)
-  // ============================================
-  const initHomeSearch = () => {
-    const searchForms = document.querySelectorAll('.search-form, .search-modal-form, .mobile-search-form form');
-    
-    searchForms.forEach(form => {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const input = form.querySelector('input[type="search"]');
-        const query = input ? input.value.trim() : '';
-        
-        if (!query) {
-          if (input) input.focus();
-          return;
-        }
-
-        // Redirect to search results or tours page with query
-        const searchUrl = `tours.html?q=${encodeURIComponent(query)}`;
-        window.location.href = searchUrl;
-      });
-    });
-
-    // Suggestion tags
-    const suggestionTags = document.querySelectorAll('.suggestion-tag');
-    suggestionTags.forEach(tag => {
-      tag.addEventListener('click', (e) => {
-        e.preventDefault();
-        const href = tag.getAttribute('href');
-        
-        // Add smooth transition
-        document.body.style.opacity = '0.7';
-        setTimeout(() => {
-          window.location.href = href;
-        }, 150);
-      });
-    });
-  };
-
-  // ============================================
-  // 6. SMOOTH SCROLL FOR ANCHOR LINKS
-  // ============================================
-  const initSmoothScroll = () => {
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-    
-    anchorLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        
-        if (href === '#' || href === '#main') return;
-        
-        const target = document.querySelector(href);
-        
-        if (target) {
-          e.preventDefault();
-          
-          const headerOffset = 80;
-          const elementPosition = target.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-  };
-
-  // ============================================
-  // 7. DYNAMIC CONTENT LOADING (OPTIONAL)
-  // ============================================
-  const loadDynamicContent = () => {
-    // This function can be used to load content from CMS or API
-    // Example: Fetch latest tour packages, reviews, etc.
-    
-    try {
-      // Check if there's a data attribute for dynamic loading
-      const dynamicSections = document.querySelectorAll('[data-load-content]');
-      
-      dynamicSections.forEach(section => {
-        const contentUrl = section.dataset.loadContent;
-        if (contentUrl) {
-          // Fetch and inject content
-          console.log('Would load content from:', contentUrl);
-        }
-      });
-    } catch (error) {
-      console.warn('Dynamic content loading error:', error);
-    }
-  };
-
-  // ============================================
-  // 8. INITIALIZE ALL HOME PAGE FEATURES
-  // ============================================
-  const initHomePage = () => {
-    console.log('🏠 Initializing home page...');
-
-    // Initialize stats counter
     initStatsCounter();
-
-    // Initialize sliders
-    initHomeSliders();
-
-    // Initialize parallax effects
+    initHeroSwiper();
+    initReviewsSwiper();
     initParallaxEffects();
 
-    // Initialize lazy loading fallback
-    initLazyLoading();
-
-    // Initialize search functionality
-    initHomeSearch();
-
-    // Initialize smooth scroll
-    initSmoothScroll();
-
-    // Load dynamic content (if needed)
-    loadDynamicContent();
-
-    console.log('✅ Home page fully initialized');
+    console.log('✅ Home.js initialized');
   };
 
-  // ============================================
-  // WAIT FOR DOM AND LIBRARIES
-  // ============================================
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHomePage);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    // DOM already loaded, wait a bit for libraries
-    setTimeout(initHomePage, 100);
+    setTimeout(init, 100);
   }
 
-  // Re-initialize on window load to ensure all resources are ready
+  // Re-initialize swipers on window load
   window.addEventListener('load', () => {
-    // Ensure sliders are properly sized
-    if (window.Swiper) {
-      const allSwipers = document.querySelectorAll('.swiper');
-      allSwipers.forEach(swiperEl => {
+    if (typeof Swiper !== 'undefined') {
+      document.querySelectorAll('.swiper').forEach(swiperEl => {
         if (swiperEl.swiper) {
           swiperEl.swiper.update();
         }
