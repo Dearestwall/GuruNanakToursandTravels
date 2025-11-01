@@ -1,0 +1,44 @@
+{
+  "faqs": [
+    {
+      "id": "faq-1",
+      "q": "How do I book a tour package?",
+      "a": "You can book tours directly through our website by clicking 'Book Now', calling us at +91 6283315156, or visiting our office. We also support WhatsApp bookings for your convenience."
+    },
+    {
+      "id": "faq-2",
+      "q": "What payment methods do you accept?",
+      "a": "We accept all major credit cards, debit cards, UPI, net banking, and direct bank transfers. Payment plans are available for premium packages."
+    },
+    {
+      "id": "faq-3",
+      "q": "Can I cancel or modify my booking?",
+      "a": "Yes, you can cancel up to 7 days before the tour for a full refund. Modifications can be made anytime based on availability."
+    },
+    {
+      "id": "faq-4",
+      "q": "Do you provide travel insurance?",
+      "a": "Travel insurance can be added during booking for an additional fee. We strongly recommend it for international trips."
+    },
+    {
+      "id": "faq-5",
+      "q": "What is included in the tour packages?",
+      "a": "Most packages include accommodation, meals, guided tours, and transportation. Check the detailed itinerary for exact inclusions and exclusions."
+    },
+    {
+      "id": "faq-6",
+      "q": "Do you offer customized tour packages?",
+      "a": "Absolutely! We offer fully customized tours tailored to your budget, preferences, and schedule. Contact us to discuss your requirements."
+    },
+    {
+      "id": "faq-7",
+      "q": "How early should I book?",
+      "a": "We recommend booking 30-45 days in advance for international tours and 15-21 days for domestic packages for better rates."
+    },
+    {
+      "id": "faq-8",
+      "q": "Is group discount available?",
+      "a": "Yes, groups of 10 or more get special discounts. Contact our group travel specialist for customized quotes."
+    }
+  ]
+}

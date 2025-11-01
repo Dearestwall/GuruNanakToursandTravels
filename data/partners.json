@@ -1,0 +1,32 @@
+{
+  "partners": [
+    {
+      "id": "partner-1",
+      "name": "Air India",
+      "logo": "https://via.placeholder.com/200x80?text=Air+India",
+      "description": "Official airline partner",
+      "link": "https://www.airindia.in"
+    },
+    {
+      "id": "partner-2",
+      "name": "MakeMyTrip",
+      "logo": "https://via.placeholder.com/200x80?text=MakeMyTrip",
+      "description": "Travel portal integration",
+      "link": "https://www.makemytrip.com"
+    },
+    {
+      "id": "partner-3",
+      "name": "IRCTC",
+      "logo": "https://via.placeholder.com/200x80?text=IRCTC",
+      "description": "Train booking partner",
+      "link": "https://www.irctctourism.com"
+    },
+    {
+      "id": "partner-4",
+      "name": "Booking.com",
+      "logo": "https://via.placeholder.com/200x80?text=Booking.com",
+      "description": "Hotel booking integration",
+      "link": "https://www.booking.com"
+    }
+  ]
+}

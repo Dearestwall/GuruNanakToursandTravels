@@ -6,127 +6,282 @@ site_url: "https://dearestwall.github.io/GuruNanakToursandTravels"
 media_folder: "assets/images"
 public_folder: "/GuruNanakToursandTravels/assets/images"
 
-publish_mode: simple
+publish_mode: editorial_workflow
 slug:
   encoding: "ascii"
   clean_accents: true
 
 collections:
-  - name: "home"
-    label: "Home Page"
-    files:
-      - name: "home_content"
-        label: "Home Content"
-        file: "data/home.json"
+  # Hero Slides
+  - name: "hero"
+    label: "Hero Slides"
+    file: "data/hero.json"
+    format: "json"
+    fields:
+      - label: "Hero Slides"
+        name: "hero_slides"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.title}}"
         fields:
-          - { label: "Site Title", name: "site_title", widget: "string" }
-          - { label: "Tagline", name: "tagline", widget: "string" }
-          
-          - label: "Hero Slides"
-            name: "hero_slides"
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "text" }
+          - { label: "Image", name: "image", widget: "image" }
+          - label: "Call-to-Actions"
+            name: "ctas"
             widget: "list"
-            collapsed: false
-            summary: "{{fields.title}}"
+            summary: "{{fields.label}}"
             fields:
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Subtitle", name: "subtitle", widget: "text" }
-              - { label: "Image URL", name: "image", widget: "image" }
-              - label: "Call-to-Actions"
-                name: "ctas"
-                widget: "list"
-                summary: "{{fields.label}} → {{fields.href}}"
-                fields:
-                  - { label: "Button Label", name: "label", widget: "string" }
-                  - { label: "Link", name: "href", widget: "string" }
-          
-          - label: "What We Offer (Services)"
-            name: "offerings"
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Link", name: "href", widget: "string" }
+
+  # Offerings/Services
+  - name: "offerings"
+    label: "Services & Offerings"
+    file: "data/offerings.json"
+    format: "json"
+    fields:
+      - label: "Offerings"
+        name: "offerings"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.title}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string", required: true }
+          - { label: "Icon", name: "icon", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Long Description", name: "long_description", widget: "markdown" }
+          - label: "Features"
+            name: "features"
             widget: "list"
-            collapsed: false
-            summary: "{{fields.title}}"
-            fields:
-              - { label: "ID (unique slug for deep links)", name: "id", widget: "string", required: true, hint: "e.g., flight-bookings, hotel-stays" }
-              - { label: "Icon (emoji)", name: "icon", widget: "string", hint: "e.g., ✈️, 🏨, 🗺️" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
-              - { label: "Link Label", name: "link_label", widget: "string", required: false, default: "Learn More" }
-              - { label: "Link Href", name: "link_href", widget: "string", required: false, default: "/details/" }
-          
-          - label: "Featured Tours & Packages"
-            name: "featured_tours"
+            field: { label: "Feature", name: "item", widget: "string" }
+          - label: "Benefits"
+            name: "benefits"
             widget: "list"
-            collapsed: false
-            summary: "{{fields.name}} - ₹{{fields.price}}"
-            fields:
-              - { label: "ID (unique slug)", name: "id", widget: "string", required: true, hint: "e.g., goa-beaches-5d4n, himalaya-trek-6d5n" }
-              - { label: "Package Name", name: "name", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-              - { label: "Short Summary", name: "summary", widget: "text" }
-              - { label: "Full Description", name: "description", widget: "markdown" }
-              - { label: "Price (INR)", name: "price", widget: "number", value_type: "int" }
-              - { label: "Duration (e.g., 5 Days)", name: "duration", widget: "string", required: false }
-              - label: "Includes"
-                name: "includes"
-                widget: "list"
-                required: false
-                summary: "{{item}}"
-                field: { label: "Item", name: "item", widget: "string" }
-              - label: "Excludes"
-                name: "excludes"
-                widget: "list"
-                required: false
-                summary: "{{item}}"
-                field: { label: "Item", name: "item", widget: "string" }
-              - { label: "Details Page Link", name: "href", widget: "string", required: false, default: "/details/" }
-          
-          - label: "Statistics & Achievements"
-            name: "stats"
-            widget: "object"
-            collapsed: false
-            fields:
-              - { label: "Happy Customers", name: "happy_customers", widget: "number", value_type: "int" }
-              - { label: "Tour Packages Offered", name: "tour_packages", widget: "number", value_type: "int" }
-              - { label: "Destinations Covered", name: "destinations", widget: "number", value_type: "int" }
-              - { label: "Support Availability", name: "support", widget: "string", default: "24/7" }
-          
-          - label: "Customer Reviews & Testimonials"
-            name: "testimonials"
+            field: { label: "Benefit", name: "item", widget: "string" }
+          - { label: "Link Label", name: "link_label", widget: "string" }
+          - { label: "Link Href", name: "link_href", widget: "string" }
+
+  # Featured Tours
+  - name: "tours"
+    label: "Featured Tours"
+    file: "data/tours.json"
+    format: "json"
+    fields:
+      - label: "Tours"
+        name: "featured_tours"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.name}} - ₹{{fields.price}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string", required: true }
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Summary", name: "summary", widget: "text" }
+          - { label: "Description", name: "description", widget: "markdown" }
+          - { label: "Price (₹)", name: "price", widget: "number", value_type: "int" }
+          - { label: "Duration", name: "duration", widget: "string" }
+          - { label: "Best Season", name: "best_season", widget: "string" }
+          - label: "Includes"
+            name: "includes"
             widget: "list"
-            collapsed: false
-            summary: "{{fields.name}} - {{fields.rating}} stars"
-            fields:
-              - { label: "Customer Name", name: "name", widget: "string" }
-              - { label: "Location/City", name: "location", widget: "string", required: false }
-              - { label: "Rating (1-5)", name: "rating", widget: "number", min: 1, max: 5, value_type: "int" }
-              - { label: "Review/Comment", name: "comment", widget: "text", hint: "What the customer says about their experience" }
-              - { label: "Profile Photo", name: "photo", widget: "image", required: false }
-          
-          - label: "Trusted Partners & Brands"
-            name: "partners"
+            field: { label: "Item", name: "item", widget: "string" }
+          - label: "Excludes"
+            name: "excludes"
             widget: "list"
-            collapsed: false
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "Partner Name", name: "name", widget: "string" }
-              - { label: "Logo Image", name: "logo", widget: "image" }
-          
-          - label: "Frequently Asked Questions"
+            field: { label: "Item", name: "item", widget: "string" }
+          - label: "Highlights"
+            name: "highlights"
+            widget: "list"
+            field: { label: "Highlight", name: "item", widget: "string" }
+          - label: "FAQs"
             name: "faqs"
             widget: "list"
-            collapsed: false
-            summary: "Q: {{fields.q}}"
+            summary: "{{fields.q}}"
             fields:
               - { label: "Question", name: "q", widget: "string" }
-              - { label: "Answer", name: "a", widget: "text", hint: "Provide a clear and helpful answer" }
-          
-          - label: "Contact Information"
-            name: "contact"
+              - { label: "Answer", name: "a", widget: "text" }
+
+   # Testimonials & Reviews
+  - name: "testimonials"
+    label: "Customer Reviews & Testimonials"
+    file: "data/testimonials.json"
+    format: "json"
+    create: true
+    delete: true
+    fields:
+      - label: "Customer Testimonials"
+        name: "testimonials"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.name}} - {{fields.rating}} ⭐ ({{fields.tour_package}})"
+        fields:
+          - {
+              label: "Review ID",
+              name: "id",
+              widget: "string",
+              required: true,
+              hint: "e.g., review-1, review-2"
+            }
+          - {
+              label: "Customer Name",
+              name: "name",
+              widget: "string",
+              required: true
+            }
+          - {
+              label: "Email Address",
+              name: "email",
+              widget: "string",
+              required: false
+            }
+          - {
+              label: "City/Location",
+              name: "location",
+              widget: "string",
+              required: false
+            }
+          - {
+              label: "Star Rating",
+              name: "rating",
+              widget: "select",
+              options: ["5", "4", "3", "2", "1"],
+              required: true
+            }
+          - {
+              label: "Review Comment",
+              name: "comment",
+              widget: "text",
+              required: true,
+              hint: "What did the customer say about their experience?"
+            }
+          - {
+              label: "Customer Photo/Avatar",
+              name: "photo",
+              widget: "image",
+              required: false,
+              hint: "Profile picture of the customer"
+            }
+          - {
+              label: "Tour/Service Package",
+              name: "tour_package",
+              widget: "string",
+              required: false,
+              hint: "e.g., Goa Beach Paradise, Visa Assistance"
+            }
+          - {
+              label: "Travel Date",
+              name: "travel_date",
+              widget: "string",
+              required: false,
+              hint: "When did they travel? e.g., November 2024"
+            }
+          - {
+              label: "Verified Customer",
+              name: "verified",
+              widget: "boolean",
+              required: false,
+              default: true
+            }
+          - {
+              label: "Helpful Count",
+              name: "helpful_count",
+              widget: "number",
+              required: false,
+              value_type: "int",
+              hint: "How many people found this review helpful?"
+            }
+          - {
+              label: "Review Highlight",
+              name: "highlight",
+              widget: "string",
+              required: false,
+              hint: "Short highlight of the review (2-5 words)"
+            }
+
+
+  # Partners
+  - name: "partners"
+    label: "Partners & Brands"
+    file: "data/partners.json"
+    format: "json"
+    fields:
+      - label: "Partners"
+        name: "partners"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Logo", name: "logo", widget: "image" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Link", name: "link", widget: "string" }
+
+  # FAQs
+  - name: "faqs"
+    label: "Frequently Asked Questions"
+    file: "data/faqs.json"
+    format: "json"
+    fields:
+      - label: "FAQs"
+        name: "faqs"
+        widget: "list"
+        collapsed: false
+        summary: "{{fields.q}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Question", name: "q", widget: "string" }
+          - { label: "Answer", name: "a", widget: "text" }
+
+  # Statistics
+  - name: "stats"
+    label: "Statistics"
+    file: "data/stats.json"
+    format: "json"
+    fields:
+      - label: "Statistics"
+        name: "stats"
+        widget: "object"
+        fields:
+          - { label: "Happy Customers", name: "happy_customers", widget: "number" }
+          - { label: "Tour Packages", name: "tour_packages", widget: "number" }
+          - { label: "Destinations", name: "destinations", widget: "number" }
+          - { label: "Support", name: "support", widget: "string" }
+          - { label: "Experience (Years)", name: "experience_years", widget: "number" }
+          - { label: "Success Rate (%)", name: "success_rate", widget: "number" }
+          - { label: "Average Rating", name: "average_rating", widget: "number" }
+
+  # Contact
+  - name: "contact"
+    label: "Contact Information"
+    file: "data/contact.json"
+    format: "json"
+    fields:
+      - label: "Contact"
+        name: "contact"
+        widget: "object"
+        fields:
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Address", name: "address", widget: "text" }
+          - { label: "Maps Link", name: "map_link", widget: "string" }
+          - { label: "Booking Link", name: "booking_link", widget: "string" }
+          - label: "Office Hours"
+            name: "office_hours"
             widget: "object"
-            collapsed: false
             fields:
-              - { label: "Phone", name: "phone", widget: "string", hint: "e.g., +91 6283315156" }
-              - { label: "WhatsApp Number", name: "whatsapp", widget: "string", hint: "Same as phone or different" }
-              - { label: "Email Address", name: "email", widget: "string" }
-              - { label: "Office Address", name: "address", widget: "text" }
-              - { label: "Google Maps Link", name: "map_link", widget: "string", required: false }
-              - { label: "Booking Page Link", name: "booking_link", widget: "string", required: false, default: "/booking/" }
+              - { label: "Mon-Fri", name: "monday_friday", widget: "string" }
+              - { label: "Saturday", name: "saturday", widget: "string" }
+              - { label: "Sunday", name: "sunday", widget: "string" }
+          - label: "Social Media"
+            name: "social_media"
+            widget: "object"
+            fields:
+              - { label: "Facebook", name: "facebook", widget: "string" }
+              - { label: "Instagram", name: "instagram", widget: "string" }
+              - { label: "YouTube", name: "youtube", widget: "string" }
+              - { label: "WhatsApp Group", name: "whatsapp_group", widget: "string" }

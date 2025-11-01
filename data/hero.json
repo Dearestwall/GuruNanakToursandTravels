@@ -1,0 +1,32 @@
+{
+  "hero_slides": [
+    {
+      "id": "hero-1",
+      "title": "Explore India's Beauty",
+      "subtitle": "Discover unforgettable journeys with us",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "Explore Tours", "href": "/tours/" },
+        { "label": "Book Now", "href": "/booking/" }
+      ]
+    },
+    {
+      "id": "hero-2",
+      "title": "Affordable Travel Solutions",
+      "subtitle": "Flights, hotels, cabs, and more - all in one place",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "View Services", "href": "/services/" }
+      ]
+    },
+    {
+      "id": "hero-3",
+      "title": "Plan Your Next Adventure",
+      "subtitle": "From mountains to beaches, we've got you covered",
+      "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "Browse Packages", "href": "/tours/" }
+      ]
+    }
+  ]
+}

@@ -11,17 +11,22 @@ let currentPage = 1;
  * Load and render tours
  */
 async function loadTours() {
-  const cmsData = await fetchCMSData();
-  if (!cmsData || !cmsData.featured_tours) {
-    showToast('Failed to load tours', 'error');
-    return;
-  }
+  try {
+    const cmsData = await fetchCMSData();
+    if (!cmsData || !cmsData.featured_tours) {
+      showToast('Failed to load tours', 'error');
+      return;
+    }
 
-  allTours = cmsData.featured_tours.sort((a, b) => b.price - a.price);
-  filteredTours = [...allTours];
-  renderToursGrid();
-  setupFilters();
-  setupPagination();
+    allTours = cmsData.featured_tours.sort((a, b) => b.price - a.price);
+    filteredTours = [...allTours];
+    renderToursGrid();
+    setupFilters();
+    setupPagination();
+  } catch (e) {
+    console.error('Tours load error:', e);
+    showToast('Failed to load tours', 'error');
+  }
 }
 
 /**
@@ -37,11 +42,13 @@ function renderToursGrid() {
 
   if (pageTours.length === 0) {
     container.innerHTML = '';
-    document.getElementById('noResults').style.display = 'block';
+    const noRes = document.getElementById('noResults');
+    if (noRes) noRes.style.display = 'block';
     return;
   }
 
-  document.getElementById('noResults').style.display = 'none';
+  const noRes = document.getElementById('noResults');
+  if (noRes) noRes.style.display = 'none';
 
   container.innerHTML = pageTours.map(tour => `
     <article class="tour">
@@ -71,7 +78,7 @@ function setupFilters() {
 
   const applyFilters = () => {
     currentPage = 1;
-    const query = searchInput?.value.toLowerCase() || '';
+    const query = (searchInput?.value || '').toLowerCase();
     const duration = durationFilter?.value || '';
     const priceRange = priceFilter?.value || '';
 
@@ -81,9 +88,10 @@ function setupFilters() {
         return false;
       }
 
-      // Duration filter
+      // Duration filter (expects formats like "5 Days / 4 Nights")
       if (duration) {
-        const days = parseInt(tour.duration) || 0;
+        const daysMatch = String(tour.duration || '').match(/^(\d+)/);
+        const days = daysMatch ? parseInt(daysMatch[1], 10) : 0;
         if (duration === '3' && days !== 3) return false;
         if (duration === '4' && days !== 4) return false;
         if (duration === '5' && days !== 5) return false;
@@ -92,10 +100,10 @@ function setupFilters() {
 
       // Price filter
       if (priceRange) {
-        const [min, max] = priceRange.split('-');
+        const [min, max] = priceRange.split('-').map(v => parseInt(v, 10));
         const price = tour.price;
-        if (max && (price < parseInt(min) || price > parseInt(max))) return false;
-        if (!max && price < parseInt(min)) return false;
+        if (!isNaN(min) && isNaN(max) && price < min) return false;
+        if (!isNaN(min) && !isNaN(max) && (price < min || price > max)) return false;
       }
 
       return true;
@@ -105,7 +113,7 @@ function setupFilters() {
     setupPagination();
   };
 
-  searchInput?.addEventListener('input', applyFilters);
+  searchInput?.addEventListener('input', debounce(applyFilters, 250));
   durationFilter?.addEventListener('change', applyFilters);
   priceFilter?.addEventListener('change', applyFilters);
 }
@@ -125,11 +133,7 @@ function setupPagination() {
   }
 
   for (let i = 1; i <= totalPages; i++) {
-    if (i === currentPage) {
-      html += `<button class="pagination-btn active">${i}</button>`;
-    } else {
-      html += `<button onclick="goToPage(${i})" class="pagination-btn">${i}</button>`;
-    }
+    html += `<button onclick="goToPage(${i})" class="pagination-btn ${i === currentPage ? 'active' : ''}">${i}</button>`;
   }
 
   if (currentPage < totalPages) {
@@ -146,7 +150,8 @@ function goToPage(page) {
   currentPage = page;
   renderToursGrid();
   setupPagination();
-  document.querySelector('.tours-grid-section').scrollIntoView({ behavior: 'smooth' });
+  const anchor = document.querySelector('.tours-grid-section') || document.body;
+  anchor.scrollIntoView({ behavior: 'smooth' });
 }
 
 /**

@@ -9,23 +9,28 @@ let selectedService = null;
  * Load and render services
  */
 async function loadServices() {
-  const cmsData = await fetchCMSData();
-  if (!cmsData || !cmsData.offerings) {
-    showToast('Failed to load services', 'error');
-    return;
-  }
-
-  allServices = cmsData.offerings;
-  renderServicesGrid();
-
-  // Check if there's an ID in URL to show details
-  const selectedId = getQueryParam('id');
-  if (selectedId) {
-    const service = allServices.find(s => s.id === selectedId);
-    if (service) {
-      selectedService = service;
-      showServiceDetail(service);
+  try {
+    const cmsData = await fetchCMSData();
+    if (!cmsData || !cmsData.offerings) {
+      showToast('Failed to load services', 'error');
+      return;
     }
+
+    allServices = cmsData.offerings;
+    renderServicesGrid();
+
+    // Deep link detail if ?id= present
+    const selectedId = getQueryParam('id');
+    if (selectedId) {
+      const service = allServices.find(s => s.id === selectedId);
+      if (service) {
+        selectedService = service;
+        showServiceDetail(service);
+      }
+    }
+  } catch (e) {
+    console.error('Services load error:', e);
+    showToast('Failed to load services', 'error');
   }
 }
 
@@ -41,26 +46,26 @@ function renderServicesGrid() {
       <div class="service-icon-large">${service.icon}</div>
       <h3>${service.title}</h3>
       <p>${service.description}</p>
-      <button class="btn btn-sm" onclick="showServiceDetail({id: '${service.id}', title: '${service.title}', description: '${service.description}', icon: '${service.icon}'})">
+      <a class="btn btn-sm" href="${__toAbs(`/details/?id=${service.id}&type=offering`)}">
         Learn More →
-      </button>
+      </a>
     </article>
   `).join('');
 }
 
 /**
- * Show service detail
+ * Show service detail (inline view optional)
  */
 function showServiceDetail(service) {
   const detailSection = document.getElementById('serviceDetail');
   if (!detailSection) return;
 
   document.getElementById('serviceName').textContent = service.title;
-  document.getElementById('serviceDescription').textContent = service.description;
+  document.getElementById('serviceDescription').textContent = service.long_description || service.description;
 
   const featuresContainer = document.getElementById('serviceFeatures');
   if (featuresContainer) {
-    const features = getServiceFeatures(service.id);
+    const features = (service.features && service.features.length ? service.features : getServiceFeatures(service.id));
     featuresContainer.innerHTML = features.map(f => `<li>✅ ${f}</li>`).join('');
   }
 
@@ -69,7 +74,7 @@ function showServiceDetail(service) {
 }
 
 /**
- * Get features for a service
+ * Fallback features for known services
  */
 function getServiceFeatures(serviceId) {
   const features = {

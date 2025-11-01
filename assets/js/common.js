@@ -4,17 +4,14 @@
 
 /**
  * Detect site base URL from the script location
- * Works on both local dev and GitHub Pages project sites
- * Handles both root pages and nested directories
  */
 function detectBaseFromScript() {
   const scripts = document.getElementsByTagName('script');
   for (const s of scripts) {
     const src = s.src || '';
     const m = src.match(/^(.*\/)assets\/js\/common\.js(?:\?.*)?$/);
-    if (m) return m[1]; // absolute base ending with slash
+    if (m) return m[1];
   }
-  // Fallback: compute from current page path
   const path = location.pathname.endsWith('/') 
     ? location.pathname 
     : location.pathname.replace(/\/[^\/]*$/, '/');
@@ -22,39 +19,31 @@ function detectBaseFromScript() {
 }
 
 /**
- * Detect root base URL (for partials and assets)
- * Finds the project root, not the current directory
+ * Detect root base URL
  */
 function detectRootBase() {
   const currentPath = location.pathname;
   
-  // If we're at /GuruNanakToursandTravels/ (root)
   if (currentPath.match(/\/GuruNanakToursandTravels\/?$/)) {
     return `${location.origin}/GuruNanakToursandTravels/`;
   }
   
-  // If we're at /GuruNanakToursandTravels/index.html
   if (currentPath.match(/\/GuruNanakToursandTravels\/index\.html$/)) {
     return `${location.origin}/GuruNanakToursandTravels/`;
   }
   
-  // If we're at /GuruNanakToursandTravels/details/index.html or similar
   if (currentPath.includes('/GuruNanakToursandTravels/')) {
-    const parts = currentPath.split('/GuruNanakToursandTravels/')[0];
     return `${location.origin}/GuruNanakToursandTravels/`;
   }
   
-  // For local dev at /
   if (currentPath.match(/^\/[^\/]*\.html$/) || currentPath === '/') {
     return `${location.origin}/`;
   }
   
-  // For local dev in subdirectories like /details/index.html
   if (currentPath.match(/^\/[^\/]+\/index\.html$/)) {
     return `${location.origin}/`;
   }
   
-  // Fallback
   return `${location.origin}/`;
 }
 
@@ -68,23 +57,19 @@ const __BASE_PATH = __BASE_ABS.replace(/^https?:\/\/[^/]+/, '');
 function __toAbs(url) {
   if (!url) return '#';
   
-  // Absolute URLs, protocols, tel:, mailto: pass through
   if (/^(https?:)?\/\//i.test(url) || url.startsWith('tel:') || url.startsWith('mailto:')) {
     return url;
   }
   
-  // Root-relative paths
   if (url.startsWith('/')) {
     return `${location.origin}${__BASE_PATH}${url.replace(/^\//, '')}`;
   }
   
-  // Relative paths
   return `${__BASE_ABS}${url}`;
 }
 
 /**
  * Get absolute path to partials and data
- * Always relative to project root
  */
 function __getPartialUrl(filename) {
   return `${__ROOT_BASE}partials/${filename}`;
@@ -103,17 +88,79 @@ window.__getPartialUrl = __getPartialUrl;
 window.__getDataUrl = __getDataUrl;
 
 /**
- * Fetch CMS data with proper base URL
+ * Cache for merged CMS data
+ */
+let cachedCMSData = null;
+
+/**
+ * Load all modular JSON files and merge them
  */
 async function fetchCMSData() {
+  if (cachedCMSData) {
+    return cachedCMSData;
+  }
+
+  const files = [
+    { key: 'hero_slides', path: 'hero.json', fallback: { hero_slides: [] } },
+    { key: 'offerings', path: 'offerings.json', fallback: { offerings: [] } },
+    { key: 'featured_tours', path: 'tours.json', fallback: { featured_tours: [] } },
+    { key: 'stats', path: 'stats.json', fallback: { stats: {} } },
+    { key: 'testimonials', path: 'testimonials.json', fallback: { testimonials: [] } },
+    { key: 'partners', path: 'partners.json', fallback: { partners: [] } },
+    { key: 'faqs', path: 'faqs.json', fallback: { faqs: [] } },
+    { key: 'contact', path: 'contact.json', fallback: { contact: {} } }
+  ];
+
+  const mergedData = {
+    hero_slides: [],
+    offerings: [],
+    featured_tours: [],
+    stats: {},
+    testimonials: [],
+    partners: [],
+    faqs: [],
+    contact: {}
+  };
+
+  async function fetchFile(file) {
+    try {
+      const url = __getDataUrl(file.path);
+      const res = await fetch(url, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!res.ok) {
+        console.warn(`Failed to load ${file.path}: HTTP ${res.status}`);
+        return file.fallback;
+      }
+      
+      return await res.json();
+    } catch (e) {
+      console.warn(`Failed to load ${file.path}:`, e);
+      return file.fallback;
+    }
+  }
+
   try {
-    const url = __getDataUrl('home.json');
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    // Load all files in parallel
+    const results = await Promise.all(files.map(f => fetchFile(f)));
+    
+    // Merge data
+    results.forEach((data, index) => {
+      const key = files[index].key;
+      if (data[key]) {
+        mergedData[key] = data[key];
+      }
+    });
+
+    // Cache the merged data
+    cachedCMSData = mergedData;
+    console.log('CMS data loaded successfully', mergedData);
+    return mergedData;
   } catch (e) {
-    console.error('CMS data load error:', e, 'URL:', __getDataUrl('home.json'));
-    return null;
+    console.error('Error loading CMS data:', e);
+    return mergedData; // Return partial data
   }
 }
 
@@ -211,7 +258,7 @@ function initializeHeader() {
   // Search toggle
   const searchToggle = document.getElementById('searchToggle');
   const searchBar = document.getElementById('searchBar');
-  const searchInput = document.getElementById('header-search-input');
+  const searchInput = document.getElementById('header-search-input') || document.getElementById('mobile-search-input');
 
   if (searchToggle && searchBar) {
     searchToggle.addEventListener('click', () => {
@@ -225,24 +272,31 @@ function initializeHeader() {
 
   // Search form submission
   const headerSearchForm = document.getElementById('headerSearchForm');
-  if (headerSearchForm) {
-    headerSearchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const query = searchInput?.value.trim();
-      if (query) {
-        location.href = __toAbs(`/tours/?q=${encodeURIComponent(query)}`);
-      }
-    });
-  }
+  const mobileSearchForm = document.getElementById('mobileSearchForm');
+
+  [headerSearchForm, mobileSearchForm].forEach(form => {
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = form.querySelector('input[type="search"]');
+        const query = input?.value.trim();
+        if (query) {
+          location.href = __toAbs(`/tours/?q=${encodeURIComponent(query)}`);
+        }
+      });
+    }
+  });
 
   // Search suggestions
   const suggestions = document.querySelectorAll('.suggestion-item');
   suggestions.forEach(btn => {
     btn.addEventListener('click', () => {
       const query = btn.dataset.search;
-      if (searchInput && headerSearchForm) {
-        searchInput.value = query;
-        headerSearchForm.submit();
+      const form = btn.closest('.search-container')?.querySelector('form');
+      if (form) {
+        const input = form.querySelector('input[type="search"]');
+        input.value = query;
+        form.submit();
       }
     });
   });
@@ -302,6 +356,40 @@ function initializeHeader() {
 
   // Prefix all links after header is loaded
   prefixInternalLinks(document);
+
+  // Header show/hide on scroll
+  initHeaderScroll();
+}
+
+/**
+ * Header show/hide on scroll
+ */
+function initHeaderScroll() {
+  const header = document.getElementById('siteHeader');
+  if (!header) return;
+
+  let lastScrollTop = 0;
+  let scrollTimeout;
+
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > 100) {
+      if (currentScroll > lastScrollTop) {
+        // Scrolling down - hide header
+        header.classList.add('hide');
+      } else {
+        // Scrolling up - show header
+        header.classList.remove('hide');
+      }
+    } else {
+      // Near top - always show
+      header.classList.remove('hide');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+  }, { passive: true });
 }
 
 /**
@@ -319,18 +407,21 @@ async function updateContactButtons() {
   const waHref = waClean ? `https://wa.me/${waClean.replace('+', '')}?text=Hello%20GNTT` : null;
 
   // Update all call buttons
-  document.querySelectorAll('[id*="call"]').forEach(el => {
-    if (phoneHref && el.tagName === 'A') el.href = phoneHref;
+  ['sticky-call', 'cta-call', 'header-call', 'mobile-call'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && phoneHref) el.href = phoneHref;
   });
 
   // Update all WhatsApp buttons
-  document.querySelectorAll('[id*="wa"]').forEach(el => {
-    if (waHref && el.tagName === 'A') el.href = waHref;
+  ['sticky-wa', 'cta-wa', 'header-wa', 'mobile-wa'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && waHref) el.href = waHref;
   });
 
   // Update book buttons
-  document.querySelectorAll('[id*="book"]').forEach(el => {
-    if (el.tagName === 'A' && contact.booking_link) {
+  ['sticky-book', 'cta-book', 'header-book', 'mobile-book'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && contact.booking_link) {
       el.href = __toAbs(contact.booking_link);
     }
   });

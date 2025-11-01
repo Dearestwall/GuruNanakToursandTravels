@@ -1,0 +1,21 @@
+{
+  "contact": {
+    "phone": "+91 6283315156",
+    "whatsapp": "+91 6283315156",
+    "email": "patticsc72@gmail.com",
+    "address": "Court Road near Police Station, Patti 143416, Punjab, India",
+    "map_link": "https://maps.google.com/?q=Guru+Nanak+Tour+%26+Travels+Patti",
+    "booking_link": "/booking/",
+    "office_hours": {
+      "monday_friday": "9:00 AM - 7:00 PM",
+      "saturday": "10:00 AM - 6:00 PM",
+      "sunday": "Closed"
+    },
+    "social_media": {
+      "facebook": "https://facebook.com/gurunanaktours",
+      "instagram": "@gurunanaktours",
+      "youtube": "https://youtube.com/gurunanaktours",
+      "whatsapp_group": "https://chat.whatsapp.com/your-group-link"
+    }
+  }
+}

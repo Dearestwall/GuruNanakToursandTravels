@@ -1,9 +1,10 @@
 // =====================================================
-// DETAILS.JS - Tour/Service/Offering details page
+// DETAILS.JS - Tour/Service details page
 // =====================================================
 
 let cmsData = null;
 let currentDetail = null;
+let detailType = 'tour'; // 'tour' or 'offering'
 
 /**
  * Load details based on URL parameters
@@ -17,6 +18,8 @@ async function loadDetails() {
     return;
   }
 
+  detailType = type;
+
   cmsData = await fetchCMSData();
   if (!cmsData) {
     showError('Failed to load data');
@@ -27,20 +30,20 @@ async function loadDetails() {
 
   if (type === 'tour') {
     item = cmsData.featured_tours?.find(t => t.id === id);
-  } else if (type === 'service' || type === 'offering') {
+  } else if (type === 'offering' || type === 'service') {
     item = cmsData.offerings?.find(o => o.id === id);
   }
 
   if (!item) {
-    showError(`${type} not found`);
+    showError(`${type === 'tour' ? 'Tour' : 'Service'} not found`);
     return;
   }
 
   currentDetail = item;
   renderDetails(item, type);
   renderSuggested(type);
-  renderMoreServices(type);
-  renderFAQs();
+  renderRelated(type);
+  renderDetailFAQs();
 }
 
 /**
@@ -50,8 +53,8 @@ function renderDetails(item, type) {
   const pageTitle = document.getElementById('page-title');
   if (pageTitle) pageTitle.textContent = `${item.name || item.title} — GNTT`;
 
-  const pagDesc = document.getElementById('page-desc');
-  if (pagDesc) pagDesc.setAttribute('content', item.summary || item.description || '');
+  const pageDesc = document.getElementById('page-desc');
+  if (pageDesc) pageDesc.setAttribute('content', item.summary || item.description || '');
 
   // Hero
   const heroTitle = document.getElementById('details-title');
@@ -60,11 +63,19 @@ function renderDetails(item, type) {
   const heroSubtitle = document.getElementById('details-subtitle');
   if (heroSubtitle) heroSubtitle.textContent = item.summary || '';
 
-  // Breadcrumb
-  const breadcrumb = document.getElementById('breadcrumb-current');
-  if (breadcrumb) breadcrumb.textContent = item.name || item.title;
+  // Breadcrumb type link
+  const breadcrumbType = document.getElementById('breadcrumb-type');
+  if (breadcrumbType) {
+    if (type === 'tour') {
+      breadcrumbType.textContent = 'Tours';
+      breadcrumbType.href = __toAbs('/tours/');
+    } else {
+      breadcrumbType.textContent = 'Services';
+      breadcrumbType.href = __toAbs('/services/');
+    }
+  }
 
-  // Image
+  // Image/Icon
   const mainImage = document.getElementById('details-main-image');
   if (mainImage && item.image) {
     mainImage.src = item.image;
@@ -77,13 +88,19 @@ function renderDetails(item, type) {
     descText.innerHTML = (item.description || item.summary || '').replace(/\n/g, '<br>');
   }
 
-  // Inclusions/Exclusions
-  renderSections(item);
+  // Render sections based on type
+  if (type === 'tour') {
+    renderTourSections(item);
+  } else {
+    renderOfferingSections(item);
+  }
 
-  // Sidebar
-  const sidebarPrice = document.getElementById('sidebar-price');
-  if (sidebarPrice && item.price) {
-    sidebarPrice.textContent = `₹${item.price.toLocaleString('en-IN')}`;
+  // Sidebar price/duration
+  if (type === 'tour' && item.price) {
+    const sidebarPrice = document.getElementById('sidebar-price');
+    if (sidebarPrice) {
+      sidebarPrice.textContent = `₹${item.price.toLocaleString('en-IN')}`;
+    }
   }
 
   if (item.duration) {
@@ -100,31 +117,43 @@ function renderDetails(item, type) {
 }
 
 /**
- * Render inclusions/exclusions
+ * Render tour-specific sections
  */
-function renderSections(item) {
+function renderTourSections(tour) {
   const container = document.getElementById('detailsSections');
   if (!container) return;
 
   let html = '';
 
-  if (item.includes && item.includes.length > 0) {
+  if (tour.includes && tour.includes.length > 0) {
     html += `
       <div class="details-section">
         <h3>✅ What's Included</h3>
         <ul class="section-list">
-          ${item.includes.map(inc => `<li>${inc}</li>`).join('')}
+          ${tour.includes.map(inc => `<li>${inc}</li>`).join('')}
         </ul>
       </div>
     `;
   }
 
-  if (item.excludes && item.excludes.length > 0) {
+  if (tour.excludes && tour.excludes.length > 0) {
     html += `
       <div class="details-section">
         <h3>❌ What's Not Included</h3>
         <ul class="section-list">
-          ${item.excludes.map(exc => `<li>${exc}</li>`).join('')}
+          ${tour.excludes.map(exc => `<li>${exc}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  // Optional highlights
+  if (tour.highlights && tour.highlights.length > 0) {
+    html += `
+      <div class="details-section">
+        <h3>🌟 Highlights</h3>
+        <ul class="section-list">
+          ${tour.highlights.map(h => `<li>${h}</li>`).join('')}
         </ul>
       </div>
     `;
@@ -134,84 +163,180 @@ function renderSections(item) {
 }
 
 /**
- * Render suggested packages
+ * Render offering-specific sections
+ */
+function renderOfferingSections(offering) {
+  const container = document.getElementById('detailsSections');
+  if (!container) return;
+
+  let html = '';
+
+  if (offering.features && offering.features.length > 0) {
+    html += `
+      <div class="details-section">
+        <h3>✨ Key Features</h3>
+        <ul class="section-list">
+          ${offering.features.map(feat => `<li>${feat}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  if (offering.benefits && offering.benefits.length > 0) {
+    html += `
+      <div class="details-section">
+        <h3>🎯 Benefits</h3>
+        <ul class="section-list">
+          ${offering.benefits.map(ben => `<li>${ben}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+}
+
+/**
+ * Render suggested items
  */
 function renderSuggested(currentType) {
   const container = document.getElementById('suggestedPackages');
   if (!container) return;
 
   let items = [];
+  
   if (currentType === 'tour' && cmsData.featured_tours) {
-    items = cmsData.featured_tours.filter(t => t.id !== currentDetail.id).slice(0, 3);
-  } else if ((currentType === 'service' || currentType === 'offering') && cmsData.offerings) {
-    items = cmsData.offerings.filter(o => o.id !== currentDetail.id).slice(0, 3);
+    items = cmsData.featured_tours
+      .filter(t => t.id !== currentDetail.id)
+      .slice(0, 3);
+  } else if ((currentType === 'offering' || currentType === 'service') && cmsData.offerings) {
+    items = cmsData.offerings
+      .filter(o => o.id !== currentDetail.id)
+      .slice(0, 3);
   }
 
-  container.innerHTML = items.map(item => `
-    <a href="${__toAbs(`/details/?id=${item.id}&type=${currentType}`)}" class="suggested-item">
-      <div class="suggested-icon">${item.icon || '🎁'}</div>
-      <h4>${item.name || item.title}</h4>
-      ${item.price ? `<p class="price">₹${item.price.toLocaleString('en-IN')}</p>` : ''}
-    </a>
-  `).join('');
+  container.innerHTML = items.map(item => {
+    const typeParam = currentType === 'tour' ? 'tour' : 'offering';
+    const url = __toAbs(`/details/?id=${item.id}&type=${typeParam}`);
+    return `
+      <a href="${url}" class="suggested-item">
+        <div class="suggested-icon">${item.icon || item.name?.charAt(0) || '➜'}</div>
+        <h4>${item.name || item.title}</h4>
+        ${item.price ? `<p class="price">₹${item.price.toLocaleString('en-IN')}</p>` : ''}
+      </a>
+    `;
+  }).join('');
 }
 
 /**
- * Render more services
+ * Render related services/tours
  */
-function renderMoreServices(currentType) {
-  const container = document.getElementById('moreServices');
-  if (!container || currentType === 'offering') return;
-
-  const services = cmsData.offerings?.slice(0, 4) || [];
-
-  container.innerHTML = services.map(service => `
-    <a href="${__toAbs(`/details/?id=${service.id}&type=offering`)}" class="service-item">
-      <div class="service-icon">${service.icon}</div>
-      <h5>${service.title}</h5>
-    </a>
-  `).join('');
-}
-
-/**
- * Render related packages
- */
-function renderRelatedTours() {
+function renderRelated(currentType) {
   const container = document.getElementById('relatedTours');
-  if (!container || !cmsData.featured_tours) return;
+  if (!container) return;
 
-  const related = cmsData.featured_tours.filter(t => t.id !== currentDetail.id).slice(0, 3);
+  let items = [];
 
-  container.innerHTML = related.map(tour => `
-    <article class="tour">
-      <div class="tour-image-wrapper">
-        <img src="${tour.image}" alt="${tour.name}" class="tour-image" loading="lazy" />
-      </div>
-      <div class="tour-body">
-        <h3 class="tour-title">${tour.name}</h3>
-        <p class="tour-summary">${tour.summary}</p>
-        <div class="tour-footer">
-          <p class="tour-price">₹${tour.price.toLocaleString('en-IN')}</p>
-          <a class="btn btn-sm" href="${__toAbs(`/details/?id=${tour.id}&type=tour`)}">View Details</a>
+  if (currentType === 'tour' && cmsData.featured_tours) {
+    items = cmsData.featured_tours
+      .filter(t => t.id !== currentDetail.id)
+      .slice(0, 3);
+  } else if ((currentType === 'offering' || currentType === 'service') && cmsData.offerings) {
+    items = cmsData.offerings
+      .filter(o => o.id !== currentDetail.id)
+      .slice(0, 3);
+  }
+
+  if (items.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  if (currentType === 'tour') {
+    container.innerHTML = items.map(tour => `
+      <article class="tour">
+        <div class="tour-image-wrapper">
+          <img src="${tour.image}" alt="${tour.name}" class="tour-image" loading="lazy" />
         </div>
-      </div>
-    </article>
-  `).join('');
+        <div class="tour-body">
+          <h3 class="tour-title">${tour.name}</h3>
+          <p class="tour-summary">${tour.summary}</p>
+          <div class="tour-footer">
+            <p class="tour-price">₹${tour.price.toLocaleString('en-IN')}</p>
+            <a class="btn btn-sm" href="${__toAbs(`/details/?id=${tour.id}&type=tour`)}">View Details</a>
+          </div>
+        </div>
+      </article>
+    `).join('');
+  } else {
+    container.innerHTML = items.map(offering => `
+      <article class="service-card">
+        <div class="service-icon">${offering.icon}</div>
+        <h3>${offering.title}</h3>
+        <p>${offering.description}</p>
+        <a class="btn btn-sm" href="${__toAbs(`/details/?id=${offering.id}&type=offering`)}">Learn More</a>
+      </article>
+    `).join('');
+  }
 }
 
 /**
- * Render FAQs
+ * Render detail page FAQs with progressive reveal
  */
-function renderFAQs() {
+function renderDetailFAQs() {
   const container = document.getElementById('details-faq-list');
-  if (!container || !cmsData.faqs) return;
+  if (!container) return;
 
-  container.innerHTML = cmsData.faqs.map((faq, i) => `
-    <details class="faq"${i === 0 ? ' open' : ''}>
+  const faqs = currentDetail.faqs || cmsData.faqs || [];
+  if (faqs.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const initial = Math.min(3, faqs.length);
+  container.innerHTML = faqs.map((faq, i) => `
+    <details class="faq"${i === 0 ? ' open' : ''} ${i >= initial ? 'data-hidden="true" style="display:none;"' : ''}>
       <summary class="faq-summary">${faq.q}</summary>
       <div class="faq-answer">${faq.a}</div>
     </details>
   `).join('');
+
+  // Show more button
+  if (faqs.length > initial) {
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'btn btn-outline';
+    moreBtn.textContent = 'Show more FAQs';
+    moreBtn.style.marginTop = '1rem';
+    container.parentElement?.appendChild(moreBtn);
+    moreBtn.addEventListener('click', () => {
+      const hidden = Array.from(container.querySelectorAll('.faq[data-hidden="true"]'));
+      hidden.slice(0, 2).forEach(el => {
+        el.style.display = '';
+        el.removeAttribute('data-hidden');
+      });
+      if (!container.querySelector('.faq[data-hidden="true"]')) {
+        moreBtn.style.display = 'none';
+      }
+    });
+  }
+
+  setupDetailFAQAccordion(container);
+}
+
+/**
+ * Setup FAQ accordion
+ */
+function setupDetailFAQAccordion(container) {
+  const faqs = container.querySelectorAll('.faq');
+  faqs.forEach(faq => {
+    faq.addEventListener('click', (e) => {
+      if (e.target.closest('.faq-summary')) {
+        if (!faq.open) {
+          faqs.forEach(other => { if (other !== faq) other.open = false; });
+        }
+      }
+    });
+  });
 }
 
 /**
@@ -246,12 +371,17 @@ function updateShareButtons(item) {
 }
 
 /**
- * Show error message
+ * Show error
  */
 function showError(msg) {
   const main = document.getElementById('main');
   if (main) {
-    main.innerHTML = `<div class="error-message"><p>⚠️ ${msg}</p><a href="/" class="btn">← Go Back</a></div>`;
+    main.innerHTML = `
+      <div class="error-message">
+        <p>⚠️ ${msg}</p>
+        <a href="${__toAbs('/')} " class="btn">← Go Back</a>
+      </div>
+    `;
   }
 }
 
@@ -261,6 +391,5 @@ function showError(msg) {
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     loadDetails();
-    renderRelatedTours();
   }, 200);
 });
