@@ -1,51 +1,10 @@
-# Netlify Configuration for Guru Nanak Tour & Travels
+# Deploy only /admin as the Netlify site (admin-only surface)
 [build]
-  command = "npm run build"
-  functions = ".netlify/functions"
-  publish = "."
+  publish = "admin"
+  functions = "netlify/functions"
 
-# Headers for security and performance
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
-    X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdn.gtranslate.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https:;"
-
-# Cache configuration for static assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
-
-# Redirects for SPA routing (if needed)
+# Make /admin resolve to the CMS root
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/admin"
+  to = "/"
   status = 200
-  conditions = { 
-    Role = ["CMS"]
-  }
-
-# Environment variables
-[env.production]
-  variables = { 
-    CONTEXT = "production"
-  }
-
-[env.preview]
-  variables = { 
-    CONTEXT = "preview"
-  }
-
-[env.develop]
-  variables = { 
-    CONTEXT = "develop"
-  }

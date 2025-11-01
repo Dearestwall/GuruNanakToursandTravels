@@ -1,0 +1,249 @@
+{
+  "site_title": "Guru Nanak Tour & Travels",
+  "tagline": "Your journey, our responsibility",
+  
+  "hero_slides": [
+    {
+      "title": "Explore India's Beauty",
+      "subtitle": "Discover unforgettable journeys with us",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "Explore Tours", "href": "/tours/" },
+        { "label": "Book Now", "href": "/booking/" }
+      ]
+    },
+    {
+      "title": "Affordable Travel Solutions",
+      "subtitle": "Flights, hotels, cabs, and more - all in one place",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "View Services", "href": "/services/" }
+      ]
+    },
+    {
+      "title": "Plan Your Next Adventure",
+      "subtitle": "From mountains to beaches, we've got you covered",
+      "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&h=600&fit=crop",
+      "ctas": [
+        { "label": "Browse Packages", "href": "/tours/" }
+      ]
+    }
+  ],
+  
+  "offerings": [
+    {
+      "id": "flight-bookings",
+      "icon": "✈️",
+      "title": "Flight Bookings",
+      "description": "Best prices on domestic and international flights with instant confirmation",
+      "link_label": "Learn More",
+      "link_href": "/details/"
+    },
+    {
+      "id": "hotel-stays",
+      "icon": "🏨",
+      "title": "Hotels & Stays",
+      "description": "Comfortable accommodations and resorts worldwide",
+      "link_label": "Learn More",
+      "link_href": "/details/"
+    },
+    {
+      "id": "tour-packages",
+      "icon": "🗺️",
+      "title": "Tour Packages",
+      "description": "Customized tours for every budget and preference",
+      "link_label": "Learn More",
+      "link_href": "/details/"
+    },
+    {
+      "id": "visa-assistance",
+      "icon": "📋",
+      "title": "Visa Assistance",
+      "description": "Expert visa support and documentation for 50+ countries",
+      "link_label": "Learn More",
+      "link_href": "/details/"
+    }
+  ],
+  
+  "featured_tours": [
+    {
+      "id": "goa-beaches-5d4n",
+      "name": "Goa Beach Paradise",
+      "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&h=300&fit=crop",
+      "summary": "Relax on pristine beaches with water sports and nightlife",
+      "description": "Experience the ultimate beach vacation in Goa with water sports, delicious seafood, vibrant nightlife, and relaxing beach retreats.",
+      "price": 8999,
+      "duration": "5 Days / 4 Nights",
+      "includes": ["Accommodation (4-star hotel)", "Daily breakfast and dinner", "Beach water sports", "Airport transfers"],
+      "excludes": ["Flights", "Travel insurance", "Personal expenses"],
+      "href": "/details/"
+    },
+    {
+      "id": "himalaya-trek-6d5n",
+      "name": "Himalaya Mountain Adventure",
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
+      "summary": "Trek through majestic mountain peaks with expert guides",
+      "description": "Join our guided treks through the stunning Himalayan ranges with experienced trekkers. Explore pristine forests, alpine meadows, and breathtaking mountain views.",
+      "price": 12999,
+      "duration": "6 Days / 5 Nights",
+      "includes": ["Accommodation in mountain lodges", "All meals", "Professional trekking guide", "Porter service"],
+      "excludes": ["Trekking equipment rental", "Travel insurance"],
+      "href": "/details/"
+    },
+    {
+      "id": "rajasthan-cultural-5d4n",
+      "name": "Rajasthan Cultural Tour",
+      "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&h=300&fit=crop",
+      "summary": "Discover palaces, forts, and heritage sites of Rajasthan",
+      "description": "Explore the rich cultural heritage of Rajasthan with visits to iconic forts, magnificent palaces, ancient temples, and vibrant bazaars.",
+      "price": 10999,
+      "duration": "5 Days / 4 Nights",
+      "includes": ["Accommodation (3-star hotel)", "Daily breakfast", "Guided sightseeing tours", "Vehicle rental"],
+      "excludes": ["Flights", "Meals (except breakfast)", "Entry fees"],
+      "href": "/details/"
+    },
+    {
+      "id": "kerala-backwaters-4d3n",
+      "name": "Kerala Backwaters Escape",
+      "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&h=300&fit=crop",
+      "summary": "Cruise through serene backwaters and lush green landscapes",
+      "description": "Experience the tranquility of Kerala's backwaters with houseboat cruises, local experiences, and Ayurvedic treatments.",
+      "price": 9999,
+      "duration": "4 Days / 3 Nights",
+      "includes": ["Houseboat accommodation", "All meals", "Local sightseeing"],
+      "excludes": ["Flights", "Travel insurance"],
+      "href": "/details/"
+    },
+    {
+      "id": "mumbai-coastal-3d2n",
+      "name": "Mumbai Coastal Weekend",
+      "image": "https://images.unsplash.com/photo-1514819861854-dbe86a8c0cde?w=500&h=300&fit=crop",
+      "summary": "Explore the city's iconic landmarks and vibrant culture",
+      "description": "Discover Mumbai's best attractions including Marine Drive, Gateway of India, and local markets with luxury accommodations.",
+      "price": 7999,
+      "duration": "3 Days / 2 Nights",
+      "includes": ["Hotel stay", "Breakfast", "City tour"],
+      "excludes": ["Flights"],
+      "href": "/details/"
+    },
+    {
+      "id": "ladakh-adventure-7d6n",
+      "name": "Ladakh High-Altitude Adventure",
+      "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&h=300&fit=crop",
+      "summary": "Experience the mystique of high-altitude deserts and monasteries",
+      "description": "Explore the rugged beauty of Ladakh with visits to ancient monasteries, crystal-clear lakes, and high mountain passes.",
+      "price": 15999,
+      "duration": "7 Days / 6 Nights",
+      "includes": ["Accommodation", "All meals", "Vehicle rental", "Guide services"],
+      "excludes": ["Flights to Leh", "Travel insurance"],
+      "href": "/details/"
+    }
+  ],
+  
+  "stats": {
+    "happy_customers": 5000,
+    "tour_packages": 150,
+    "destinations": 50,
+    "support": "24/7"
+  },
+  
+  "testimonials": [
+    {
+      "name": "Raj Kumar",
+      "location": "Delhi",
+      "rating": 5,
+      "comment": "Amazing service! The entire trip was perfectly planned and executed. Highly recommended for families!",
+      "photo": "https://i.pravatar.cc/150?img=1"
+    },
+    {
+      "name": "Priya Singh",
+      "location": "Mumbai",
+      "rating": 5,
+      "comment": "Best travel agency in town. They made our honeymoon unforgettable. Every detail was perfect!",
+      "photo": "https://i.pravatar.cc/150?img=5"
+    },
+    {
+      "name": "Arjun Patel",
+      "location": "Bangalore",
+      "rating": 4,
+      "comment": "Great value for money. Professional team and excellent customer support throughout the journey.",
+      "photo": "https://i.pravatar.cc/150?img=3"
+    },
+    {
+      "name": "Anita Sharma",
+      "location": "Pune",
+      "rating": 5,
+      "comment": "Booked a family vacation and everything was perfect. Will definitely book again soon!",
+      "photo": "https://i.pravatar.cc/150?img=7"
+    },
+    {
+      "name": "Vikram Reddy",
+      "location": "Hyderabad",
+      "rating": 5,
+      "comment": "Excellent planning and coordination. The guides were knowledgeable and friendly. Worth every penny!",
+      "photo": "https://i.pravatar.cc/150?img=2"
+    },
+    {
+      "name": "Sneha Kapoor",
+      "location": "Jaipur",
+      "rating": 4,
+      "comment": "Very professional service. Accommodations were comfortable and the itinerary was well-paced.",
+      "photo": "https://i.pravatar.cc/150?img=6"
+    }
+  ],
+  
+  "partners": [
+    {
+      "name": "Air India",
+      "logo": "https://via.placeholder.com/200x80?text=Air+India"
+    },
+    {
+      "name": "MakeMyTrip",
+      "logo": "https://via.placeholder.com/200x80?text=MakeMyTrip"
+    },
+    {
+      "name": "IRCTC",
+      "logo": "https://via.placeholder.com/200x80?text=IRCTC"
+    },
+    {
+      "name": "Booking.com",
+      "logo": "https://via.placeholder.com/200x80?text=Booking.com"
+    }
+  ],
+  
+  "faqs": [
+    {
+      "q": "How do I book a tour package?",
+      "a": "You can book tours directly through our website by clicking 'Book Now', calling us at +91 6283315156, or visiting our office. We also support WhatsApp bookings for your convenience."
+    },
+    {
+      "q": "What payment methods do you accept?",
+      "a": "We accept all major credit cards, debit cards, UPI, net banking, and direct bank transfers. Payment plans are available for premium packages."
+    },
+    {
+      "q": "Can I cancel or modify my booking?",
+      "a": "Yes, you can cancel up to 7 days before the tour for a full refund. Modifications can be made anytime based on availability."
+    },
+    {
+      "q": "Do you provide travel insurance?",
+      "a": "Travel insurance can be added during booking for an additional fee. We strongly recommend it for international trips."
+    },
+    {
+      "q": "What is included in the tour packages?",
+      "a": "Most packages include accommodation, meals, guided tours, and transportation. Check the detailed itinerary for exact inclusions and exclusions."
+    },
+    {
+      "q": "Do you offer customized tour packages?",
+      "a": "Absolutely! We offer fully customized tours tailored to your budget, preferences, and schedule. Contact us to discuss your requirements."
+    }
+  ],
+  
+  "contact": {
+    "phone": "+91 6283315156",
+    "whatsapp": "+91 6283315156",
+    "email": "patticsc72@gmail.com",
+    "address": "Court Road near Police Station, Patti 143416, Punjab, India",
+    "map_link": "https://maps.google.com/?q=Guru+Nanak+Tour+%26+Travels+Patti",
+    "booking_link": "/booking/"
+  }
+}

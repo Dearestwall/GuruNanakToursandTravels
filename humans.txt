@@ -1,7 +1,0 @@
-/* TEAM */
-Developer: buy24hstore
-Site: Guru Nanak Tour & Travels (GNTT)
-Thanks to: customers and partners
-
-/* TECHNOLOGY */
-HTML5, CSS Grid/Flexbox, ES6, AOS, Swiper

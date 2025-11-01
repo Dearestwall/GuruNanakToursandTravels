@@ -1,369 +1,283 @@
+// =====================================================
+// COMMON.JS - Shared utilities for all pages
+// =====================================================
+
 /**
- * COMMON.JS - Global Site Functionality
- * Header, Menu, Search, Scroll, Accessibility, Animations
- * Guru Nanak Tour & Travels
+ * Detect site base URL from the script location
+ * Works on both local dev and GitHub Pages project sites
  */
+function detectBaseFromScript() {
+  const scripts = document.getElementsByTagName('script');
+  for (const s of scripts) {
+    const src = s.src || '';
+    const m = src.match(/^(.*\/)assets\/js\/common\.js(?:\?.*)?$/);
+    if (m) return m[1]; // absolute base ending with slash
+  }
+  // Fallback: compute from current page path
+  const path = location.pathname.endsWith('/') 
+    ? location.pathname 
+    : location.pathname.replace(/\/[^\/]*$/, '/');
+  return `${location.origin}${path}`;
+}
 
-(function() {
-  'use strict';
+const __BASE_ABS = detectBaseFromScript(); // e.g. https://host/GuruNanakToursandTravels/
+const __BASE_PATH = __BASE_ABS.replace(/^https?:\/\/[^/]+/, ''); // /GuruNanakToursandTravels/ or /
 
-  // ============================================
-  // 1. AUTO-HIDE HEADER ON SCROLL
-  // ============================================
-  const initAutoHideHeader = () => {
-    const header = document.getElementById('siteHeader');
-    if (!header) return;
+/**
+ * Convert relative/root paths to absolute URLs respecting project subpath
+ */
+function __toAbs(url) {
+  if (!url) return '#';
+  // Absolute URLs, protocols, tel:, mailto: pass through
+  if (/^(https?:)?\/\//i.test(url) || url.startsWith('tel:') || url.startsWith('mailto:')) {
+    return url;
+  }
+  // Root-relative: prefix with origin + BASE_PATH
+  if (url.startsWith('/')) {
+    return `${location.origin}${__BASE_PATH}${url.replace(/^\//,'')}`;
+  }
+  // Relative: append to BASE_ABS
+  return `${__BASE_ABS}${url}`;
+}
 
-    let lastScrollY = window.pageYOffset;
-    let ticking = false;
+// Export to window for use in other scripts
+window.__BASE_ABS = __BASE_ABS;
+window.__BASE_PATH = __BASE_PATH;
+window.__toAbs = __toAbs;
 
-    const updateHeaderState = () => {
-      const currentScrollY = window.pageYOffset;
+/**
+ * Prefix all root-relative links so they work under GitHub Pages project subpath
+ */
+function prefixInternalLinks(scope = document) {
+  scope.querySelectorAll('a[href^="/"]').forEach(a => {
+    const raw = a.getAttribute('href');
+    a.setAttribute('href', __toAbs(raw));
+  });
+}
 
-      // Add shadow when scrolled
-      if (currentScrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+/**
+ * Mobile hamburger menu toggle
+ */
+function bindNavToggle(root = document) {
+  const btn = root.getElementById ? root.getElementById('nav-toggle') : document.getElementById('nav-toggle');
+  const nav = root.getElementById ? root.getElementById('primary-nav') : document.getElementById('primary-nav');
+  if (!btn || !nav) return;
 
-      // Hide header when scrolling down, show when scrolling up
-      if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        header.classList.add('hidden');
-      } else {
-        header.classList.remove('hidden');
-      }
+  btn.addEventListener('click', () => {
+    const isOpen = nav.style.display === 'block';
+    nav.style.display = isOpen ? 'none' : 'block';
+    btn.setAttribute('aria-expanded', !isOpen);
+  });
 
-      lastScrollY = currentScrollY;
-      ticking = false;
-    };
-
-    const requestTick = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateHeaderState);
-        ticking = true;
-      }
-    };
-
-    window.addEventListener('scroll', requestTick, { passive: true });
-
-    console.log('✅ Auto-hide header initialized');
-  };
-
-  // ============================================
-  // 2. MOBILE MENU TOGGLE
-  // ============================================
-  const initMobileMenu = () => {
-    const menuToggle = document.getElementById('menuToggle');
-    const menuClose = document.getElementById('menuClose');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const backdrop = document.getElementById('modalBackdrop');
-    const body = document.body;
-
-    if (!menuToggle || !mobileMenu) return;
-
-    const openMenu = () => {
-      mobileMenu.removeAttribute('hidden');
-      mobileMenu.classList.add('open');
-      backdrop.removeAttribute('hidden');
-      body.classList.add('no-scroll');
-      menuToggle.setAttribute('aria-expanded', 'true');
-    };
-
-    const closeMenu = () => {
-      mobileMenu.classList.remove('open');
-      setTimeout(() => {
-        mobileMenu.setAttribute('hidden', '');
-        backdrop.setAttribute('hidden', '');
-      }, 300);
-      body.classList.remove('no-scroll');
-      menuToggle.setAttribute('aria-expanded', 'false');
-    };
-
-    menuToggle.addEventListener('click', openMenu);
-    menuClose?.addEventListener('click', closeMenu);
-    backdrop?.addEventListener('click', closeMenu);
-
-    // Close on navigation item click
-    const navItems = mobileMenu.querySelectorAll('.mobile-nav-item');
-    navItems.forEach(item => {
-      item.addEventListener('click', closeMenu);
+  // Close menu when a link is clicked
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
     });
+  });
+}
 
-    // Close on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !mobileMenu.hasAttribute('hidden')) {
-        closeMenu();
-      }
-    });
+/**
+ * Search form handler
+ */
+function bindSearch(root = document) {
+  const form = root.querySelector ? root.querySelector('.site-search form') : document.querySelector('.site-search form');
+  if (!form) return;
 
-    console.log('✅ Mobile menu initialized');
-  };
-
-  // ============================================
-  // 3. SEARCH MODAL
-  // ============================================
-  const initSearchModal = () => {
-    const searchToggle = document.getElementById('searchToggle');
-    const searchClose = document.getElementById('searchClose');
-    const searchModal = document.getElementById('searchModal');
-    const backdrop = document.getElementById('modalBackdrop');
-    const searchInput = document.getElementById('searchInput');
-    const body = document.body;
-
-    if (!searchToggle || !searchModal) return;
-
-    const openSearch = () => {
-      searchModal.removeAttribute('hidden');
-      searchModal.classList.add('open');
-      backdrop.removeAttribute('hidden');
-      body.classList.add('no-scroll');
-      searchToggle.setAttribute('aria-expanded', 'true');
-      setTimeout(() => searchInput?.focus(), 100);
-    };
-
-    const closeSearch = () => {
-      searchModal.classList.remove('open');
-      setTimeout(() => {
-        searchModal.setAttribute('hidden', '');
-        backdrop.setAttribute('hidden', '');
-      }, 300);
-      body.classList.remove('no-scroll');
-      searchToggle.setAttribute('aria-expanded', 'false');
-    };
-
-    searchToggle.addEventListener('click', openSearch);
-    searchClose?.addEventListener('click', closeSearch);
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !searchModal.hasAttribute('hidden')) {
-        closeSearch();
-      }
-    });
-
-    // Handle search form submission
-    const searchForm = document.querySelector('.search-modal-form');
-    if (searchForm) {
-      searchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const query = searchInput?.value.trim();
-        if (query) {
-          window.location.href = `tours/index.html?q=${encodeURIComponent(query)}`;
-        }
-      });
+  form.addEventListener('submit', (e) => {
+    const input = form.querySelector('input[type="search"]');
+    const q = input ? input.value.trim() : '';
+    if (!q) {
+      e.preventDefault();
+      return;
     }
+    const action = form.getAttribute('action') || '/tours/';
+    e.preventDefault();
+    location.href = __toAbs(`${action}?q=${encodeURIComponent(q)}`);
+  });
+}
 
-    console.log('✅ Search modal initialized');
-  };
+/**
+ * Language switcher with i18n support
+ */
+const LANGS = ['en', 'pa', 'hi'];
 
-  // ============================================
-  // 4. PAGE LOADER
-  // ============================================
-  const initPageLoader = () => {
-    const loader = document.getElementById('pageLoader');
-    if (!loader) return;
+function initLang(root = document) {
+  const select = root.getElementById ? root.getElementById('lang-select') : document.getElementById('lang-select');
+  if (!select) return;
 
-    const hideLoader = () => {
-      loader.classList.add('hide');
-      setTimeout(() => {
-        loader.style.display = 'none';
-      }, 500);
-    };
+  const saved = localStorage.getItem('lang') || 'en';
+  if (LANGS.includes(saved)) select.value = saved;
 
-    if (document.readyState === 'complete') {
-      hideLoader();
-    } else {
-      window.addEventListener('load', hideLoader);
+  async function applyLang(lang) {
+    try {
+      const url = __toAbs(`/assets/i18n/${lang}.json`);
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) return;
+
+      const dict = await res.json();
+
+      // Apply text translations
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      // Apply placeholder translations
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) el.setAttribute('placeholder', dict[key]);
+      });
+
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = lang;
+    } catch (e) {
+      console.warn(`Failed to load language: ${lang}`, e);
     }
-
-    // Fallback: force hide after 3 seconds
-    setTimeout(hideLoader, 3000);
-
-    console.log('✅ Page loader initialized');
-  };
-
-  // ============================================
-  // 5. SMOOTH SCROLL TO ANCHOR
-  // ============================================
-  const initSmoothScroll = () => {
-    const anchorLinks = document.querySelectorAll('a[href^="#"]');
-
-    anchorLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href === '#' || href === '#main') return;
-
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          const headerHeight = document.querySelector('.site-header')?.offsetHeight || 76;
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-
-          // Update focus for accessibility
-          target.tabIndex = -1;
-          target.focus();
-        }
-      });
-    });
-
-    console.log('✅ Smooth scroll initialized');
-  };
-
-  // ============================================
-  // 6. BACK TO TOP BUTTON
-  // ============================================
-  const initBackToTop = () => {
-    const btn = document.getElementById('backToTop');
-    if (!btn) return;
-
-    const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        btn.classList.add('show');
-      } else {
-        btn.classList.remove('show');
-      }
-    };
-
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-
-    btn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-
-    console.log('✅ Back to top button initialized');
-  };
-
-  // ============================================
-  // 7. INTERSECTION OBSERVER (FADE-IN)
-  // ============================================
-  const initIntersectionObserver = () => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in-observe').forEach(el => {
-      observer.observe(el);
-    });
-
-    console.log('✅ Intersection observer initialized');
-  };
-
-  // ============================================
-  // 8. SET CURRENT YEAR IN FOOTER
-  // ============================================
-  const setCurrentYear = () => {
-    const yearSpan = document.getElementById('currentYear');
-    if (yearSpan) {
-      yearSpan.textContent = new Date().getFullYear();
-    }
-  };
-
-  // ============================================
-  // 9. INITIALIZE AOS (ANIMATE ON SCROLL)
-  // ============================================
-  const initAOS = () => {
-    if (typeof AOS !== 'undefined') {
-      AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true,
-        offset: 120,
-        disable: window.innerWidth < 640 ? true : false
-      });
-      console.log('✅ AOS initialized');
-    }
-  };
-
-  // ============================================
-  // 10. PERFORMANCE MONITORING
-  // ============================================
-  const initPerformanceMonitoring = () => {
-    if (window.performance && window.performance.timing) {
-      window.addEventListener('load', () => {
-        const pageLoadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
-        console.log(`📊 Page loaded in ${pageLoadTime}ms`);
-      });
-    }
-  };
-
-  // ============================================
-  // 11. KEYBOARD NAVIGATION
-  // ============================================
-  const initKeyboardNavigation = () => {
-    document.addEventListener('keydown', (e) => {
-      // Alt + S: Open search
-      if (e.altKey && e.key === 's') {
-        e.preventDefault();
-        document.getElementById('searchToggle')?.click();
-      }
-
-      // Alt + M: Open menu
-      if (e.altKey && e.key === 'm') {
-        e.preventDefault();
-        document.getElementById('menuToggle')?.click();
-      }
-    });
-
-    console.log('✅ Keyboard navigation initialized');
-  };
-
-  // ============================================
-  // 12. INITIALIZE ALL
-  // ============================================
-  const init = () => {
-    console.log('🚀 Initializing common.js...');
-
-    initPageLoader();
-    initAutoHideHeader();
-    initMobileMenu();
-    initSearchModal();
-    initSmoothScroll();
-    initBackToTop();
-    initIntersectionObserver();
-    setCurrentYear();
-    initKeyboardNavigation();
-    initPerformanceMonitoring();
-
-    // Initialize AOS after a brief delay
-    setTimeout(initAOS, 100);
-
-    console.log('✅ Common.js initialized');
-  };
-
-  // Run on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
   }
 
-  // Export for global access
-  window.commonModule = {
-    initAutoHideHeader,
-    initMobileMenu,
-    initSearchModal,
-    initPageLoader,
-    initSmoothScroll,
-    initBackToTop
-  };
+  select.addEventListener('change', (e) => {
+    applyLang(e.target.value);
+  });
 
-})();
+  applyLang(select.value);
+}
+
+/**
+ * Inject header and footer partials, then bind all behaviors
+ */
+async function injectPartials() {
+  const headerPh = document.getElementById('header-placeholder');
+  const footerPh = document.getElementById('footer-placeholder');
+
+  // Inject header
+  if (headerPh) {
+    try {
+      const url = __toAbs('/partials/header.html');
+      const h = await fetch(url).then(r => r.text());
+      headerPh.innerHTML = h;
+    } catch (e) {
+      console.warn('Failed to load header.html', e);
+    }
+  }
+
+  // Inject footer
+  if (footerPh) {
+    try {
+      const url = __toAbs('/partials/footer.html');
+      const f = await fetch(url).then(r => r.text());
+      footerPh.innerHTML = f;
+    } catch (e) {
+      console.warn('Failed to load footer.html', e);
+    }
+  }
+
+  // Bind all behaviors on the newly injected content
+  setTimeout(() => {
+    prefixInternalLinks(document);
+    bindNavToggle(document);
+    bindSearch(document);
+    initLang(document);
+
+    // Update year in footer
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  }, 100);
+}
+
+/**
+ * Initialize common page on DOMContentLoaded
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  injectPartials().then(() => {
+    // Ensure all links are prefixed in case partials already contained them
+    prefixInternalLinks(document);
+  });
+});
+// Enhanced header functionality
+function initializeHeader() {
+  const searchToggle = document.getElementById('searchToggle');
+  const searchBar = document.getElementById('searchBar');
+  const searchInput = document.getElementById('header-search-input');
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+  const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+  const headerSearchForm = document.getElementById('headerSearchForm');
+  const suggestions = document.querySelectorAll('.suggestion-item');
+
+  // Search toggle
+  if (searchToggle && searchBar) {
+    searchToggle.addEventListener('click', () => {
+      searchBar.classList.toggle('active');
+      searchToggle.setAttribute('aria-expanded', searchBar.classList.contains('active'));
+      if (searchBar.classList.contains('active')) {
+        searchInput.focus();
+      }
+    });
+  }
+
+  // Search suggestions
+  suggestions.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const query = btn.dataset.search;
+      searchInput.value = query;
+      if (headerSearchForm) {
+        headerSearchForm.submit();
+      }
+    });
+  });
+
+  // Mobile menu toggle
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+      menuToggle.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
+      mobileMenu.setAttribute('aria-hidden', !mobileMenu.classList.contains('active'));
+    });
+  }
+
+  // Close mobile menu
+  if (mobileMenuClose && mobileMenu) {
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      menuToggle.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  // Mobile menu overlay
+  if (mobileMenuOverlay && mobileMenu) {
+    mobileMenuOverlay.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      menuToggle.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  // Mobile menu links close menu on click
+  const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+  mobileMenuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+      menuToggle.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    });
+  });
+
+  // Update year in footer
+  const yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+}
+
+// Call on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initializeHeader, 100);
+});
