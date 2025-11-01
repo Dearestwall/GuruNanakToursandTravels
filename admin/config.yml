@@ -11,234 +11,251 @@ slug:
   encoding: "ascii"
   clean_accents: true
 
+# Single file collections
 collections:
   # Hero Slides - Single File Collection
   - name: "hero"
     label: "Hero Slides"
-    file: "data/hero.json"
-    format: "json"
-    fields:
-      - label: "Hero Slides"
-        name: "hero_slides"
-        widget: "list"
-        collapsed: false
-        summary: "{{fields.title}}"
-        field:
-          label: "Slide"
-          name: "slide"
-          widget: "object"
-          fields:
-            - { label: "ID", name: "id", widget: "string" }
-            - { label: "Title", name: "title", widget: "string" }
-            - { label: "Subtitle", name: "subtitle", widget: "text" }
-            - { label: "Image", name: "image", widget: "image" }
-            - label: "Call-to-Actions"
-              name: "ctas"
-              widget: "list"
-              field:
-                label: "CTA"
-                name: "cta"
-                widget: "object"
+    files:
+      - name: "hero_content"
+        label: "Hero Slides Content"
+        file: "data/hero.json"
+        format: "json"
+        fields:
+          - label: "Hero Slides"
+            name: "hero_slides"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Subtitle", name: "subtitle", widget: "text" }
+              - { label: "Image", name: "image", widget: "image" }
+              - label: "Call-to-Actions"
+                name: "ctas"
+                widget: "list"
+                summary: "{{fields.label}}"
                 fields:
                   - { label: "Label", name: "label", widget: "string" }
                   - { label: "Link", name: "href", widget: "string" }
+                  - { label: "Button Style", name: "style", widget: "select", options: ["btn-primary", "btn-secondary"], required: false }
+                  - { label: "Target", name: "target", widget: "string", required: false }
 
   # Offerings/Services - Single File Collection
   - name: "offerings"
     label: "Services & Offerings"
-    file: "data/offerings.json"
-    format: "json"
-    fields:
-      - label: "Offerings"
-        name: "offerings"
-        widget: "list"
-        collapsed: false
-        summary: "{{fields.title}}"
-        field:
-          label: "Service"
-          name: "service"
-          widget: "object"
-          fields:
-            - { label: "ID", name: "id", widget: "string", required: true }
-            - { label: "Icon", name: "icon", widget: "string" }
-            - { label: "Title", name: "title", widget: "string" }
-            - { label: "Description", name: "description", widget: "text" }
-            - { label: "Long Description", name: "long_description", widget: "markdown" }
-            - label: "Features"
-              name: "features"
-              widget: "list"
-              field: { label: "Feature", name: "item", widget: "string" }
-            - label: "Benefits"
-              name: "benefits"
-              widget: "list"
-              field: { label: "Benefit", name: "item", widget: "string" }
-            - { label: "Link Label", name: "link_label", widget: "string" }
-            - { label: "Link Href", name: "link_href", widget: "string" }
+    files:
+      - name: "offerings_content"
+        label: "Services Content"
+        file: "data/offerings.json"
+        format: "json"
+        fields:
+          - label: "Offerings"
+            name: "offerings"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "Icon", name: "icon", widget: "string", hint: "e.g., ✈️, 🏨, 🗺️" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Long Description", name: "long_description", widget: "markdown" }
+              - label: "Features"
+                name: "features"
+                widget: "list"
+                collapsed: true
+                field: { label: "Feature", name: "item", widget: "string" }
+              - label: "Benefits"
+                name: "benefits"
+                widget: "list"
+                collapsed: true
+                field: { label: "Benefit", name: "item", widget: "string" }
+              - { label: "Link Label", name: "link_label", widget: "string", default: "Learn More" }
+              - { label: "Link Href", name: "link_href", widget: "string", default: "/details/" }
 
   # Featured Tours - Single File Collection
   - name: "tours"
     label: "Featured Tours"
-    file: "data/tours.json"
-    format: "json"
-    fields:
-      - label: "Tours"
-        name: "featured_tours"
-        widget: "list"
-        collapsed: false
-        summary: "{{fields.name}} - ₹{{fields.price}}"
-        field:
-          label: "Tour"
-          name: "tour"
-          widget: "object"
-          fields:
-            - { label: "ID", name: "id", widget: "string", required: true }
-            - { label: "Name", name: "name", widget: "string" }
-            - { label: "Image", name: "image", widget: "image" }
-            - { label: "Summary", name: "summary", widget: "text" }
-            - { label: "Description", name: "description", widget: "markdown" }
-            - { label: "Price (₹)", name: "price", widget: "number", value_type: "int" }
-            - { label: "Duration", name: "duration", widget: "string" }
-            - { label: "Best Season", name: "best_season", widget: "string" }
-            - label: "Includes"
-              name: "includes"
-              widget: "list"
-              field: { label: "Item", name: "item", widget: "string" }
-            - label: "Excludes"
-              name: "excludes"
-              widget: "list"
-              field: { label: "Item", name: "item", widget: "string" }
-            - label: "Highlights"
-              name: "highlights"
-              widget: "list"
-              field: { label: "Highlight", name: "item", widget: "string" }
-            - label: "FAQs"
-              name: "faqs"
-              widget: "list"
-              field:
-                label: "FAQ"
-                name: "faq"
-                widget: "object"
+    files:
+      - name: "tours_content"
+        label: "Tours Content"
+        file: "data/tours.json"
+        format: "json"
+        fields:
+          - label: "Tours"
+            name: "featured_tours"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.name}} - ₹{{fields.price}}"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Summary", name: "summary", widget: "text" }
+              - { label: "Description", name: "description", widget: "markdown" }
+              - { label: "Price (₹)", name: "price", widget: "number", value_type: "int" }
+              - { label: "Duration", name: "duration", widget: "string", hint: "e.g., 5 Days / 4 Nights" }
+              - { label: "Best Season", name: "best_season", widget: "string", required: false }
+              - label: "Includes"
+                name: "includes"
+                widget: "list"
+                collapsed: true
+                field: { label: "Item", name: "item", widget: "string" }
+              - label: "Excludes"
+                name: "excludes"
+                widget: "list"
+                collapsed: true
+                field: { label: "Item", name: "item", widget: "string" }
+              - label: "Highlights"
+                name: "highlights"
+                widget: "list"
+                collapsed: true
+                required: false
+                field: { label: "Highlight", name: "item", widget: "string" }
+              - label: "FAQs"
+                name: "faqs"
+                widget: "list"
+                collapsed: true
+                required: false
+                summary: "{{fields.q}}"
                 fields:
                   - { label: "Question", name: "q", widget: "string" }
                   - { label: "Answer", name: "a", widget: "text" }
 
-  # Testimonials - Single File Collection
+  # Testimonials & Reviews - Single File Collection
   - name: "testimonials"
     label: "Customer Reviews"
-    file: "data/testimonials.json"
-    format: "json"
-    fields:
-      - label: "Customer Testimonials"
-        name: "testimonials"
-        widget: "list"
-        collapsed: false
-        summary: "{{fields.name}} - {{fields.rating}} ⭐"
-        field:
-          label: "Testimonial"
-          name: "testimonial"
-          widget: "object"
-          fields:
-            - { label: "Review ID", name: "id", widget: "string", required: true }
-            - { label: "Customer Name", name: "name", widget: "string", required: true }
-            - { label: "Email Address", name: "email", widget: "string", required: false }
-            - { label: "City/Location", name: "location", widget: "string", required: false }
-            - { label: "Star Rating", name: "rating", widget: "select", options: ["5", "4", "3", "2", "1"], required: true }
-            - { label: "Review Comment", name: "comment", widget: "text", required: true }
-            - { label: "Customer Photo", name: "photo", widget: "image", required: false }
-            - { label: "Tour/Service Package", name: "tour_package", widget: "string", required: false }
-            - { label: "Travel Date", name: "travel_date", widget: "string", required: false }
-            - { label: "Verified Customer", name: "verified", widget: "boolean", default: true }
-            - { label: "Helpful Count", name: "helpful_count", widget: "number", required: false, value_type: "int" }
-            - { label: "Review Highlight", name: "highlight", widget: "string", required: false }
+    files:
+      - name: "testimonials_content"
+        label: "Customer Testimonials"
+        file: "data/testimonials.json"
+        format: "json"
+        fields:
+          - label: "Customer Testimonials"
+            name: "testimonials"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.name}} - {{fields.rating}} ⭐"
+            fields:
+              - { label: "Review ID", name: "id", widget: "string", required: true, hint: "e.g., review-1" }
+              - { label: "Customer Name", name: "name", widget: "string", required: true }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { 
+                  label: "Rating",
+                  name: "rating",
+                  widget: "select",
+                  options: ["5", "4", "3", "2", "1"],
+                  required: true
+                }
+              - { label: "Comment", name: "comment", widget: "text", required: true }
+              - { label: "Photo", name: "photo", widget: "image", required: false }
+              - { label: "Tour Package", name: "tour_package", widget: "string", required: false }
+              - { label: "Travel Date", name: "travel_date", widget: "string", required: false }
+              - { label: "Verified", name: "verified", widget: "boolean", default: true, required: false }
+              - { label: "Helpful Count", name: "helpful_count", widget: "number", value_type: "int", required: false }
+              - { label: "Highlight", name: "highlight", widget: "string", required: false }
 
-  # Partners - Single File Collection
+  # Partners & Brands - Single File Collection
   - name: "partners"
     label: "Partners & Brands"
-    file: "data/partners.json"
-    format: "json"
-    fields:
-      - label: "Partners"
-        name: "partners"
-        widget: "list"
-        collapsed: false
-        summary: "{{fields.name}}"
-        field:
-          label: "Partner"
-          name: "partner"
-          widget: "object"
-          fields:
-            - { label: "ID", name: "id", widget: "string" }
-            - { label: "Name", name: "name", widget: "string" }
-            - { label: "Logo", name: "logo", widget: "image" }
-            - { label: "Description", name: "description", widget: "text" }
-            - { label: "Link", name: "link", widget: "string" }
+    files:
+      - name: "partners_content"
+        label: "Partners Content"
+        file: "data/partners.json"
+        format: "json"
+        fields:
+          - label: "Partners"
+            name: "partners"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Logo", name: "logo", widget: "image" }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "Link", name: "link", widget: "string", required: false }
 
   # FAQs - Single File Collection
   - name: "faqs"
-    label: "Frequently Asked Questions"
-    file: "data/faqs.json"
-    format: "json"
-    fields:
-      - label: "FAQs"
-        name: "faqs"
-        widget: "list"
-        collapsed: false
-        summary: "Q: {{fields.q}}"
-        field:
-          label: "FAQ"
-          name: "faq"
-          widget: "object"
-          fields:
-            - { label: "ID", name: "id", widget: "string" }
-            - { label: "Question", name: "q", widget: "string" }
-            - { label: "Answer", name: "a", widget: "text" }
+    label: "FAQ Questions"
+    files:
+      - name: "faqs_content"
+        label: "FAQs Content"
+        file: "data/faqs.json"
+        format: "json"
+        fields:
+          - label: "FAQs"
+            name: "faqs"
+            widget: "list"
+            collapsed: false
+            summary: "Q: {{fields.q}}"
+            fields:
+              - { label: "ID", name: "id", widget: "string" }
+              - { label: "Question", name: "q", widget: "string" }
+              - { label: "Answer", name: "a", widget: "text" }
 
   # Statistics - Single File Collection
   - name: "stats"
     label: "Statistics"
-    file: "data/stats.json"
-    format: "json"
-    fields:
-      - label: "Company Statistics"
-        name: "stats"
-        widget: "object"
+    files:
+      - name: "stats_content"
+        label: "Statistics Content"
+        file: "data/stats.json"
+        format: "json"
         fields:
-          - { label: "Happy Customers", name: "happy_customers", widget: "number", value_type: "int" }
-          - { label: "Tour Packages", name: "tour_packages", widget: "number", value_type: "int" }
-          - { label: "Destinations", name: "destinations", widget: "number", value_type: "int" }
-          - { label: "Support", name: "support", widget: "string" }
-          - { label: "Experience (Years)", name: "experience_years", widget: "number", value_type: "int" }
-          - { label: "Success Rate (%)", name: "success_rate", widget: "number", value_type: "int" }
-          - { label: "Average Rating", name: "average_rating", widget: "number", value_type: "float" }
+          - label: "Statistics"
+            name: "stats"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Happy Customers", name: "happy_customers", widget: "number", value_type: "int" }
+              - { label: "Tour Packages", name: "tour_packages", widget: "number", value_type: "int" }
+              - { label: "Destinations", name: "destinations", widget: "number", value_type: "int" }
+              - { label: "Support (24/7)", name: "support", widget: "string", default: "24/7" }
+              - { label: "Years of Experience", name: "experience_years", widget: "number", value_type: "int", required: false }
+              - { label: "Success Rate (%)", name: "success_rate", widget: "number", value_type: "int", required: false }
+              - { label: "Average Rating", name: "average_rating", widget: "number", value_type: "float", required: false }
 
-  # Contact - Single File Collection
+  # Contact Information - Single File Collection
   - name: "contact"
     label: "Contact Information"
-    file: "data/contact.json"
-    format: "json"
-    fields:
-      - label: "Contact Details"
-        name: "contact"
-        widget: "object"
+    files:
+      - name: "contact_content"
+        label: "Contact Details"
+        file: "data/contact.json"
+        format: "json"
         fields:
-          - { label: "Phone", name: "phone", widget: "string" }
-          - { label: "WhatsApp", name: "whatsapp", widget: "string" }
-          - { label: "Email", name: "email", widget: "string" }
-          - { label: "Address", name: "address", widget: "text" }
-          - { label: "Maps Link", name: "map_link", widget: "string" }
-          - { label: "Booking Link", name: "booking_link", widget: "string" }
-          - label: "Office Hours"
-            name: "office_hours"
+          - label: "Contact Information"
+            name: "contact"
             widget: "object"
+            collapsed: false
             fields:
-              - { label: "Mon-Fri", name: "monday_friday", widget: "string" }
-              - { label: "Saturday", name: "saturday", widget: "string" }
-              - { label: "Sunday", name: "sunday", widget: "string" }
-          - label: "Social Media"
-            name: "social_media"
-            widget: "object"
-            fields:
-              - { label: "Facebook", name: "facebook", widget: "string" }
-              - { label: "Instagram", name: "instagram", widget: "string" }
-              - { label: "YouTube", name: "youtube", widget: "string" }
-              - { label: "WhatsApp Group", name: "whatsapp_group", widget: "string" }
+              - { label: "Phone", name: "phone", widget: "string", hint: "e.g., +91 6283315156" }
+              - { label: "WhatsApp", name: "whatsapp", widget: "string", hint: "e.g., +91 6283315156" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Address", name: "address", widget: "text" }
+              - { label: "Google Maps Link", name: "map_link", widget: "string", required: false }
+              - { label: "Booking Link", name: "booking_link", widget: "string", default: "/booking/" }
+              
+              - label: "Office Hours"
+                name: "office_hours"
+                widget: "object"
+                collapsed: true
+                fields:
+                  - { label: "Mon-Fri", name: "monday_friday", widget: "string", default: "9:00 AM - 7:00 PM" }
+                  - { label: "Saturday", name: "saturday", widget: "string", default: "10:00 AM - 6:00 PM" }
+                  - { label: "Sunday", name: "sunday", widget: "string", default: "Closed" }
+              
+              - label: "Social Media"
+                name: "social_media"
+                widget: "object"
+                collapsed: true
+                fields:
+                  - { label: "Facebook URL", name: "facebook", widget: "string", required: false }
+                  - { label: "Instagram Handle", name: "instagram", widget: "string", required: false }
+                  - { label: "YouTube Channel", name: "youtube", widget: "string", required: false }
+                  - { label: "WhatsApp Group Link", name: "whatsapp_group", widget: "string", required: false }
