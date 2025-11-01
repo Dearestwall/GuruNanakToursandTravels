@@ -1,79 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <title>Gallery — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <meta name="description" content="Explore stunning photos from our travel experiences" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
+  <link rel="stylesheet" href="../assets/css/gallery.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
-  <header class="site-header sticky">
-    <div class="container flex-between">
-      <a href="index.html" class="brand">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
-        <span>GNTT</span>
-      </a>
-      <nav class="nav desktop-nav">
-        <a href="index.html">Home</a>
-        <a href="gallery.html" class="active">Gallery</a>
-        <a href="booking.html">Booking</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+    <!-- Page Hero -->
+    <section class="page-hero gallery-hero">
+      <div class="container">
+        <h1>Gallery</h1>
+        <p>Stunning moments from our journeys</p>
+      </div>
+    </section>
+
+    <!-- Gallery Categories -->
+    <section class="gallery-section">
+      <div class="container">
+        <div class="gallery-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="mountains">🏔️ Mountains</button>
+          <button class="filter-btn" data-filter="beaches">🏖️ Beaches</button>
+          <button class="filter-btn" data-filter="cities">🏙️ Cities</button>
+          <button class="filter-btn" data-filter="culture">🕌 Culture</button>
+        </div>
+
+        <div id="galleryGrid" class="gallery-grid"></div>
+      </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" style="display:none;">
+      <div class="lightbox-content">
+        <button class="lightbox-close">&times;</button>
+        <img id="lightboxImage" src="" alt="" />
+        <div class="lightbox-nav">
+          <button class="lightbox-prev">❮</button>
+          <button class="lightbox-next">❯</button>
+        </div>
       </div>
     </div>
-  </header>
 
-  <div id="offcanvas" class="offcanvas" hidden>
-    <button class="offcanvas-close" data-close>&times;</button>
-    <ul class="nav-list">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="gallery.html">📷 Gallery</a></li>
-      <li><a href="booking.html">📝 Booking</a></li>
-    </ul>
-  </div>
-
-  <main id="main" class="container">
-    <h1 data-aos="fade-up">Photo Gallery</h1>
-    <section class="masonry">
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 1" loading="lazy" />
-      </div>
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 2" loading="lazy" />
-      </div>
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 3" loading="lazy" />
-      </div>
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 4" loading="lazy" />
-      </div>
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 5" loading="lazy" />
-      </div>
-      <div class="m-item" data-aos="zoom-in">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Gallery 6" loading="lazy" />
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Create Your Own Memories</h2>
+        <p>Join us on an unforgettable journey</p>
+        <a href="/booking/" class="btn btn-primary">📝 Book Now</a>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container"><small>&copy; <span id="year">2025</span> GNTT</small></div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <button id="toTop" class="to-top">↑</button>
-
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/aos-init.js" defer></script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/gallery.js" defer></script>
 </body>
 </html>

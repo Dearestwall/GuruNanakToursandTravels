@@ -1,87 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Contact — GNTT</title>
+  <title>Contact Us — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
+  <meta name="description" content="Get in touch with Guru Nanak Tour & Travels" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
+  <link rel="stylesheet" href="../assets/css/contact.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
-  <header class="site-header sticky">
-    <div class="container flex-between">
-      <a href="index.html" class="brand">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
-        <span>GNTT</span>
-      </a>
-      <nav class="nav desktop-nav">
-        <a href="index.html">Home</a>
-        <a href="contact.html" class="active">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+    <!-- Page Hero -->
+    <section class="page-hero contact-hero">
+      <div class="container">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you. Get in touch with us today!</p>
       </div>
-    </div>
-  </header>
+    </section>
 
-  <div id="offcanvas" class="offcanvas" hidden>
-    <button class="offcanvas-close" data-close>&times;</button>
-    <ul class="nav-list">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="contact.html">📞 Contact</a></li>
-    </ul>
-  </div>
+    <!-- Contact Info & Form -->
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Contact Information -->
+          <aside class="contact-info">
+            <article class="info-card phone-card">
+              <div class="info-icon">📞</div>
+              <h3>Phone</h3>
+              <p id="contact-phone"></p>
+              <a href="#" id="call-link" class="btn btn-sm">Call Now</a>
+            </article>
 
-  <main id="main" class="container">
-    <h1>Contact Us</h1>
-    <div class="grid-2">
-      <section>
-        <h2>Reach Us</h2>
-        <ul class="contact-list">
-          <li><a href="tel:+916283315156">📞 +91 6283315156</a></li>
-          <li><a href="mailto:patticsc72@gmail.com">✉️ patticsc72@gmail.com</a></li>
-          <li><a target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT">💬 WhatsApp Chat</a></li>
-          <li>📍 Court Road near Police Station, Patti 143416, Punjab, India</li>
-        </ul>
+            <article class="info-card email-card">
+              <div class="info-icon">✉️</div>
+              <h3>Email</h3>
+              <p id="contact-email"></p>
+              <a href="#" id="email-link" class="btn btn-sm">Send Email</a>
+            </article>
 
-        <div class="quick-ctas">
-          <a class="btn primary" href="tel:+916283315156">Call Now</a>
-          <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT">WhatsApp</a>
+            <article class="info-card location-card">
+              <div class="info-icon">📍</div>
+              <h3>Location</h3>
+              <p id="contact-address"></p>
+              <a href="#" id="map-link" target="_blank" rel="noopener" class="btn btn-sm">View Map</a>
+            </article>
+
+            <article class="info-card hours-card">
+              <div class="info-icon">🕐</div>
+              <h3>Business Hours</h3>
+              <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+              <p>Sunday: Closed</p>
+            </article>
+          </aside>
+
+          <!-- Contact Form -->
+          <div class="contact-form-wrapper">
+            <h2>Send us a Message</h2>
+            <form id="contactForm" action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+              <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+              <input type="hidden" name="subject" value="New Message from GNTT Website">
+              <input type="hidden" name="from_name" value="GNTT Website">
+
+              <div class="form-group">
+                <label for="contactName">Full Name *</label>
+                <input id="contactName" name="name" type="text" required />
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email Address *</label>
+                <input id="contactEmail" name="email" type="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="contactPhone">Phone Number *</label>
+                <input id="contactPhone" name="phone" type="tel" required />
+              </div>
+
+              <div class="form-group">
+                <label for="contactSubject">Subject *</label>
+                <input id="contactSubject" name="subject" type="text" required />
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage">Message *</label>
+                <textarea id="contactMessage" name="message" rows="5" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <div class="h-captcha" data-captcha="true"></div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">📨 Send Message</button>
+                <a href="https://wa.me/916283315156" target="_blank" rel="noopener" class="btn btn-secondary">💬 WhatsApp</a>
+              </div>
+
+              <div id="contactResult" class="toast" hidden></div>
+            </form>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <h3>Business Hours</h3>
-        <p>Mon–Sat: 9:00 AM – 7:00 PM<br>Sunday: Closed</p>
+    <!-- Map Section -->
+    <section class="map-section">
+      <div id="contactMap" class="contact-map"></div>
+    </section>
 
-        <h3>FAQs</h3>
-        <details class="faq"><summary>How soon will I get a response?</summary><p>Usually within a few hours during business hours.</p></details>
-        <details class="faq"><summary>Do you provide visa assistance?</summary><p>Yes, we guide documentation and appointments.</p></details>
-      </section>
-
-      <section>
-        <h2>Location</h2>
-        <div class="map-note">Map shows approximate location near Police Station, Patti.</div>
-        <iframe
-          title="GNTT location"
-          width="100%" height="400" style="border:0;border-radius:12px" loading="lazy"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3429.123!2d74.958!3d31.288!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDE3JzE3LjMiTiA3NMKwNTcnMjguOCJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin">
-        </iframe>
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Office location" style="width:100%;margin-top:1rem;border-radius:12px" loading="lazy" />
-      </section>
-    </div>
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="container">
+        <h2>Frequently Asked Questions</h2>
+        <div id="contactFaqList" class="faq-list"></div>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container"><small>&copy; <span id="year">2025</span> GNTT</small></div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <button id="toTop" class="to-top">↑</button>
+  <div id="toast" class="toast" role="alert"></div>
 
-  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/contact.js" defer></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY"></script>
+  <script src="https://web3forms.com/client/script.js" async defer></script>
 </body>
 </html>

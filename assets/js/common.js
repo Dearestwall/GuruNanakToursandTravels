@@ -5,6 +5,7 @@
 /**
  * Detect site base URL from the script location
  * Works on both local dev and GitHub Pages project sites
+ * Handles both root pages and nested directories
  */
 function detectBaseFromScript() {
   const scripts = document.getElementsByTagName('script');
@@ -20,33 +21,135 @@ function detectBaseFromScript() {
   return `${location.origin}${path}`;
 }
 
-const __BASE_ABS = detectBaseFromScript(); // e.g. https://host/GuruNanakToursandTravels/
-const __BASE_PATH = __BASE_ABS.replace(/^https?:\/\/[^/]+/, ''); // /GuruNanakToursandTravels/ or /
+/**
+ * Detect root base URL (for partials and assets)
+ * Finds the project root, not the current directory
+ */
+function detectRootBase() {
+  const currentPath = location.pathname;
+  
+  // If we're at /GuruNanakToursandTravels/ (root)
+  if (currentPath.match(/\/GuruNanakToursandTravels\/?$/)) {
+    return `${location.origin}/GuruNanakToursandTravels/`;
+  }
+  
+  // If we're at /GuruNanakToursandTravels/index.html
+  if (currentPath.match(/\/GuruNanakToursandTravels\/index\.html$/)) {
+    return `${location.origin}/GuruNanakToursandTravels/`;
+  }
+  
+  // If we're at /GuruNanakToursandTravels/details/index.html or similar
+  if (currentPath.includes('/GuruNanakToursandTravels/')) {
+    const parts = currentPath.split('/GuruNanakToursandTravels/')[0];
+    return `${location.origin}/GuruNanakToursandTravels/`;
+  }
+  
+  // For local dev at /
+  if (currentPath.match(/^\/[^\/]*\.html$/) || currentPath === '/') {
+    return `${location.origin}/`;
+  }
+  
+  // For local dev in subdirectories like /details/index.html
+  if (currentPath.match(/^\/[^\/]+\/index\.html$/)) {
+    return `${location.origin}/`;
+  }
+  
+  // Fallback
+  return `${location.origin}/`;
+}
+
+const __BASE_ABS = detectBaseFromScript();
+const __ROOT_BASE = detectRootBase();
+const __BASE_PATH = __BASE_ABS.replace(/^https?:\/\/[^/]+/, '');
 
 /**
- * Convert relative/root paths to absolute URLs respecting project subpath
+ * Convert relative/root paths to absolute URLs
  */
 function __toAbs(url) {
   if (!url) return '#';
+  
   // Absolute URLs, protocols, tel:, mailto: pass through
   if (/^(https?:)?\/\//i.test(url) || url.startsWith('tel:') || url.startsWith('mailto:')) {
     return url;
   }
-  // Root-relative: prefix with origin + BASE_PATH
+  
+  // Root-relative paths
   if (url.startsWith('/')) {
-    return `${location.origin}${__BASE_PATH}${url.replace(/^\//,'')}`;
+    return `${location.origin}${__BASE_PATH}${url.replace(/^\//, '')}`;
   }
-  // Relative: append to BASE_ABS
+  
+  // Relative paths
   return `${__BASE_ABS}${url}`;
 }
 
-// Export to window for use in other scripts
+/**
+ * Get absolute path to partials and data
+ * Always relative to project root
+ */
+function __getPartialUrl(filename) {
+  return `${__ROOT_BASE}partials/${filename}`;
+}
+
+function __getDataUrl(filename) {
+  return `${__ROOT_BASE}data/${filename}`;
+}
+
+// Export to window
 window.__BASE_ABS = __BASE_ABS;
+window.__ROOT_BASE = __ROOT_BASE;
 window.__BASE_PATH = __BASE_PATH;
 window.__toAbs = __toAbs;
+window.__getPartialUrl = __getPartialUrl;
+window.__getDataUrl = __getDataUrl;
 
 /**
- * Prefix all root-relative links so they work under GitHub Pages project subpath
+ * Fetch CMS data with proper base URL
+ */
+async function fetchCMSData() {
+  try {
+    const url = __getDataUrl('home.json');
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.error('CMS data load error:', e, 'URL:', __getDataUrl('home.json'));
+    return null;
+  }
+}
+
+/**
+ * Show toast notification
+ */
+function showToast(msg, type = 'info', duration = 3000) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = 'toast';
+    toast.setAttribute('role', 'alert');
+    document.body.appendChild(toast);
+  }
+  
+  toast.textContent = msg;
+  toast.style.background = type === 'success' ? '#ecfdf5' : type === 'error' ? '#fee2e2' : '#dbeafe';
+  toast.style.color = type === 'success' ? '#065f46' : type === 'error' ? '#b91c1c' : '#0c4a6e';
+  toast.hidden = false;
+  
+  setTimeout(() => {
+    toast.hidden = true;
+  }, duration);
+}
+
+/**
+ * Get URL parameter
+ */
+function getQueryParam(name) {
+  const params = new URLSearchParams(location.search);
+  return params.get(name);
+}
+
+/**
+ * Prefix all root-relative links with correct base
  */
 function prefixInternalLinks(scope = document) {
   scope.querySelectorAll('a[href^="/"]').forEach(a => {
@@ -56,228 +159,228 @@ function prefixInternalLinks(scope = document) {
 }
 
 /**
- * Mobile hamburger menu toggle
+ * Load and inject header/footer partials
  */
-function bindNavToggle(root = document) {
-  const btn = root.getElementById ? root.getElementById('nav-toggle') : document.getElementById('nav-toggle');
-  const nav = root.getElementById ? root.getElementById('primary-nav') : document.getElementById('primary-nav');
-  if (!btn || !nav) return;
-
-  btn.addEventListener('click', () => {
-    const isOpen = nav.style.display === 'block';
-    nav.style.display = isOpen ? 'none' : 'block';
-    btn.setAttribute('aria-expanded', !isOpen);
-  });
-
-  // Close menu when a link is clicked
-  nav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      nav.style.display = 'none';
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-}
-
-/**
- * Search form handler
- */
-function bindSearch(root = document) {
-  const form = root.querySelector ? root.querySelector('.site-search form') : document.querySelector('.site-search form');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    const input = form.querySelector('input[type="search"]');
-    const q = input ? input.value.trim() : '';
-    if (!q) {
-      e.preventDefault();
-      return;
-    }
-    const action = form.getAttribute('action') || '/tours/';
-    e.preventDefault();
-    location.href = __toAbs(`${action}?q=${encodeURIComponent(q)}`);
-  });
-}
-
-/**
- * Language switcher with i18n support
- */
-const LANGS = ['en', 'pa', 'hi'];
-
-function initLang(root = document) {
-  const select = root.getElementById ? root.getElementById('lang-select') : document.getElementById('lang-select');
-  if (!select) return;
-
-  const saved = localStorage.getItem('lang') || 'en';
-  if (LANGS.includes(saved)) select.value = saved;
-
-  async function applyLang(lang) {
-    try {
-      const url = __toAbs(`/assets/i18n/${lang}.json`);
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) return;
-
-      const dict = await res.json();
-
-      // Apply text translations
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) el.textContent = dict[key];
-      });
-
-      // Apply placeholder translations
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (dict[key]) el.setAttribute('placeholder', dict[key]);
-      });
-
-      localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang;
-    } catch (e) {
-      console.warn(`Failed to load language: ${lang}`, e);
-    }
-  }
-
-  select.addEventListener('change', (e) => {
-    applyLang(e.target.value);
-  });
-
-  applyLang(select.value);
-}
-
-/**
- * Inject header and footer partials, then bind all behaviors
- */
-async function injectPartials() {
+async function loadPartials() {
   const headerPh = document.getElementById('header-placeholder');
   const footerPh = document.getElementById('footer-placeholder');
 
-  // Inject header
-  if (headerPh) {
-    try {
-      const url = __toAbs('/partials/header.html');
-      const h = await fetch(url).then(r => r.text());
-      headerPh.innerHTML = h;
-    } catch (e) {
-      console.warn('Failed to load header.html', e);
+  try {
+    // Load header
+    if (headerPh) {
+      const headerUrl = __getPartialUrl('header.html');
+      console.log('Loading header from:', headerUrl);
+      const headerRes = await fetch(headerUrl);
+      if (!headerRes.ok) throw new Error(`Header HTTP ${headerRes.status}`);
+      const headerHtml = await headerRes.text();
+      headerPh.innerHTML = headerHtml;
     }
-  }
-
-  // Inject footer
-  if (footerPh) {
-    try {
-      const url = __toAbs('/partials/footer.html');
-      const f = await fetch(url).then(r => r.text());
-      footerPh.innerHTML = f;
-    } catch (e) {
-      console.warn('Failed to load footer.html', e);
+    
+    // Load footer
+    if (footerPh) {
+      const footerUrl = __getPartialUrl('footer.html');
+      console.log('Loading footer from:', footerUrl);
+      const footerRes = await fetch(footerUrl);
+      if (!footerRes.ok) throw new Error(`Footer HTTP ${footerRes.status}`);
+      const footerHtml = await footerRes.text();
+      footerPh.innerHTML = footerHtml;
     }
+
+    // Initialize header/footer after loading
+    setTimeout(() => {
+      initializeHeader();
+      updateContactButtons();
+    }, 200);
+
+  } catch (e) {
+    console.error('Error loading partials:', e);
+    showToast('⚠️ Failed to load header/footer', 'error');
   }
-
-  // Bind all behaviors on the newly injected content
-  setTimeout(() => {
-    prefixInternalLinks(document);
-    bindNavToggle(document);
-    bindSearch(document);
-    initLang(document);
-
-    // Update year in footer
-    const yearEl = document.getElementById('year');
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
-  }, 100);
 }
 
 /**
- * Initialize common page on DOMContentLoaded
+ * Initialize header functionality
  */
-document.addEventListener('DOMContentLoaded', () => {
-  injectPartials().then(() => {
-    // Ensure all links are prefixed in case partials already contained them
-    prefixInternalLinks(document);
-  });
-});
-// Enhanced header functionality
 function initializeHeader() {
+  // Update year in footer
+  const yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+
+  // Search toggle
   const searchToggle = document.getElementById('searchToggle');
   const searchBar = document.getElementById('searchBar');
   const searchInput = document.getElementById('header-search-input');
-  const menuToggle = document.getElementById('menuToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
-  const mobileMenuClose = document.getElementById('mobileMenuClose');
-  const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-  const headerSearchForm = document.getElementById('headerSearchForm');
-  const suggestions = document.querySelectorAll('.suggestion-item');
 
-  // Search toggle
   if (searchToggle && searchBar) {
     searchToggle.addEventListener('click', () => {
       searchBar.classList.toggle('active');
       searchToggle.setAttribute('aria-expanded', searchBar.classList.contains('active'));
       if (searchBar.classList.contains('active')) {
-        searchInput.focus();
+        searchInput?.focus();
+      }
+    });
+  }
+
+  // Search form submission
+  const headerSearchForm = document.getElementById('headerSearchForm');
+  if (headerSearchForm) {
+    headerSearchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = searchInput?.value.trim();
+      if (query) {
+        location.href = __toAbs(`/tours/?q=${encodeURIComponent(query)}`);
       }
     });
   }
 
   // Search suggestions
+  const suggestions = document.querySelectorAll('.suggestion-item');
   suggestions.forEach(btn => {
     btn.addEventListener('click', () => {
       const query = btn.dataset.search;
-      searchInput.value = query;
-      if (headerSearchForm) {
+      if (searchInput && headerSearchForm) {
+        searchInput.value = query;
         headerSearchForm.submit();
       }
     });
   });
 
   // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileMenuClose = document.getElementById('mobileMenuClose');
+  const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+
+  function closeMobileMenu() {
+    if (mobileMenu) {
+      mobileMenu.classList.remove('active');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+    if (menuToggle) {
+      menuToggle.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function openMobileMenu() {
+    if (mobileMenu) {
+      mobileMenu.classList.add('active');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+    }
+    if (menuToggle) {
+      menuToggle.classList.add('open');
+      menuToggle.setAttribute('aria-expanded', 'true');
+    }
+  }
+
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('active');
-      menuToggle.classList.toggle('open');
-      menuToggle.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
-      mobileMenu.setAttribute('aria-hidden', !mobileMenu.classList.contains('active'));
+      if (mobileMenu.classList.contains('active')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
     });
   }
 
-  // Close mobile menu
+  // Close menu handlers
   if (mobileMenuClose && mobileMenu) {
-    mobileMenuClose.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      menuToggle.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-    });
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
   }
 
-  // Mobile menu overlay
   if (mobileMenuOverlay && mobileMenu) {
-    mobileMenuOverlay.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      menuToggle.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-    });
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
   }
 
-  // Mobile menu links close menu on click
+  // Close menu when clicking links
   const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
   mobileMenuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.remove('active');
-      menuToggle.classList.remove('open');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-    });
+    link.addEventListener('click', closeMobileMenu);
   });
 
-  // Update year in footer
-  const yearEl = document.getElementById('year');
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
+  // Prefix all links after header is loaded
+  prefixInternalLinks(document);
+}
+
+/**
+ * Update contact buttons with CMS data
+ */
+async function updateContactButtons() {
+  const data = await fetchCMSData();
+  if (!data || !data.contact) return;
+
+  const contact = data.contact;
+  const phoneClean = (contact.phone || '').replace(/\s+/g, '').replace(/^0+/, '');
+  const waClean = (contact.whatsapp || '').replace(/\s+/g, '').replace(/^0+/, '');
+
+  const phoneHref = phoneClean ? `tel:${phoneClean.replace(/^\+?/, '+')}` : null;
+  const waHref = waClean ? `https://wa.me/${waClean.replace('+', '')}?text=Hello%20GNTT` : null;
+
+  // Update all call buttons
+  document.querySelectorAll('[id*="call"]').forEach(el => {
+    if (phoneHref && el.tagName === 'A') el.href = phoneHref;
+  });
+
+  // Update all WhatsApp buttons
+  document.querySelectorAll('[id*="wa"]').forEach(el => {
+    if (waHref && el.tagName === 'A') el.href = waHref;
+  });
+
+  // Update book buttons
+  document.querySelectorAll('[id*="book"]').forEach(el => {
+    if (el.tagName === 'A' && contact.booking_link) {
+      el.href = __toAbs(contact.booking_link);
+    }
+  });
+
+  // Update footer contact info
+  const footerPhone = document.getElementById('footer-phone');
+  if (footerPhone && contact.phone) {
+    footerPhone.textContent = contact.phone;
+    if (phoneHref) footerPhone.href = phoneHref;
+  }
+
+  const footerEmail = document.getElementById('footer-email');
+  if (footerEmail && contact.email) {
+    footerEmail.textContent = contact.email;
+    footerEmail.href = `mailto:${contact.email}`;
+  }
+
+  const footerAddress = document.getElementById('footer-address');
+  if (footerAddress && contact.address) {
+    footerAddress.textContent = contact.address;
+  }
+
+  const footerMap = document.getElementById('footer-map');
+  if (footerMap && contact.map_link) {
+    footerMap.href = contact.map_link;
   }
 }
 
-// Call on DOM ready
+/**
+ * Initialize on page load
+ */
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(initializeHeader, 100);
+  console.log('Common.js initializing...');
+  console.log('Current path:', location.pathname);
+  console.log('Root base:', __ROOT_BASE);
+  console.log('Base abs:', __BASE_ABS);
+  
+  loadPartials();
+});
+
+// Mobile menu close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuToggle = document.getElementById('menuToggle');
+    if (mobileMenu?.classList.contains('active')) {
+      mobileMenu.classList.remove('active');
+      menuToggle?.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+    }
+  }
 });

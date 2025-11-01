@@ -1,179 +1,204 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Booking — GNTT</title>
+  <title>Booking & Enquiry — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
+  <meta name="description" content="Book your dream vacation with GNTT" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
+  <link rel="stylesheet" href="../assets/css/booking.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
-  <header class="site-header sticky">
-    <div class="container flex-between">
-      <a href="index.html" class="brand">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
-        <span>GNTT</span>
-      </a>
-      <nav class="nav desktop-nav">
-        <a href="index.html">Home</a>
-        <a href="booking.html" class="active">Booking</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+    <!-- Page Hero -->
+    <section class="page-hero booking-hero">
+      <div class="container">
+        <h1>Book Your Trip</h1>
+        <p>Start your journey with us today</p>
       </div>
-    </div>
-  </header>
+    </section>
 
-  <div id="offcanvas" class="offcanvas" hidden>
-    <button class="offcanvas-close" data-close>&times;</button>
-    <ul class="nav-list">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="booking.html">📝 Booking</a></li>
-      <li><a href="contact.html">📞 Contact</a></li>
-    </ul>
-  </div>
+    <!-- Booking Form Section -->
+    <section class="booking-section">
+      <div class="container">
+        <div class="booking-wrapper">
+          <!-- Form -->
+          <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST" class="booking-form">
+            <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+            <input type="hidden" name="subject" value="New Booking Enquiry from GNTT Website">
+            <input type="hidden" name="from_name" value="GNTT Website">
 
-  <main id="main" class="container">
-    <h1>Booking / Enquiry</h1>
-    
-    <!-- Web3Forms Integration -->
-    <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST" class="form">
-      <!-- Replace with your actual Web3Forms access key -->
-      <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
-      <input type="hidden" name="subject" value="New Booking Enquiry from GNTT Website">
-      <input type="hidden" name="from_name" value="GNTT Website">
-      
-      <div class="grid-2">
-        <div class="form-row">
-          <label for="tripType">Trip Type *</label>
-          <select id="tripType" name="trip_type" required>
-            <option value="">Select</option>
-            <option>One Way</option>
-            <option>Round Trip</option>
-            <option>Multi-City</option>
-            <option>Package</option>
-          </select>
-        </div>
+            <div class="form-section">
+              <h2>Trip Details</h2>
+              
+              <div class="form-row">
+                <label for="tripType">Trip Type *</label>
+                <select id="tripType" name="trip_type" required>
+                  <option value="">Select trip type</option>
+                  <option value="domestic-tour">Domestic Tour</option>
+                  <option value="international-tour">International Tour</option>
+                  <option value="flights">Flight Only</option>
+                  <option value="hotels">Hotel Only</option>
+                  <option value="visa">Visa Assistance</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
 
-        <div class="form-row">
-          <label for="origin">Origin *</label>
-          <input id="origin" name="origin" required />
-        </div>
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label for="origin">Origin City *</label>
+                  <input id="origin" name="origin" type="text" placeholder="e.g., Chandigarh" required />
+                </div>
 
-        <div class="form-row">
-          <label for="destination">Destination *</label>
-          <input id="destination" name="destination" required />
-        </div>
+                <div class="form-row">
+                  <label for="destination">Destination *</label>
+                  <input id="destination" name="destination" type="text" placeholder="e.g., Goa" required />
+                </div>
+              </div>
 
-        <div class="form-row">
-          <label for="startDate">Start Date *</label>
-          <input id="startDate" name="start_date" type="date" required />
-        </div>
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label for="startDate">Start Date *</label>
+                  <input id="startDate" name="start_date" type="date" required />
+                </div>
 
-        <div class="form-row">
-          <label for="endDate">End Date *</label>
-          <input id="endDate" name="end_date" type="date" required />
-        </div>
+                <div class="form-row">
+                  <label for="endDate">End Date *</label>
+                  <input id="endDate" name="end_date" type="date" required />
+                </div>
+              </div>
 
-        <div class="form-row">
-          <label for="pax">Passengers *</label>
-          <input id="pax" name="passengers" type="number" required min="1" max="99" />
-        </div>
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label for="passengers">Number of Passengers *</label>
+                  <input id="passengers" name="passengers" type="number" min="1" max="99" required />
+                </div>
 
-        <div class="form-row">
-          <label for="budget">Budget (INR)</label>
-          <input id="budget" name="budget" type="number" min="0" step="500" />
-        </div>
+                <div class="form-row">
+                  <label for="budget">Budget (INR)</label>
+                  <input id="budget" name="budget" type="number" min="0" step="1000" placeholder="Optional" />
+                </div>
+              </div>
+            </div>
 
-        <div class="form-row">
-          <label for="name">Full Name *</label>
-          <input id="name" name="name" required />
-        </div>
+            <div class="form-section">
+              <h2>Personal Information</h2>
 
-        <div class="form-row">
-          <label for="phone">Phone *</label>
-          <input id="phone" name="phone" required pattern="[0-9]{10,15}" inputmode="numeric" />
-        </div>
+              <div class="form-grid-2">
+                <div class="form-row">
+                  <label for="fullName">Full Name *</label>
+                  <input id="fullName" name="name" type="text" required />
+                </div>
 
-        <div class="form-row">
-          <label for="email">Email *</label>
-          <input id="email" name="email" type="email" required />
+                <div class="form-row">
+                  <label for="email">Email Address *</label>
+                  <input id="email" name="email" type="email" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label for="phone">Phone Number *</label>
+                <input id="phone" name="phone" type="tel" pattern="[0-9]{10,15}" required />
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>Additional Information</h2>
+
+              <div class="form-row">
+                <label for="preferences">Travel Preferences</label>
+                <textarea id="preferences" name="preferences" rows="4" placeholder="Any specific requirements, preferences, or notes..."></textarea>
+              </div>
+
+              <div class="form-row checkbox">
+                <input id="agreeTerms" name="agree_terms" type="checkbox" required />
+                <label for="agreeTerms">I agree to the terms and conditions *</label>
+              </div>
+            </div>
+
+            <div class="form-section captcha-section">
+              <div class="h-captcha" data-captcha="true"></div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary large">📝 Submit Enquiry</button>
+              <a href="/" class="btn btn-outline large">← Go Back</a>
+            </div>
+
+            <div id="bookingResult" class="toast" hidden></div>
+          </form>
+
+          <!-- Sidebar with Info -->
+          <aside class="booking-sidebar">
+            <div class="info-box">
+              <h3>Quick Contact</h3>
+              <p><strong>Phone:</strong> <a href="#" id="sidebar-phone"></a></p>
+              <p><strong>Email:</strong> <a href="#" id="sidebar-email"></a></p>
+              <p><strong>Hours:</strong> Mon-Sat, 9 AM - 7 PM</p>
+              <a href="https://wa.me/916283315156" target="_blank" rel="noopener" class="btn btn-secondary full-width">💬 Chat on WhatsApp</a>
+            </div>
+
+            <div class="info-box">
+              <h3>Why Book With Us?</h3>
+              <ul class="benefits-list">
+                <li>✅ Best Price Guarantee</li>
+                <li>✅ 24/7 Customer Support</li>
+                <li>✅ Flexible Cancellation</li>
+                <li>✅ Expert Travel Consultants</li>
+                <li>✅ 100% Secure Booking</li>
+              </ul>
+            </div>
+
+            <div class="info-box">
+              <h3>Our Expertise</h3>
+              <p>We have helped over 5,000 customers plan their dream vacations to 50+ destinations worldwide.</p>
+            </div>
+          </aside>
         </div>
       </div>
+    </section>
 
-      <div class="form-row">
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="4" placeholder="Any preferences or notes..."></textarea>
+    <!-- Steps Section -->
+    <section class="booking-steps">
+      <div class="container">
+        <h2>How It Works</h2>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Fill the Form</h3>
+            <p>Tell us about your travel preferences</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Receive Quote</h3>
+            <p>Get a personalized quote from our team</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Confirm & Pay</h3>
+            <p>Finalize details and make payment</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <h3>Enjoy Your Trip</h3>
+            <p>Relax and enjoy your perfect vacation</p>
+          </div>
+        </div>
       </div>
-
-      <div class="form-row">
-        <div class="h-captcha" data-captcha="true"></div>
-      </div>
-
-      <div class="form-actions">
-        <button class="btn primary" type="submit">Submit Enquiry</button>
-        <a class="btn accent" target="_blank" rel="noopener" href="https://wa.me/916283315156?text=Hello%20GNTT%2C%20I%20want%20to%20book%20a%20trip">💬 WhatsApp Instead</a>
-      </div>
-
-      <div id="result" class="toast" hidden></div>
-    </form>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container"><small>&copy; <span id="year">2025</span> GNTT</small></div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <button id="toTop" class="to-top">↑</button>
+  <div id="toast" class="toast" role="alert"></div>
 
-  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/booking.js" defer></script>
   <script src="https://web3forms.com/client/script.js" async defer></script>
-  <script src="assets/js/main.js" defer></script>
-  
-  <script>
-    const form = document.getElementById('bookingForm');
-    const result = document.getElementById('result');
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const object = Object.fromEntries(formData);
-      const json = JSON.stringify(object);
-      result.innerHTML = "Please wait...";
-      result.hidden = false;
-
-      try {
-        const response = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: json
-        });
-        const data = await response.json();
-        if (response.status == 200) {
-          result.innerHTML = "✅ Thank you! We will contact you soon.";
-          result.style.background = '#ecfdf5';
-          result.style.color = '#065f46';
-          form.reset();
-          setTimeout(() => result.hidden = true, 3000);
-        } else {
-          result.innerHTML = data.message || "❌ Something went wrong!";
-          result.style.background = '#fee2e2';
-          result.style.color = '#b91c1c';
-        }
-      } catch (error) {
-        result.innerHTML = "❌ Something went wrong!";
-        result.style.background = '#fee2e2';
-        result.style.color = '#b91c1c';
-      }
-    });
-  </script>
 </body>
 </html>

@@ -1,102 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Tours — GNTT Packages</title>
-  <meta name="description" content="Browse filterable tour packages by region, duration, and budget." />
+  <title>Tours & Packages — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+  <meta name="description" content="Discover our amazing tour packages across India and beyond" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
+  <link rel="stylesheet" href="../assets/css/tours.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
-  <header class="site-header sticky">
-    <div class="container flex-between">
-      <a href="index.html" class="brand">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="GNTT" width="60" height="60" />
-        <span>GNTT</span>
-      </a>
-      <nav class="nav desktop-nav">
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="tours.html" class="active">Tours</a>
-        <a href="booking.html">Booking</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <div class="header-actions">
-        <a class="btn primary btn-sm desktop-only" href="tel:+916283315156">📞</a>
-        <button id="navToggle" class="nav-toggle mobile-only" aria-expanded="false" aria-controls="offcanvas"><span class="hamburger"></span></button>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+    <!-- Page Hero -->
+    <section class="page-hero tours-hero">
+      <div class="container">
+        <h1>Tour Packages</h1>
+        <p>Discover unforgettable journeys across India and beyond</p>
       </div>
-    </div>
-  </header>
+    </section>
 
-  <div id="offcanvas" class="offcanvas" hidden>
-    <button class="offcanvas-close" data-close>&times;</button>
-    <ul class="nav-list">
-      <li><a href="index.html">🏠 Home</a></li>
-      <li><a href="tours.html">🗺️ Tours</a></li>
-      <li><a href="booking.html">📝 Booking</a></li>
-    </ul>
-  </div>
+    <!-- Filters -->
+    <section class="tours-filters">
+      <div class="container">
+        <div class="filter-bar">
+          <input type="text" id="searchTours" placeholder="Search packages..." class="search-input" />
+          <select id="filterDuration" class="filter-select">
+            <option value="">All Durations</option>
+            <option value="3">3 Days</option>
+            <option value="4">4 Days</option>
+            <option value="5">5 Days</option>
+            <option value="6">6+ Days</option>
+          </select>
+          <select id="filterPrice" class="filter-select">
+            <option value="">All Prices</option>
+            <option value="0-10000">Below ₹10,000</option>
+            <option value="10000-20000">₹10,000 - ₹20,000</option>
+            <option value="20000-50000">₹20,000 - ₹50,000</option>
+            <option value="50000">₹50,000+</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
-  <main id="main" class="container">
-    <h1 data-aos="fade-up">Tour Packages</h1>
+    <!-- Tours Grid -->
+    <section class="tours-grid-section">
+      <div class="container">
+        <div id="toursGrid" class="tour-grid"></div>
+        <div id="noResults" class="no-results" style="display:none;">
+          <p>No packages found. Try adjusting your filters.</p>
+        </div>
+      </div>
+    </section>
 
-    <form id="tourFilters" class="filters">
-      <select name="region"><option value="">All Regions</option><option>Himalayas</option><option>Goa</option><option>Dubai</option></select>
-      <select name="duration"><option value="">Any Duration</option><option value="1-3">1–3 days</option><option value="4-6">4–6 days</option></select>
-      <select name="budget"><option value="">Any Budget</option><option value="under-20000">Under ₹20,000</option><option value="20000-50000">₹20–50k</option></select>
-    </form>
+    <!-- Pagination -->
+    <section class="pagination-section">
+      <div class="container">
+        <div id="pagination" class="pagination"></div>
+      </div>
+    </section>
 
-    <div id="toursGrid" class="grid-3">
-      <article class="card tour" data-region="Himalayas" data-duration="4-6" data-budget="20000-50000" data-aos="fade-up">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Himalayan escape" loading="lazy" />
-        <h2>Himalayan Escape — 5D/4N</h2>
-        <p class="price">From ₹28,999</p>
-        <a class="btn primary" href="booking.html">Book Now</a>
-      </article>
-
-      <article class="card tour" data-region="Goa" data-duration="1-3" data-budget="under-20000" data-aos="fade-up">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Goa getaway" loading="lazy" />
-        <h2>Goa Getaway — 3D/2N</h2>
-        <p class="price">From ₹12,499</p>
-        <a class="btn primary" href="booking.html">Book Now</a>
-      </article>
-
-      <article class="card tour" data-region="Dubai" data-duration="4-6" data-budget="over-50000" data-aos="fade-up">
-        <img src="https://m.media-amazon.com/images/X/bxt1/M/sbxt1B9n2cXKoZR.png" alt="Dubai highlights" loading="lazy" />
-        <h2>Dubai Highlights — 5D/4N</h2>
-        <p class="price">From ₹64,999</p>
-        <a class="btn primary" href="booking.html">Book Now</a>
-      </article>
-    </div>
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Can't Find What You're Looking For?</h2>
+        <p>We offer customized tour packages tailored to your preferences</p>
+        <a href="/booking/" class="btn btn-primary">📝 Customize Your Package</a>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container"><small>&copy; <span id="year">2025</span> GNTT</small></div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <button id="toTop" class="to-top">↑</button>
-
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
-  <script>window.gtranslateSettings={"default_language":"pa","wrapper_selector":".gtranslate_wrapper","switcher_horizontal_position":"right","flag_style":"3d","alt_flags":{"en":"usa"}}</script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/aos-init.js" defer></script>
-  <script>
-    document.getElementById('tourFilters').addEventListener('change',(e)=>{
-      const fd=new FormData(e.currentTarget),r=fd.get('region'),d=fd.get('duration'),b=fd.get('budget');
-      document.querySelectorAll('.tour').forEach(c=>{
-        const ok=(!r||c.dataset.region===r)&&(!d||c.dataset.duration===d)&&(!b||c.dataset.budget===b);
-        c.style.display=ok?'':'none';
-      });
-    });
-  </script>
+  <script src="../assets/js/common.js" defer></script>
+  <script src="../assets/js/tours.js" defer></script>
 </body>
 </html>
