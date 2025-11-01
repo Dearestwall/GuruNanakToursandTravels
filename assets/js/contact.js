@@ -13,21 +13,22 @@ async function loadContactInfo() {
 
   // Phone
   const phoneEl = document.getElementById('contact-phone');
-  if (phoneEl) {
-    phoneEl.textContent = contact.phone;
-    document.getElementById('call-link').href = `tel:${contact.phone}`;
+  const callLink = document.getElementById('call-link');
+  if (callLink && contact.phone) {
+    callLink.textContent = contact.phone;
+    callLink.href = `tel:${contact.phone.replace(/\s+/g, '')}`;
   }
 
   // Email
-  const emailEl = document.getElementById('contact-email');
-  if (emailEl) {
-    emailEl.textContent = contact.email;
-    document.getElementById('email-link').href = `mailto:${contact.email}`;
+  const emailLink = document.getElementById('email-link');
+  if (emailLink && contact.email) {
+    emailLink.textContent = contact.email;
+    emailLink.href = `mailto:${contact.email}`;
   }
 
   // Address
   const addressEl = document.getElementById('contact-address');
-  if (addressEl) {
+  if (addressEl && contact.address) {
     addressEl.textContent = contact.address;
   }
 
@@ -37,10 +38,7 @@ async function loadContactInfo() {
     mapLink.href = contact.map_link;
   }
 
-  // Load map
   loadMap(contact.map_link);
-
-  // FAQs
   loadContactFAQs();
 }
 
@@ -52,12 +50,12 @@ function loadMap(mapUrl) {
   const mapContainer = document.getElementById('contactMap');
   if (!mapContainer) return;
 
-  // Embed Google Map iframe
+  // Extract coordinates from Google Maps URL or build embed
   mapContainer.innerHTML = `
     <iframe 
-      src="${mapUrl.replace(/^https:\/\/maps/, 'https://www.google.com/maps/embed')}&output=embed"
+      src="${mapUrl.includes('maps.google.com') ? mapUrl.replace('?q=', '?q=').replace('maps.google', 'google.com/maps/embed/v1/place?key=AIzaSyDXT8jAXY0vQ5-Tx9CnHmGY4CFoLVjHb8U&q=') : 'about:blank'}"
       width="100%" 
-      height="400" 
+      height="100%" 
       style="border:0;" 
       allowfullscreen="" 
       loading="lazy" 
@@ -76,12 +74,31 @@ async function loadContactFAQs() {
   const container = document.getElementById('contactFaqList');
   if (!container) return;
 
+  const initial = Math.min(6, cmsData.faqs.length);
   container.innerHTML = cmsData.faqs.map((faq, i) => `
-    <details class="faq"${i === 0 ? ' open' : ''}>
+    <details class="faq"${i === 0 ? ' open' : ''} ${i >= initial ? 'data-hidden="true" style="display:none;"' : ''}>
       <summary class="faq-summary">${faq.q}</summary>
       <div class="faq-answer">${faq.a}</div>
     </details>
   `).join('');
+
+  if (cmsData.faqs.length > initial) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.textContent = 'Show More Questions';
+    btn.style.marginTop = '1rem';
+    container.parentElement?.appendChild(btn);
+    btn.addEventListener('click', () => {
+      const hidden = Array.from(container.querySelectorAll('.faq[data-hidden="true"]'));
+      hidden.slice(0, 3).forEach(el => {
+        el.style.display = '';
+        el.removeAttribute('data-hidden');
+      });
+      if (!container.querySelector('.faq[data-hidden="true"]')) {
+        btn.style.display = 'none';
+      }
+    });
+  }
 }
 
 /**

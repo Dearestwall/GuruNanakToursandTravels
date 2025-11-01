@@ -11,16 +11,19 @@ slug:
   encoding: "ascii"
   clean_accents: true
 
-# Single file collections
 collections:
-  # Hero Slides - Single File Collection
+  # ========================================================
+  # DATA COLLECTIONS - Single file per collection
+  # ========================================================
+
   - name: "hero"
-    label: "Hero Slides"
+    label: "🎬 Hero Slides"
+    description: "Manage homepage hero carousel slides"
+    format: "json"
     files:
-      - name: "hero_content"
-        label: "Hero Slides Content"
+      - name: "hero_slides"
+        label: "Hero Slides"
         file: "data/hero.json"
-        format: "json"
         fields:
           - label: "Hero Slides"
             name: "hero_slides"
@@ -28,228 +31,211 @@ collections:
             collapsed: false
             summary: "{{fields.title}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Subtitle", name: "subtitle", widget: "text" }
-              - { label: "Image", name: "image", widget: "image" }
+              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Subtitle", name: "subtitle", widget: "text", required: true }
+              - { label: "Image URL", name: "image", widget: "image", required: true }
               - label: "Call-to-Actions"
                 name: "ctas"
                 widget: "list"
-                summary: "{{fields.label}}"
+                collapsed: false
+                summary: "{{fields.label}} → {{fields.href}}"
                 fields:
-                  - { label: "Label", name: "label", widget: "string" }
-                  - { label: "Link", name: "href", widget: "string" }
-                  - { label: "Button Style", name: "style", widget: "select", options: ["btn-primary", "btn-secondary"], required: false }
-                  - { label: "Target", name: "target", widget: "string", required: false }
+                  - { label: "Button Label", name: "label", widget: "string", required: true }
+                  - { label: "Button Link", name: "href", widget: "string", required: true }
+                  - { label: "Button Style", name: "style", widget: "select", options: ["btn-primary", "btn-secondary"], default: "btn-primary", required: false }
 
-  # Offerings/Services - Single File Collection
   - name: "offerings"
-    label: "Services & Offerings"
+    label: "💼 Services & Offerings"
+    description: "Manage tour services, flights, hotels, visas"
+    format: "json"
     files:
-      - name: "offerings_content"
-        label: "Services Content"
+      - name: "offerings_list"
+        label: "Offerings"
         file: "data/offerings.json"
-        format: "json"
         fields:
-          - label: "Offerings"
+          - label: "Service Offerings"
             name: "offerings"
             widget: "list"
             collapsed: false
-            summary: "{{fields.title}}"
+            summary: "{{fields.icon}} {{fields.title}}"
             fields:
-              - { label: "ID", name: "id", widget: "string", required: true }
-              - { label: "Icon", name: "icon", widget: "string", hint: "e.g., ✈️, 🏨, 🗺️" }
-              - { label: "Title", name: "title", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
-              - { label: "Long Description", name: "long_description", widget: "markdown" }
-              - label: "Features"
+              - { label: "Service ID", name: "id", widget: "string", required: true, hint: "e.g., flight-bookings" }
+              - { label: "Icon (emoji)", name: "icon", widget: "string", required: true, hint: "e.g., ✈️, 🏨, 🗺️" }
+              - { label: "Service Title", name: "title", widget: "string", required: true }
+              - { label: "Short Description", name: "description", widget: "text", required: true }
+              - { label: "Long Description", name: "long_description", widget: "markdown", required: false }
+              - label: "Key Features"
                 name: "features"
                 widget: "list"
-                collapsed: true
                 field: { label: "Feature", name: "item", widget: "string" }
               - label: "Benefits"
                 name: "benefits"
                 widget: "list"
-                collapsed: true
                 field: { label: "Benefit", name: "item", widget: "string" }
-              - { label: "Link Label", name: "link_label", widget: "string", default: "Learn More" }
-              - { label: "Link Href", name: "link_href", widget: "string", default: "/details/" }
+              - { label: "Learn More Label", name: "link_label", widget: "string", default: "Learn More", required: false }
+              - { label: "Learn More Link", name: "link_href", widget: "string", default: "/details/", required: false }
 
-  # Featured Tours - Single File Collection
   - name: "tours"
-    label: "Featured Tours"
+    label: "✈️ Featured Tours & Packages"
+    description: "Manage tour packages, pricing, itineraries"
+    format: "json"
     files:
-      - name: "tours_content"
-        label: "Tours Content"
+      - name: "featured_tours"
+        label: "Tours"
         file: "data/tours.json"
-        format: "json"
         fields:
-          - label: "Tours"
+          - label: "Tour Packages"
             name: "featured_tours"
             widget: "list"
             collapsed: false
             summary: "{{fields.name}} - ₹{{fields.price}}"
             fields:
-              - { label: "ID", name: "id", widget: "string", required: true }
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Image", name: "image", widget: "image" }
-              - { label: "Summary", name: "summary", widget: "text" }
-              - { label: "Description", name: "description", widget: "markdown" }
-              - { label: "Price (₹)", name: "price", widget: "number", value_type: "int" }
-              - { label: "Duration", name: "duration", widget: "string", hint: "e.g., 5 Days / 4 Nights" }
-              - { label: "Best Season", name: "best_season", widget: "string", required: false }
-              - label: "Includes"
+              - { label: "Tour ID", name: "id", widget: "string", required: true, hint: "e.g., goa-beaches-5d4n" }
+              - { label: "Tour Name", name: "name", widget: "string", required: true }
+              - { label: "Tour Image", name: "image", widget: "image", required: true }
+              - { label: "Short Summary", name: "summary", widget: "text", required: true }
+              - { label: "Full Description", name: "description", widget: "markdown", required: true }
+              - { label: "Price (₹)", name: "price", widget: "number", value_type: "int", required: true }
+              - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g., 5 Days / 4 Nights" }
+              - { label: "Best Season", name: "best_season", widget: "string", required: false, hint: "e.g., October - March" }
+              - label: "What's Included"
                 name: "includes"
                 widget: "list"
-                collapsed: true
                 field: { label: "Item", name: "item", widget: "string" }
-              - label: "Excludes"
+              - label: "What's Excluded"
                 name: "excludes"
                 widget: "list"
-                collapsed: true
                 field: { label: "Item", name: "item", widget: "string" }
-              - label: "Highlights"
+              - label: "Tour Highlights"
                 name: "highlights"
                 widget: "list"
-                collapsed: true
-                required: false
                 field: { label: "Highlight", name: "item", widget: "string" }
-              - label: "FAQs"
+              - label: "Tour FAQs"
                 name: "faqs"
                 widget: "list"
                 collapsed: true
-                required: false
-                summary: "{{fields.q}}"
+                summary: "Q: {{fields.q}}"
                 fields:
-                  - { label: "Question", name: "q", widget: "string" }
-                  - { label: "Answer", name: "a", widget: "text" }
+                  - { label: "Question", name: "q", widget: "string", required: true }
+                  - { label: "Answer", name: "a", widget: "text", required: true }
 
-  # Testimonials & Reviews - Single File Collection
   - name: "testimonials"
-    label: "Customer Reviews"
+    label: "⭐ Customer Reviews"
+    description: "Manage customer testimonials & reviews"
+    format: "json"
     files:
-      - name: "testimonials_content"
-        label: "Customer Testimonials"
+      - name: "customer_reviews"
+        label: "Reviews"
         file: "data/testimonials.json"
-        format: "json"
         fields:
           - label: "Customer Testimonials"
             name: "testimonials"
             widget: "list"
             collapsed: false
-            summary: "{{fields.name}} - {{fields.rating}} ⭐"
+            summary: "{{fields.name}} - {{fields.rating}}⭐"
             fields:
               - { label: "Review ID", name: "id", widget: "string", required: true, hint: "e.g., review-1" }
               - { label: "Customer Name", name: "name", widget: "string", required: true }
               - { label: "Email", name: "email", widget: "string", required: false }
-              - { label: "Location", name: "location", widget: "string", required: false }
-              - { 
-                  label: "Rating",
-                  name: "rating",
-                  widget: "select",
-                  options: ["5", "4", "3", "2", "1"],
-                  required: true
-                }
-              - { label: "Comment", name: "comment", widget: "text", required: true }
-              - { label: "Photo", name: "photo", widget: "image", required: false }
+              - { label: "City/Location", name: "location", widget: "string", required: false }
+              - { label: "Rating", name: "rating", widget: "select", options: ["5", "4", "3", "2", "1"], required: true }
+              - { label: "Review Comment", name: "comment", widget: "text", required: true }
+              - { label: "Profile Photo", name: "photo", widget: "image", required: false }
               - { label: "Tour Package", name: "tour_package", widget: "string", required: false }
-              - { label: "Travel Date", name: "travel_date", widget: "string", required: false }
-              - { label: "Verified", name: "verified", widget: "boolean", default: true, required: false }
-              - { label: "Helpful Count", name: "helpful_count", widget: "number", value_type: "int", required: false }
-              - { label: "Highlight", name: "highlight", widget: "string", required: false }
+              - { label: "Travel Date", name: "travel_date", widget: "string", required: false, hint: "e.g., November 2024" }
+              - { label: "Verified", name: "verified", widget: "boolean", default: true }
+              - { label: "Helpful Count", name: "helpful_count", widget: "number", value_type: "int", default: 0 }
+              - { label: "Highlight", name: "highlight", widget: "string", required: false, hint: "2-5 word summary" }
 
-  # Partners & Brands - Single File Collection
   - name: "partners"
-    label: "Partners & Brands"
+    label: "🤝 Partners & Brands"
+    description: "Manage brand partnerships and logos"
+    format: "json"
     files:
-      - name: "partners_content"
-        label: "Partners Content"
+      - name: "brand_partners"
+        label: "Partners"
         file: "data/partners.json"
-        format: "json"
         fields:
-          - label: "Partners"
+          - label: "Partner List"
             name: "partners"
             widget: "list"
             collapsed: false
             summary: "{{fields.name}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Logo", name: "logo", widget: "image" }
+              - { label: "Partner ID", name: "id", widget: "string", required: true }
+              - { label: "Partner Name", name: "name", widget: "string", required: true }
+              - { label: "Logo", name: "logo", widget: "image", required: true }
               - { label: "Description", name: "description", widget: "text", required: false }
-              - { label: "Link", name: "link", widget: "string", required: false }
+              - { label: "Website Link", name: "link", widget: "string", required: false }
 
-  # FAQs - Single File Collection
   - name: "faqs"
-    label: "FAQ Questions"
+    label: "❓ FAQ - Global"
+    description: "General frequently asked questions"
+    format: "json"
     files:
-      - name: "faqs_content"
-        label: "FAQs Content"
+      - name: "global_faqs"
+        label: "FAQs"
         file: "data/faqs.json"
-        format: "json"
         fields:
-          - label: "FAQs"
+          - label: "Frequently Asked Questions"
             name: "faqs"
             widget: "list"
             collapsed: false
-            summary: "Q: {{fields.q}}"
+            summary: "{{fields.q}}"
             fields:
-              - { label: "ID", name: "id", widget: "string" }
-              - { label: "Question", name: "q", widget: "string" }
-              - { label: "Answer", name: "a", widget: "text" }
+              - { label: "FAQ ID", name: "id", widget: "string", required: true, hint: "e.g., faq-1" }
+              - { label: "Question", name: "q", widget: "string", required: true }
+              - { label: "Answer", name: "a", widget: "text", required: true }
 
-  # Statistics - Single File Collection
   - name: "stats"
-    label: "Statistics"
+    label: "📊 Statistics"
+    description: "Company stats & achievements"
+    format: "json"
     files:
-      - name: "stats_content"
-        label: "Statistics Content"
+      - name: "company_stats"
+        label: "Statistics"
         file: "data/stats.json"
-        format: "json"
         fields:
-          - label: "Statistics"
+          - label: "Company Statistics"
             name: "stats"
             widget: "object"
-            collapsed: false
             fields:
               - { label: "Happy Customers", name: "happy_customers", widget: "number", value_type: "int" }
               - { label: "Tour Packages", name: "tour_packages", widget: "number", value_type: "int" }
               - { label: "Destinations", name: "destinations", widget: "number", value_type: "int" }
-              - { label: "Support (24/7)", name: "support", widget: "string", default: "24/7" }
-              - { label: "Years of Experience", name: "experience_years", widget: "number", value_type: "int", required: false }
-              - { label: "Success Rate (%)", name: "success_rate", widget: "number", value_type: "int", required: false }
-              - { label: "Average Rating", name: "average_rating", widget: "number", value_type: "float", required: false }
+              - { label: "Support", name: "support", widget: "string", default: "24/7" }
+              - { label: "Years of Experience", name: "experience_years", widget: "number", value_type: "int" }
+              - { label: "Success Rate (%)", name: "success_rate", widget: "number", value_type: "int" }
+              - { label: "Average Rating", name: "average_rating", widget: "number", value_type: "float" }
 
-  # Contact Information - Single File Collection
   - name: "contact"
-    label: "Contact Information"
+    label: "📞 Contact Information"
+    description: "Company contact details & hours"
+    format: "json"
     files:
-      - name: "contact_content"
-        label: "Contact Details"
+      - name: "company_contact"
+        label: "Contact"
         file: "data/contact.json"
-        format: "json"
         fields:
-          - label: "Contact Information"
+          - label: "Contact Details"
             name: "contact"
             widget: "object"
-            collapsed: false
             fields:
-              - { label: "Phone", name: "phone", widget: "string", hint: "e.g., +91 6283315156" }
-              - { label: "WhatsApp", name: "whatsapp", widget: "string", hint: "e.g., +91 6283315156" }
-              - { label: "Email", name: "email", widget: "string" }
-              - { label: "Address", name: "address", widget: "text" }
+              - { label: "Phone", name: "phone", widget: "string", required: true }
+              - { label: "WhatsApp Number", name: "whatsapp", widget: "string", required: true }
+              - { label: "Email Address", name: "email", widget: "string", required: true }
+              - { label: "Office Address", name: "address", widget: "text", required: true }
               - { label: "Google Maps Link", name: "map_link", widget: "string", required: false }
-              - { label: "Booking Link", name: "booking_link", widget: "string", default: "/booking/" }
-              
+              - { label: "Booking Page Link", name: "booking_link", widget: "string", required: false }
               - label: "Office Hours"
                 name: "office_hours"
                 widget: "object"
                 collapsed: true
                 fields:
-                  - { label: "Mon-Fri", name: "monday_friday", widget: "string", default: "9:00 AM - 7:00 PM" }
+                  - { label: "Monday-Friday", name: "monday_friday", widget: "string", default: "9:00 AM - 7:00 PM" }
                   - { label: "Saturday", name: "saturday", widget: "string", default: "10:00 AM - 6:00 PM" }
                   - { label: "Sunday", name: "sunday", widget: "string", default: "Closed" }
-              
               - label: "Social Media"
                 name: "social_media"
                 widget: "object"
@@ -257,5 +243,147 @@ collections:
                 fields:
                   - { label: "Facebook URL", name: "facebook", widget: "string", required: false }
                   - { label: "Instagram Handle", name: "instagram", widget: "string", required: false }
-                  - { label: "YouTube Channel", name: "youtube", widget: "string", required: false }
+                  - { label: "YouTube URL", name: "youtube", widget: "string", required: false }
                   - { label: "WhatsApp Group Link", name: "whatsapp_group", widget: "string", required: false }
+
+  # ========================================================
+  # PAGE COLLECTIONS - Folder-based for multiple entries
+  # ========================================================
+
+  - name: "pages_about"
+    label: "📄 About Page Content"
+    description: "Edit About page sections"
+    folder: "content/pages/about"
+    format: "json"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Section Title", name: "title", widget: "string" }
+      - { label: "Section ID", name: "id", widget: "string", hint: "e.g., story, why-choose-us" }
+      - { label: "Content", name: "content", widget: "markdown" }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 0 }
+
+  - name: "pages_gallery"
+    label: "🖼️ Gallery Images"
+    description: "Manage gallery images and categories"
+    folder: "content/pages/gallery"
+    format: "json"
+    create: true
+    delete: true
+    slug: "{{id}}"
+    fields:
+      - { label: "Image ID", name: "id", widget: "string", required: true }
+      - { label: "Image Title", name: "title", widget: "string", required: true }
+      - { label: "Category", name: "category", widget: "select", options: ["mountains", "beaches", "cities", "culture"], required: true }
+      - { label: "Image File", name: "image", widget: "image", required: true }
+      - { label: "Description", name: "description", widget: "text", required: false }
+
+  - name: "pages_testimonials_page"
+    label: "⭐ Testimonials Page"
+    description: "Page-specific testimonials settings"
+    folder: "content/pages/testimonials"
+    format: "json"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    files:
+      - name: "testimonials_page"
+        label: "Testimonials Page"
+        file: "content/pages/testimonials/index.json"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Customer Testimonials" }
+          - { label: "Page Subtitle", name: "subtitle", widget: "string", default: "What our travelers say" }
+          - { label: "Show on Homepage", name: "show_homepage", widget: "boolean", default: true }
+          - { label: "Items per Page", name: "items_per_page", widget: "number", value_type: "int", default: 6 }
+
+  - name: "pages_booking"
+    label: "📝 Booking Page Settings"
+    description: "Booking form configuration"
+    folder: "content/pages/booking"
+    format: "json"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    files:
+      - name: "booking_page"
+        label: "Booking Page"
+        file: "content/pages/booking/index.json"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Book Your Journey" }
+          - { label: "Page Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Form Heading", name: "form_heading", widget: "string", default: "Fill in your details" }
+          - label: "Trip Types"
+            name: "trip_types"
+            widget: "list"
+            field: { label: "Type", name: "item", widget: "string" }
+            default: ["Tour", "Flight", "Hotel", "Visa Assistance"]
+
+  - name: "pages_contact"
+    label: "📍 Contact Page Settings"
+    description: "Contact page configuration"
+    folder: "content/pages/contact"
+    format: "json"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    files:
+      - name: "contact_page"
+        label: "Contact Page"
+        file: "content/pages/contact/index.json"
+        fields:
+          - { label: "Page Title", name: "title", widget: "string", default: "Get In Touch" }
+          - { label: "Page Subtitle", name: "subtitle", widget: "string", default: "We'd love to hear from you" }
+          - { label: "Show Map", name: "show_map", widget: "boolean", default: true }
+          - { label: "Show FAQs", name: "show_faqs", widget: "boolean", default: true }
+
+  - name: "blog_posts"
+    label: "📚 Blog Posts"
+    description: "Travel tips, guides, and updates"
+    folder: "content/blog"
+    format: "md"
+    create: true
+    delete: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Post Title", name: "title", widget: "string" }
+      - { label: "Post Slug", name: "slug", widget: "string", required: false }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Publish Date", name: "date", widget: "datetime", default: "now" }
+      - { label: "Author", name: "author", widget: "string", default: "GNTT Team" }
+      - { label: "Category", name: "category", widget: "select", options: ["Travel Tips", "Destination Guide", "News", "How-To"] }
+      - { label: "Tags", name: "tags", widget: "list", field: { label: "Tag", name: "item", widget: "string" } }
+      - { label: "Post Content", name: "body", widget: "markdown" }
+      - { label: "Meta Description", name: "meta_description", widget: "text", required: false }
+
+  - name: "pages_settings"
+    label: "⚙️ Site Settings"
+    description: "Global site configuration"
+    folder: "content/settings"
+    format: "json"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    files:
+      - name: "general_settings"
+        label: "General Settings"
+        file: "content/settings/general.json"
+        fields:
+          - { label: "Site Name", name: "site_name", widget: "string", default: "Guru Nanak Tour & Travels" }
+          - { label: "Site Tagline", name: "tagline", widget: "string", default: "Your journey, our responsibility" }
+          - { label: "Meta Description", name: "meta_description", widget: "text" }
+          - { label: "Meta Keywords", name: "meta_keywords", widget: "string" }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - { label: "Favicon", name: "favicon", widget: "image", required: false }
+
+      - name: "seo_settings"
+        label: "SEO Settings"
+        file: "content/settings/seo.json"
+        fields:
+          - { label: "Default Meta Description", name: "default_description", widget: "text" }
+          - { label: "Google Analytics ID", name: "google_analytics", widget: "string", required: false }
+          - { label: "Meta Robots", name: "meta_robots", widget: "string", default: "index, follow" }
+          - label: "SEO Keywords"
+            name: "keywords"
+            widget: "list"
+            field: { label: "Keyword", name: "item", widget: "string" }

@@ -2,64 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Gallery — GNTT</title>
+  <title id="page-title">Gallery — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Explore stunning photos from our travel experiences" />
+  <meta name="description" id="page-desc" content="Gallery of tours and destinations" />
+  
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/gallery.css" />
 </head>
 <body>
-  
-
+  <a class="skip-link" href="#main">Skip to content</a>
   <div id="header-placeholder"></div>
 
-  <main id="main">
-    <!-- Page Hero -->
-    <section class="page-hero gallery-hero">
+  <main id="main" class="gallery-container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-current="page">Gallery</span>
+    </nav>
+
+    <!-- Hero -->
+    <section class="gallery-hero">
       <div class="container">
-        <h1>Gallery</h1>
-        <p>Stunning moments from our journeys</p>
+        <h1>Our Travel Gallery</h1>
+        <p>Explore beautiful moments from our past journeys</p>
       </div>
     </section>
 
-    <!-- Gallery Categories -->
-    <section class="gallery-section">
+    <!-- Filters -->
+    <section class="gallery-filters">
       <div class="container">
-        <div class="gallery-filters">
+        <div class="filter-buttons">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="mountains">🏔️ Mountains</button>
           <button class="filter-btn" data-filter="beaches">🏖️ Beaches</button>
           <button class="filter-btn" data-filter="cities">🏙️ Cities</button>
-          <button class="filter-btn" data-filter="culture">🕌 Culture</button>
+          <button class="filter-btn" data-filter="culture">🕉️ Culture</button>
         </div>
+      </div>
+    </section>
 
+    <!-- Gallery Grid -->
+    <section class="gallery-section">
+      <div class="container">
         <div id="galleryGrid" class="gallery-grid"></div>
       </div>
     </section>
 
-    <!-- Lightbox Modal -->
-    <div id="lightbox" class="lightbox" style="display:none;">
-      <div class="lightbox-content">
-        <button class="lightbox-close">&times;</button>
-        <img id="lightboxImage" src="" alt="" />
-        <div class="lightbox-nav">
-          <button class="lightbox-prev">❮</button>
-          <button class="lightbox-next">❯</button>
-        </div>
-      </div>
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+      <button class="lightbox-close" type="button">✕</button>
+      <img id="lightboxImage" src="" alt="Enlarged gallery image" />
     </div>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-      <div class="container">
-        <h2>Create Your Own Memories</h2>
-        <p>Join us on an unforgettable journey</p>
-        <a href="/booking/" class="btn btn-primary">📝 Book Now</a>
-      </div>
-    </section>
   </main>
 
   <div id="footer-placeholder"></div>
+  <div id="toast" class="toast" role="alert"></div>
 
   <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/gallery.js" defer></script>
