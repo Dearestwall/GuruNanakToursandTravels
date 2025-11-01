@@ -1,0 +1,12 @@
+{
+  "folder": "offerings",
+  "files": [
+    "flight-bookings.json",
+    "hotel-stays.json",
+    "tour-packages.json",
+    "visa-assistance.json",
+    "cab-rentals.json",
+    "holiday-packages.json"
+  ],
+  "last_updated": "2025-11-01T21:00:00Z"
+}

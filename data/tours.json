@@ -9,183 +9,106 @@
       "price": 8999,
       "duration": "5 Days / 4 Nights",
       "best_season": "October - March",
-      "includes": [
-        "Accommodation (4-star hotel)",
-        "Daily breakfast and dinner",
-        "Beach water sports",
-        "Airport transfers",
-        "Sightseeing tours"
-      ],
-      "excludes": [
-        "Flights",
-        "Travel insurance",
-        "Personal expenses",
-        "Activities beyond package"
-      ],
-      "faqs": [
-        {
-          "q": "Is the water safe for swimming in October?",
-          "a": "October marks the beginning of dry season. Early October may have mild waves, but it's generally safe. November onwards is perfect."
-        },
-        {
-          "q": "Are meals vegetarian-friendly?",
-          "a": "Yes, we provide both vegetarian and non-vegetarian meal options. Please inform us during booking."
-        }
-      ],
+      "includes": ["Accommodation (4-star hotel)", "Daily breakfast and dinner", "Beach water sports", "Airport transfers", "Sightseeing tours"],
+      "excludes": ["Flights", "Travel insurance", "Personal expenses", "Activities beyond package"],
       "highlights": ["Baga Beach", "Anjuna Night Market", "Dolphin Cruise", "Spice Farm Tour"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "Is the water safe for swimming?", "a": "October onwards is perfect for swimming with calm waters and pleasant weather." },
+        { "q": "Are meals vegetarian-friendly?", "a": "Yes, we provide both vegetarian and non-vegetarian meal options." }
+      ],
+      "meta_description": "Experience Goa beaches - 5 days of relaxation and adventure",
+      "meta_keywords": "goa tour, beach vacation, 5 days, water sports"
     },
     {
       "id": "himalaya-trek-6d5n",
       "name": "Himalaya Mountain Adventure",
       "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
       "summary": "Trek through majestic mountain peaks with expert guides",
-      "description": "Join our guided treks through the stunning Himalayan ranges with experienced trekkers. Explore pristine forests, alpine meadows, and breathtaking mountain views. Suitable for beginners to intermediate trekkers.",
+      "description": "Join our guided treks through the stunning Himalayan ranges with experienced trekkers. Explore pristine forests, alpine meadows, and breathtaking mountain views.",
       "price": 12999,
       "duration": "6 Days / 5 Nights",
       "best_season": "May - October",
-      "includes": [
-        "Accommodation in mountain lodges",
-        "All meals",
-        "Professional trekking guide",
-        "Porter service",
-        "Trek permit"
-      ],
-      "excludes": [
-        "Trekking equipment rental",
-        "Travel insurance",
-        "Personal medications"
-      ],
-      "faqs": [
-        {
-          "q": "What's the difficulty level?",
-          "a": "Moderate to high. Suitable for people with basic fitness levels. No prior trekking experience needed."
-        },
-        {
-          "q": "What altitude will we reach?",
-          "a": "Maximum altitude is 3,500 meters. We acclimatize gradually to prevent altitude sickness."
-        }
-      ],
+      "includes": ["Accommodation in mountain lodges", "All meals", "Professional trekking guide", "Porter service", "Trek permit"],
+      "excludes": ["Trekking equipment rental", "Travel insurance", "Personal medications"],
       "highlights": ["Triund Trek", "Dhauladhar Range", "Alpine Meadows", "Mountain Views"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "What's the difficulty level?", "a": "Moderate to high. Suitable for people with basic fitness levels." },
+        { "q": "What altitude will we reach?", "a": "Maximum altitude is 3,500 meters with gradual acclimatization." }
+      ],
+      "meta_description": "Himalayan trekking adventure - 6 days in the mountains",
+      "meta_keywords": "himalaya trek, mountain adventure, trekking, himalayas"
     },
     {
       "id": "rajasthan-cultural-5d4n",
       "name": "Rajasthan Cultural Tour",
       "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=500&h=300&fit=crop",
       "summary": "Discover palaces, forts, and heritage sites of Rajasthan",
-      "description": "Explore the rich cultural heritage of Rajasthan with visits to iconic forts, magnificent palaces, ancient temples, and vibrant bazaars. Experience traditional Rajasthani hospitality.",
+      "description": "Explore the rich cultural heritage of Rajasthan with visits to iconic forts, magnificent palaces, ancient temples, and vibrant bazaars.",
       "price": 10999,
       "duration": "5 Days / 4 Nights",
       "best_season": "November - February",
-      "includes": [
-        "Accommodation (3-star hotel)",
-        "Daily breakfast",
-        "Guided sightseeing tours",
-        "Vehicle rental",
-        "Monument entry fees"
-      ],
-      "excludes": [
-        "Flights",
-        "Meals (except breakfast)",
-        "Personal expenses"
-      ],
-      "faqs": [
-        {
-          "q": "Which forts will we visit?",
-          "a": "We visit Hawa Mahal, City Palace, Jantar Mantar, and other major attractions based on your itinerary."
-        }
-      ],
+      "includes": ["Accommodation (3-star hotel)", "Daily breakfast", "Guided sightseeing tours", "Vehicle rental", "Monument entry fees"],
+      "excludes": ["Flights", "Meals (except breakfast)", "Personal expenses"],
       "highlights": ["Hawa Mahal", "City Palace", "Jantar Mantar", "Jaipur Bazaar"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "Which forts will we visit?", "a": "We visit Hawa Mahal, City Palace, Jantar Mantar, and other major attractions." }
+      ],
+      "meta_description": "Rajasthan cultural tour - heritage sites and palaces",
+      "meta_keywords": "rajasthan tour, cultural heritage, palaces, forts, jaipur"
     },
     {
       "id": "kerala-backwaters-4d3n",
       "name": "Kerala Backwaters Escape",
       "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&h=300&fit=crop",
       "summary": "Cruise through serene backwaters and lush green landscapes",
-      "description": "Experience the tranquility of Kerala's backwaters with houseboat cruises, local experiences, and Ayurvedic treatments. Discover the God's own country.",
+      "description": "Experience the tranquility of Kerala's backwaters with houseboat cruises, local experiences, and Ayurvedic treatments.",
       "price": 9999,
       "duration": "4 Days / 3 Nights",
       "best_season": "September - March",
-      "includes": [
-        "Houseboat accommodation",
-        "All meals",
-        "Local sightseeing",
-        "Ayurvedic massage",
-        "Guided backwater tour"
-      ],
-      "excludes": [
-        "Flights",
-        "Travel insurance"
-      ],
-      "faqs": [
-        {
-          "q": "Is the houseboat safe?",
-          "a": "Yes, all houseboats are equipped with life jackets and safety equipment. Expert crew accompanies you."
-        }
-      ],
+      "includes": ["Houseboat accommodation", "All meals", "Local sightseeing", "Ayurvedic massage", "Guided backwater tour"],
+      "excludes": ["Flights", "Travel insurance"],
       "highlights": ["Alleppey Backwaters", "Traditional Houseboat", "Spice Gardens", "Ayurveda Centre"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "Is the houseboat safe?", "a": "Yes, all houseboats are equipped with life jackets and safety equipment." }
+      ],
+      "meta_description": "Kerala backwaters tour - houseboat and nature escape",
+      "meta_keywords": "kerala tour, backwaters, houseboat, nature, alleppey"
     },
     {
       "id": "mumbai-coastal-3d2n",
       "name": "Mumbai Coastal Weekend",
       "image": "https://images.unsplash.com/photo-1514819861854-dbe86a8c0cde?w=500&h=300&fit=crop",
       "summary": "Explore the city's iconic landmarks and vibrant culture",
-      "description": "Discover Mumbai's best attractions including Marine Drive, Gateway of India, and local markets with luxury accommodations in the heart of the city.",
+      "description": "Discover Mumbai's best attractions including Marine Drive, Gateway of India, and local markets with luxury accommodations.",
       "price": 7999,
       "duration": "3 Days / 2 Nights",
       "best_season": "October - May",
-      "includes": [
-        "4-star hotel stay",
-        "Daily breakfast",
-        "City guided tour",
-        "Marine drive visit",
-        "Market tour"
-      ],
-      "excludes": [
-        "Flights",
-        "Meals (except breakfast)"
-      ],
-      "faqs": [
-        {
-          "q": "What's the best time to visit Marine Drive?",
-          "a": "Sunset time (around 6-7 PM) is ideal for the best views and weather."
-        }
-      ],
+      "includes": ["4-star hotel stay", "Daily breakfast", "City guided tour", "Marine drive visit", "Market tour"],
+      "excludes": ["Flights", "Meals (except breakfast)"],
       "highlights": ["Marine Drive", "Gateway of India", "Colaba Market", "Local Cuisine"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "What's the best time to visit Marine Drive?", "a": "Sunset time (around 6-7 PM) is ideal for the best views." }
+      ],
+      "meta_description": "Mumbai weekend getaway - city landmarks and culture",
+      "meta_keywords": "mumbai tour, weekend, city tour, marine drive, gateway"
     },
     {
       "id": "ladakh-adventure-7d6n",
       "name": "Ladakh High-Altitude Adventure",
       "image": "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&h=300&fit=crop",
       "summary": "Experience the mystique of high-altitude deserts and monasteries",
-      "description": "Explore the rugged beauty of Ladakh with visits to ancient monasteries, crystal-clear lakes, and high mountain passes. An adventure for the brave souls.",
+      "description": "Explore the rugged beauty of Ladakh with visits to ancient monasteries, crystal-clear lakes, and high mountain passes.",
       "price": 15999,
       "duration": "7 Days / 6 Nights",
       "best_season": "June - September",
-      "includes": [
-        "Accommodation",
-        "All meals",
-        "Vehicle rental",
-        "Guide services",
-        "Permit fees"
-      ],
-      "excludes": [
-        "Flights to Leh",
-        "Travel insurance",
-        "Trekking gear"
-      ],
-      "faqs": [
-        {
-          "q": "Do I need acclimatization for Ladakh?",
-          "a": "Yes, we recommend spending the first day in Leh to acclimatize to 3,500m altitude."
-        }
-      ],
+      "includes": ["Accommodation", "All meals", "Vehicle rental", "Guide services", "Permit fees"],
+      "excludes": ["Flights to Leh", "Travel insurance", "Trekking gear"],
       "highlights": ["Pangong Lake", "Khardung La Pass", "Hemis Monastery", "Magnetic Hill"],
-      "href": "/details/"
+      "faqs": [
+        { "q": "Do I need acclimatization?", "a": "Yes, we recommend spending the first day in Leh to acclimatize to 3,500m altitude." }
+      ],
+      "meta_description": "Ladakh adventure - high altitude desert and monasteries",
+      "meta_keywords": "ladakh tour, adventure, lakes, monasteries, high altitude"
     }
   ]
 }
