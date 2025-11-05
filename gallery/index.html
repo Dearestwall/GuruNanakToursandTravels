@@ -8,9 +8,24 @@
   
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/gallery.css" />
+  
+  <!-- GTranslate -->
+  <script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"languages":["en","hi","pa","es","fr","de"],"wrapper_selector":".gtranslate_wrapper","horizontal_position":"right","vertical_position":"top"}</script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  
+  <!-- GTranslate Widget -->
+  <div class="gtranslate_wrapper"></div>
+  
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
   <div id="header-placeholder"></div>
 
   <main id="main" class="gallery-container">
@@ -31,12 +46,8 @@
     <!-- Filters -->
     <section class="gallery-filters">
       <div class="container">
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="mountains">🏔️ Mountains</button>
-          <button class="filter-btn" data-filter="beaches">🏖️ Beaches</button>
-          <button class="filter-btn" data-filter="cities">🏙️ Cities</button>
-          <button class="filter-btn" data-filter="culture">🕉️ Culture</button>
+        <div class="filter-buttons" id="gallery-filters">
+          <!-- Filters loaded dynamically from CMS categories -->
         </div>
       </div>
     </section>
@@ -44,14 +55,23 @@
     <!-- Gallery Grid -->
     <section class="gallery-section">
       <div class="container">
-        <div id="galleryGrid" class="gallery-grid"></div>
+        <div id="galleryGrid" class="gallery-grid">
+          <!-- Gallery items loaded from CMS -->
+        </div>
+        <div id="galleryLoading" class="loading-spinner" style="display:none;">
+          <div class="spinner"></div>
+          <p>Loading gallery...</p>
+        </div>
       </div>
     </section>
 
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
-      <button class="lightbox-close" type="button">✕</button>
-      <img id="lightboxImage" src="" alt="Enlarged gallery image" />
+      <button class="lightbox-close" type="button" aria-label="Close lightbox">✕</button>
+      <button class="lightbox-prev" type="button" aria-label="Previous image">‹</button>
+      <button class="lightbox-next" type="button" aria-label="Next image">›</button>
+      <img id="lightboxImage" src="" alt="" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
   </main>
 

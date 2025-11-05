@@ -1,0 +1,15 @@
+{
+  "main_menu": [
+    { "label": "Home", "url": "/", "target": "_self", "order": 1 },
+    { "label": "Tours", "url": "/tours/", "target": "_self", "order": 2 },
+    { "label": "Services", "url": "/services/", "target": "_self", "order": 3 },
+    { "label": "About", "url": "/about/", "target": "_self", "order": 4 },
+    { "label": "Gallery", "url": "/gallery/", "target": "_self", "order": 5 },
+    { "label": "Contact", "url": "/contact/", "target": "_self", "order": 6 }
+  ],
+  "footer_menu": [
+    { "label": "Privacy Policy", "url": "/privacy/", "target": "_self" },
+    { "label": "Terms & Conditions", "url": "/terms/", "target": "_self" },
+    { "label": "Refund Policy", "url": "/refund/", "target": "_self" }
+  ]
+}

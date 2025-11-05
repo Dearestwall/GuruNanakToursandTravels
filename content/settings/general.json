@@ -1,8 +1,8 @@
 {
   "site_name": "Guru Nanak Tour & Travels",
   "tagline": "Your journey, our responsibility",
-  "meta_description": "Book tours, flights, hotels, and get visa assistance with GNTT. Best travel deals for Indian travelers.",
-  "meta_keywords": "tours, travel packages, flights, hotels, visa assistance, Punjab, India",
+  "site_description": "Book affordable tours, flights, hotels, and get visa assistance with GNTT. Trusted by 5000+ travelers across India.",
   "logo": "/GuruNanakToursandTravels/assets/images/logo.png",
-  "favicon": "/GuruNanakToursandTravels/assets/images/favicon.ico"
+  "favicon": "/GuruNanakToursandTravels/assets/images/favicon.ico",
+  "copyright": "© 2025 Guru Nanak Tour & Travels. All rights reserved."
 }
