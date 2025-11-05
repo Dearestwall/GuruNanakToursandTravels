@@ -1,0 +1,30 @@
+{
+  "id": "himalaya-trek-6d5n",
+  "name": "Himalayan Mountain Adventure",
+  "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  "summary": "Trek through majestic mountain peaks with expert guides",
+  "description": "Join our guided treks through the stunning Himalayan ranges with experienced trekkers. Explore pristine forests, alpine meadows, and breathtaking mountain views.",
+  "price": 12999,
+  "duration": "6 Days / 5 Nights",
+  "best_season": "April - June, September - November",
+  "includes": [
+    "Accommodation (mountain lodges)",
+    "All meals during trek",
+    "Expert trekking guide",
+    "Trekking equipment",
+    "Transportation to/from base"
+  ],
+  "excludes": [
+    "Personal trekking gear",
+    "Travel insurance",
+    "Emergency evacuation costs"
+  ],
+  "highlights": [
+    "Snow-capped Himalayan peaks",
+    "Alpine forests and meadows",
+    "Traditional mountain villages",
+    "Camping under stars",
+    "Local Himalayan culture"
+  ],
+  "published": true
+}

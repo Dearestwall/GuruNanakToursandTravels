@@ -1,0 +1,31 @@
+{
+  "id": "kerala-backwaters-4d3n",
+  "name": "Kerala Backwaters Experience",
+  "image": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&h=600&fit=crop",
+  "summary": "Cruise through serene backwaters on traditional houseboats",
+  "description": "Relax on traditional Kerala houseboats while cruising through scenic backwaters, paddy fields, and coconut groves. Experience authentic Kerala cuisine and Ayurvedic treatments.",
+  "price": 10999,
+  "duration": "4 Days / 3 Nights",
+  "best_season": "September - March",
+  "includes": [
+    "2 nights resort accommodation",
+    "1 night houseboat stay",
+    "All meals on houseboat",
+    "Breakfast at resort",
+    "Ayurvedic massage session"
+  ],
+  "excludes": [
+    "Flights to/from Kerala",
+    "Lunch and dinner at resort",
+    "Additional activities",
+    "Personal expenses"
+  ],
+  "highlights": [
+    "Traditional houseboat cruise",
+    "Alleppey backwaters",
+    "Kumarakom bird sanctuary",
+    "Ayurvedic spa treatments",
+    "Kerala cuisine"
+  ],
+  "published": true
+}

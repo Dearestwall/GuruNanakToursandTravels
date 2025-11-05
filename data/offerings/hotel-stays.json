@@ -1,0 +1,21 @@
+{
+  "id": "hotel-stays",
+  "icon": "🏨",
+  "title": "Hotel Reservations",
+  "description": "Wide selection of hotels from budget to luxury across India and abroad",
+  "long_description": "Access to 10,000+ hotels worldwide with best price guarantee and instant confirmation.",
+  "features": [
+    "Budget to luxury options",
+    "Verified reviews",
+    "Best price guarantee",
+    "Free cancellation"
+  ],
+  "benefits": [
+    "Exclusive deals",
+    "Secure bookings",
+    "Customer support"
+  ],
+  "link_label": "Learn More →",
+  "link_href": "/details/",
+  "order": 2
+}

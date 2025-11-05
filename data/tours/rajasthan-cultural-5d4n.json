@@ -1,0 +1,31 @@
+{
+  "id": "rajasthan-heritage-7d6n",
+  "name": "Rajasthan Heritage Tour",
+  "image": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&h=600&fit=crop",
+  "summary": "Explore royal palaces, forts, and vibrant Rajasthani culture",
+  "description": "Discover the rich heritage of Rajasthan with visits to magnificent forts, palaces, and cultural sites in Jaipur, Jodhpur, Udaipur, and Jaisalmer.",
+  "price": 15999,
+  "duration": "7 Days / 6 Nights",
+  "best_season": "October - March",
+  "includes": [
+    "Accommodation (heritage hotels)",
+    "Daily breakfast and dinner",
+    "Private AC vehicle",
+    "All monument entry fees",
+    "English-speaking guide"
+  ],
+  "excludes": [
+    "Flights to/from Rajasthan",
+    "Lunch and beverages",
+    "Camera fees at monuments",
+    "Personal expenses"
+  ],
+  "highlights": [
+    "Amber Fort, Jaipur",
+    "Mehrangarh Fort, Jodhpur",
+    "City Palace, Udaipur",
+    "Desert safari in Jaisalmer",
+    "Traditional Rajasthani folk performances"
+  ],
+  "published": true
+}

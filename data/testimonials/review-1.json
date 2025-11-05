@@ -1,0 +1,13 @@
+{
+  "id": "review-1",
+  "name": "Priya Sharma",
+  "location": "Delhi",
+  "rating": 5,
+  "comment": "Amazing experience! The tour was well-organized and our guide was excellent. Highly recommend GNTT for anyone planning a trip to Goa.",
+  "photo": "https://i.pravatar.cc/150?img=1",
+  "tour_package": "Goa Beach Paradise",
+  "travel_date": "November 2024",
+  "verified": true,
+  "helpful_count": 12,
+  "highlight": "Well organized"
+}

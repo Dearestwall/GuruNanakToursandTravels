@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build:gallery": "node scripts/generate-gallery-index.js"
+  }
+}

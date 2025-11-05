@@ -1,0 +1,21 @@
+{
+  "id": "flight-bookings",
+  "icon": "✈️",
+  "title": "Flight Bookings",
+  "description": "Best prices on domestic and international flights with instant confirmation",
+  "long_description": "Book flights to 200+ destinations worldwide. We offer competitive pricing, quick confirmations, and 24/7 customer support for all your flight needs.",
+  "features": [
+    "Competitive pricing on domestic flights",
+    "International flight bookings",
+    "Instant confirmation",
+    "Flexible date changes"
+  ],
+  "benefits": [
+    "Save up to 40% on tickets",
+    "Zero hidden charges",
+    "24/7 support"
+  ],
+  "link_label": "Learn More →",
+  "link_href": "/details/",
+  "order": 1
+}

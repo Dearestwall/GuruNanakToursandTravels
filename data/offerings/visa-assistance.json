@@ -1,0 +1,21 @@
+{
+  "id": "visa-assistance",
+  "icon": "📋",
+  "title": "Visa Assistance",
+  "description": "Expert visa support and documentation for 50+ countries",
+  "long_description": "Get expert guidance on visa requirements, documentation, and application process for all major travel destinations.",
+  "features": [
+    "Visa consultation",
+    "Document verification",
+    "Application support",
+    "Tracking assistance"
+  ],
+  "benefits": [
+    "High success rate",
+    "Quick processing",
+    "Expert guidance"
+  ],
+  "link_label": "Learn More →",
+  "link_href": "/details/",
+  "order": 4
+}

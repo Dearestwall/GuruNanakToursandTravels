@@ -1,6 +1,19 @@
 // =====================================================
-// HOME.JS - Enhanced home page with Netlify CMS support
+// HOME.JS - Enhanced home page with GitHub API auto-loading
+// Auto-discovers tours, offerings, testimonials from folders
 // =====================================================
+
+const HOME_CACHE_KEY = 'gntt_home_cache';
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
+/**
+ * GitHub Configuration
+ */
+const GITHUB_CONFIG = {
+  owner: 'dearestwall',
+  repo: 'GuruNanakToursandTravels',
+  branch: 'main'
+};
 
 /**
  * Escape HTML special characters
@@ -34,24 +47,6 @@ function linkHref(href) {
 }
 
 /**
- * Check if URL is internal
- */
-function isInternalUrl(url) {
-  return url && !/^(https?:)?\/\//i.test(url) && !url.startsWith('tel:') && !url.startsWith('mailto:');
-}
-
-/**
- * Append ID to URL as query parameter
- */
-function appendIdToUrl(url, id) {
-  if (!url || !id) return url;
-  if (!isInternalUrl(url)) return url;
-  const hasQuery = url.includes('?');
-  const sep = hasQuery ? '&' : '?';
-  return `${url}${sep}id=${encodeURIComponent(id)}`;
-}
-
-/**
  * Convert string to URL slug
  */
 function slugify(s) {
@@ -60,14 +55,6 @@ function slugify(s) {
     .replace(/['"]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-}
-
-/**
- * Format number with + suffix
- */
-function fmtPlus(n) {
-  if (typeof n !== 'number' || n == null) return undefined;
-  return n >= 1000 ? `${n.toLocaleString('en-IN')}+` : `${n}`;
 }
 
 /**
@@ -90,63 +77,172 @@ function debounce(func, delay) {
 }
 
 /**
- * Load all data from separate JSON files
- * Progressive fallback + metrics
+ * Load from localStorage cache
+ */
+function loadFromCache() {
+  try {
+    const cached = localStorage.getItem(HOME_CACHE_KEY);
+    if (!cached) return null;
+    
+    const { data, timestamp } = JSON.parse(cached);
+    const age = Date.now() - timestamp;
+    
+    if (age < CACHE_DURATION) {
+      console.log('✅ Loaded home data from cache');
+      return data;
+    }
+    
+    localStorage.removeItem(HOME_CACHE_KEY);
+    return null;
+  } catch (e) {
+    console.warn('Cache load failed:', e);
+    return null;
+  }
+}
+
+/**
+ * Save to localStorage cache
+ */
+function saveToCache(data) {
+  try {
+    const cacheData = {
+      data,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(HOME_CACHE_KEY, JSON.stringify(cacheData));
+  } catch (e) {
+    console.warn('Cache save failed:', e);
+  }
+}
+
+/**
+ * Load JSON files from GitHub folder
+ */
+async function loadFromGitHubFolder(path) {
+  try {
+    const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${path}`;
+    
+    const response = await fetch(apiUrl, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    
+    if (!response.ok) {
+      console.warn(`GitHub API failed for ${path}:`, response.status);
+      return [];
+    }
+    
+    const files = await response.json();
+    
+    if (!Array.isArray(files)) {
+      console.warn(`Unexpected response for ${path}`);
+      return [];
+    }
+    
+    // Filter JSON files
+    const jsonFiles = files.filter(file => 
+      file.type === 'file' && file.name.endsWith('.json')
+    );
+    
+    console.log(`📂 Found ${jsonFiles.length} files in ${path}`);
+    
+    // Fetch all files in parallel
+    const fetchPromises = jsonFiles.map(async (file) => {
+      try {
+        const fileResponse = await fetch(file.download_url);
+        if (fileResponse.ok) {
+          const data = await fileResponse.json();
+          console.log(`✅ Loaded: ${path}/${file.name}`);
+          return data;
+        }
+      } catch (e) {
+        console.warn(`⚠️ Failed to load ${file.name}:`, e);
+      }
+      return null;
+    });
+    
+    const results = await Promise.all(fetchPromises);
+    return results.filter(item => item !== null);
+    
+  } catch (e) {
+    console.error(`Error loading from ${path}:`, e);
+    return [];
+  }
+}
+
+/**
+ * Load single JSON file
+ */
+async function loadJSONFile(path) {
+  try {
+    const url = window.__toAbs ? window.__toAbs(path) : path;
+    const res = await fetch(url, {
+      cache: 'no-store',
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.warn(`Failed to load ${path}:`, e);
+    return {};
+  }
+}
+
+/**
+ * Load all data - auto-discover from folders
  */
 async function loadHomeData() {
-  const files = [
-    { key: 'hero', path: '/data/hero.json' },
-    { key: 'offerings', path: '/data/offerings.json' },
-    { key: 'tours', path: '/data/tours.json' },
-    { key: 'stats', path: '/data/stats.json' },
-    { key: 'testimonials', path: '/data/testimonials.json' },
-    { key: 'partners', path: '/data/partners.json' },
-    { key: 'faqs', path: '/data/faqs.json' },
-    { key: 'contact', path: '/data/contact.json' }
-  ];
-
-  const allData = {};
-  const maxRetries = 2;
-
-  async function fetchFile(file, retryCount = 0) {
-    try {
-      const url = window.__toAbs ? window.__toAbs(file.path) : file.path;
-      const res = await fetch(url, {
-        cache: 'no-store',
-        headers: { 'Accept': 'application/json' }
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      allData[file.key] = data;
-    } catch (e) {
-      if (retryCount < maxRetries) {
-        await new Promise(r => setTimeout(r, 600));
-        return fetchFile(file, retryCount + 1);
-      }
-      console.warn(`Failed to load ${file.path}:`, e);
-      allData[file.key] = {}; // keep structure
-    }
-  }
-
   try {
-    await Promise.all(files.map(f => fetchFile(f)));
-
+    console.log('🏠 Loading home page data...');
+    
+    // Try loading from cache first
+    const cachedData = loadFromCache();
+    if (cachedData) {
+      renderHome(cachedData);
+      return;
+    }
+    
+    // Load data in parallel
+    const [
+      hero,
+      offerings,
+      tours,
+      stats,
+      testimonials,
+      partners,
+      faqs,
+      contact
+    ] = await Promise.all([
+      loadJSONFile('/data/hero.json'),
+      loadFromGitHubFolder('data/offerings'),
+      loadFromGitHubFolder('data/tours'),
+      loadJSONFile('/data/stats.json'),
+      loadFromGitHubFolder('data/testimonials'),
+      loadFromGitHubFolder('data/partners'),
+      loadJSONFile('/data/faqs.json'),
+      loadJSONFile('/data/contact.json')
+    ]);
+    
     const mergedData = {
-      site_title: allData.home?.site_title || 'Guru Nanak Tour & Travels',
-      tagline: allData.home?.tagline || 'Your journey, our responsibility',
-      hero_slides: allData.hero?.hero_slides || [],
-      offerings: allData.offerings?.offerings || [],
-      featured_tours: allData.tours?.featured_tours || [],
-      stats: allData.stats?.stats || {},
-      testimonials: allData.testimonials?.testimonials || [],
-      partners: allData.partners?.partners || [],
-      faqs: allData.faqs?.faqs || [],
-      contact: allData.contact?.contact || {}
+      site_title: 'Guru Nanak Tour & Travels',
+      tagline: 'Your journey, our responsibility',
+      hero_slides: hero.hero_slides || [],
+      offerings: offerings || [],
+      featured_tours: tours || [],
+      stats: stats.stats || {},
+      testimonials: testimonials || [],
+      partners: partners || [],
+      faqs: faqs.faqs || [],
+      contact: contact.contact || {}
     };
-
+    
+    // Save to cache
+    saveToCache(mergedData);
+    
+    console.log('✅ Home data loaded successfully');
     renderHome(mergedData);
+    
   } catch (e) {
-    console.error('Data load error:', e);
+    console.error('❌ Data load error:', e);
     showToast('Failed to load page content', 'error');
   }
 }
@@ -290,16 +386,19 @@ function initHeroCarousel(container, totalSlides) {
 }
 
 /* =====================================================
-   OFFERINGS
+   OFFERINGS - Auto-loaded from data/offerings/
    ===================================================== */
 
 function renderOfferings(offerings) {
   const container = document.getElementById('offer-cards');
-  if (!container || !Array.isArray(offerings)) return;
+  if (!container || !Array.isArray(offerings) || offerings.length === 0) return;
 
-  container.innerHTML = offerings.map((o, idx) => {
+  // Sort by order if available
+  const sortedOfferings = [...offerings].sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  container.innerHTML = sortedOfferings.map((o, idx) => {
     const id = o.id || slugify(o.title || `service-${idx + 1}`);
-    const detailsUrl = __toAbs ? __toAbs(`/details/?id=${id}&type=offering`) : `/details/?id=${id}&type=offering`;
+    const detailsUrl = linkHref(`/details/?id=${id}&type=offering`);
     return `
       <article class="card offering-card" id="offer-${id}">
         <div class="card-icon">${escapeHtml(o.icon || '✨')}</div>
@@ -314,7 +413,7 @@ function renderOfferings(offerings) {
 }
 
 /* =====================================================
-   FEATURED TOURS - WITH LOAD MORE & DEEP LINKS
+   FEATURED TOURS - Auto-loaded from data/tours/
    ===================================================== */
 
 function renderFeaturedTours(tours) {
@@ -330,11 +429,12 @@ function renderFeaturedTours(tours) {
   function renderTours(count) {
     container.innerHTML = sortedTours.slice(0, count).map((t, idx) => {
       const id = t.id || slugify(t.name || `tour-${idx + 1}`);
-      const detailsUrl = __toAbs ? __toAbs(`/details/?id=${id}&type=tour`) : `/details/?id=${id}&type=tour`;
+      const detailsUrl = linkHref(`/details/?id=${id}&type=tour`);
       return `
         <article class="tour" id="tour-${id}">
           <div class="tour-image-wrapper">
-            <img src="${escapeAttr(t.image)}" alt="${escapeAttr(t.name)}" class="tour-image" loading="lazy" />
+            <img src="${escapeAttr(t.image)}" alt="${escapeAttr(t.name)}" class="tour-image" loading="lazy" 
+                 onerror="this.src='https://via.placeholder.com/800x600?text=Tour+Image'" />
           </div>
           <div class="tour-body">
             <h3 class="tour-title">${escapeHtml(t.name)}</h3>
@@ -342,7 +442,7 @@ function renderFeaturedTours(tours) {
             ${t.duration ? `<p class="tour-duration">⏱️ ${escapeHtml(t.duration)}</p>` : ''}
             <div class="tour-footer">
               <p class="tour-price">₹${Number(t.price || 0).toLocaleString('en-IN')}</p>
-              <a class="btn btn-sm" href="${detailsUrl}" target="_self">View Details</a>
+              <a class="btn btn-sm" href="${detailsUrl}">View Details</a>
             </div>
           </div>
         </article>
@@ -435,25 +535,31 @@ function renderStats(stats) {
 }
 
 /* =====================================================
-   TESTIMONIALS - RESPONSIVE CAROUSEL
+   TESTIMONIALS - Auto-loaded from data/testimonials/
    ===================================================== */
 
 function renderTestimonials(testimonials) {
   const container = document.getElementById('testimonial-list');
-  if (!container || !Array.isArray(testimonials)) return;
+  if (!container || !Array.isArray(testimonials) || testimonials.length === 0) return;
 
-  container.innerHTML = testimonials.map((t, idx) => `
+  // Filter verified and sort by rating
+  const sortedTestimonials = testimonials
+    .filter(t => t.verified !== false)
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+  container.innerHTML = sortedTestimonials.map((t, idx) => `
     <figure class="testimonial" id="review-${slugify(t.name || `review-${idx + 1}`)}">
-      ${t.photo ? `<img class="testimonial-avatar" src="${escapeAttr(t.photo)}" alt="${escapeAttr(t.name)}" loading="lazy" />` : ''}
+      ${t.photo ? `<img class="testimonial-avatar" src="${escapeAttr(t.photo)}" alt="${escapeAttr(t.name)}" loading="lazy" 
+                    onerror="this.style.display='none'" />` : ''}
       <figcaption class="testimonial-content">
-        <div class="testimonial-stars">${'⭐'.repeat(Math.max(0, Math.min(5, t.rating || 5)))}</div>
+        <div class="testimonial-stars">${'⭐'.repeat(Math.max(0, Math.min(5, Number(t.rating) || 5)))}</div>
         <blockquote class="testimonial-quote">"${escapeHtml(t.comment)}"</blockquote>
         <div class="testimonial-author">— ${escapeHtml(t.name)}${t.location ? `, ${escapeHtml(t.location)}` : ''}</div>
       </figcaption>
     </figure>
   `).join('');
 
-  initTestimonialsCarousel(container, testimonials.length);
+  initTestimonialsCarousel(container, sortedTestimonials.length);
 }
 
 function initTestimonialsCarousel(listEl, total) {
@@ -539,11 +645,12 @@ function initTestimonialsCarousel(listEl, total) {
 
 function renderPartners(partners) {
   const container = document.getElementById('partner-logos');
-  if (!container || !Array.isArray(partners)) return;
+  if (!container || !Array.isArray(partners) || partners.length === 0) return;
 
   container.innerHTML = partners.map(p => `
     <div class="partner">
-      <img src="${escapeAttr(p.logo)}" alt="${escapeAttr(p.name)}" class="partner-logo" loading="lazy" />
+      <img src="${escapeAttr(p.logo)}" alt="${escapeAttr(p.name)}" class="partner-logo" loading="lazy" 
+           onerror="this.style.display='none'" />
     </div>
   `).join('');
 
@@ -578,17 +685,13 @@ function initPartnersAutoScroll(container) {
 }
 
 /* =====================================================
-   FAQs - ACCORDION WITH AUTO-CLOSE + Progressive Reveal
+   FAQs - ACCORDION WITH AUTO-CLOSE
    ===================================================== */
-
-let faqOpenCount = 0;
-const FAQ_REVEAL_STEP = 2;
 
 function renderFAQs(faqs) {
   const container = document.getElementById('faq-list');
-  if (!container || !Array.isArray(faqs)) return;
+  if (!container || !Array.isArray(faqs) || faqs.length === 0) return;
 
-  // Initial render: show first 4, rest hidden with data-hidden
   const initial = Math.min(4, faqs.length);
   container.innerHTML = faqs.map((f, i) => `
     <details class="faq"${i === 0 ? ' open' : ''} ${i >= initial ? 'data-hidden="true" style="display:none;"' : ''}>
@@ -597,20 +700,19 @@ function renderFAQs(faqs) {
     </details>
   `).join('');
 
-  // Add "Show more FAQs" control if there are more
-  const moreNeeded = faqs.length > initial;
-  if (moreNeeded) {
+  if (faqs.length > initial) {
     const btn = document.createElement('button');
-    btn.id = 'showMoreFaqs';
     btn.className = 'btn btn-outline';
-    btn.type = 'button';
     btn.textContent = 'Show more FAQs';
     btn.style.marginTop = '1rem';
     container.parentElement?.appendChild(btn);
 
     btn.addEventListener('click', () => {
-      revealMoreFaqs(container, FAQ_REVEAL_STEP);
-      // Hide button if none left hidden
+      const hidden = Array.from(container.querySelectorAll('[data-hidden="true"]'));
+      hidden.slice(0, 2).forEach(el => {
+        el.style.display = '';
+        el.removeAttribute('data-hidden');
+      });
       if (!container.querySelector('[data-hidden="true"]')) {
         btn.style.display = 'none';
       }
@@ -620,33 +722,14 @@ function renderFAQs(faqs) {
   setupFAQAccordion(container);
 }
 
-function revealMoreFaqs(container, count) {
-  const hidden = Array.from(container.querySelectorAll('.faq[data-hidden="true"]'));
-  hidden.slice(0, count).forEach(el => {
-    el.style.display = '';
-    el.removeAttribute('data-hidden');
-  });
-}
-
 function setupFAQAccordion(container) {
   const faqs = container.querySelectorAll('.faq');
-
   faqs.forEach(faq => {
     faq.addEventListener('click', (e) => {
-      if (e.target.closest('.faq-summary')) {
-        const isOpening = !faq.open;
-        // Auto close others (accordion)
-        if (isOpening) {
-          faqs.forEach(otherFaq => {
-            if (otherFaq !== faq) otherFaq.open = false;
-          });
-
-          // Count opens and progressively reveal more
-          faqOpenCount++;
-          if (faqOpenCount % 2 === 0) {
-            revealMoreFaqs(container, FAQ_REVEAL_STEP);
-          }
-        }
+      if (e.target.closest('.faq-summary') && !faq.open) {
+        faqs.forEach(otherFaq => {
+          if (otherFaq !== faq) otherFaq.open = false;
+        });
       }
     });
   });

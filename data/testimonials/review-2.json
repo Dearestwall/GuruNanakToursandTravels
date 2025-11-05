@@ -1,0 +1,13 @@
+{
+  "id": "review-2",
+  "name": "Rajesh Kumar",
+  "location": "Mumbai",
+  "rating": 5,
+  "comment": "Best travel agency in Punjab! They handled everything from flights to hotels. Very professional service and great value for money.",
+  "photo": "https://i.pravatar.cc/150?img=12",
+  "tour_package": "Himalayan Trek",
+  "travel_date": "October 2024",
+  "verified": true,
+  "helpful_count": 18,
+  "highlight": "Professional"
+}

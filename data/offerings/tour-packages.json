@@ -1,0 +1,21 @@
+{
+  "id": "tour-packages",
+  "icon": "🗺️",
+  "title": "Tour Packages",
+  "description": "Customized tour packages for domestic and international destinations",
+  "long_description": "Explore handpicked tour packages designed by travel experts with accommodation, meals, and sightseeing included.",
+  "features": [
+    "Customizable itineraries",
+    "Expert tour guides",
+    "All-inclusive packages",
+    "Group and solo options"
+  ],
+  "benefits": [
+    "Hassle-free travel",
+    "Best value for money",
+    "Memorable experiences"
+  ],
+  "link_label": "Learn More →",
+  "link_href": "/details/",
+  "order": 3
+}

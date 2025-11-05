@@ -1,0 +1,31 @@
+{
+  "id": "goa-beaches-5d4n",
+  "name": "Goa Beach Paradise",
+  "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
+  "summary": "Relax on pristine beaches with water sports and vibrant nightlife",
+  "description": "Experience the ultimate beach vacation in Goa with water sports, delicious seafood, vibrant nightlife, and relaxing beach retreats. Stay in beachfront resorts, enjoy water activities, and explore local markets.",
+  "price": 8999,
+  "duration": "5 Days / 4 Nights",
+  "best_season": "October - March",
+  "includes": [
+    "Accommodation (4-star beachfront hotel)",
+    "Daily breakfast and dinner",
+    "Beach water sports activities",
+    "Airport transfers",
+    "Sightseeing tours to popular beaches"
+  ],
+  "excludes": [
+    "Flights to/from Goa",
+    "Travel insurance",
+    "Personal expenses",
+    "Activities beyond package"
+  ],
+  "highlights": [
+    "Baga Beach water sports",
+    "Anjuna Night Market",
+    "Dolphin watching cruise",
+    "Spice plantation tour",
+    "Beach parties"
+  ],
+  "published": true
+}

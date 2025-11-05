@@ -87,7 +87,7 @@ collections:
       # Services/Offerings
       - name: "offerings"
         label: "💼 Services & Offerings"
-        file: "data/offerings.json"
+        file: "data/offerings"
         format: "json"
         fields:
           - label: "Service Offerings"
@@ -237,7 +237,7 @@ collections:
   - name: "partners"
     label: "🤝 Partners & Brands"
     description: "Manage business partnerships and logos"
-    folder: "data/partners"
+    folder: "data/partners.json"
     format: "json"
     create: true
     delete: true
