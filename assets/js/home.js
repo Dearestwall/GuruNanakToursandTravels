@@ -1,5 +1,6 @@
 // =====================================================
 // HOME.JS - Enhanced home page with Netlify CMS support
+// Uses CMS data from common.js (no direct /data/*.json fetches)
 // =====================================================
 
 /**
@@ -90,65 +91,58 @@ function debounce(func, delay) {
 }
 
 /**
- * Load all data from separate JSON files
- * Progressive fallback + metrics
+ * Load homepage data from common.js (no direct fetches)
+ */
+async function loadHomeDataFromCMS() {
+  try {
+    // Fast path
+    if (window.cachedCMSData) return window.cachedCMSData;
+
+    // Wait for cached data if being loaded
+    let attempts = 0;
+    while (!window.cachedCMSData && attempts < 20) {
+      await new Promise(r => setTimeout(r, 250));
+      attempts++;
+    }
+    if (window.cachedCMSData) return window.cachedCMSData;
+
+    // Fallback: trigger a fetch via common.js
+    if (typeof window.fetchCMSData === 'function') {
+      return await window.fetchCMSData();
+    }
+
+    return null;
+  } catch (e) {
+    console.error('CMS data load error:', e);
+    return null;
+  }
+}
+
+/**
+ * Main render function entry
  */
 async function loadHomeData() {
-  const files = [
-    { key: 'hero', path: '/data/hero.json' },
-    { key: 'offerings', path: '/data/offerings.json' },
-    { key: 'tours', path: '/data/tours.json' },
-    { key: 'stats', path: '/data/stats.json' },
-    { key: 'testimonials', path: '/data/testimonials.json' },
-    { key: 'partners', path: '/data/partners.json' },
-    { key: 'faqs', path: '/data/faqs.json' },
-    { key: 'contact', path: '/data/contact.json' }
-  ];
-
-  const allData = {};
-  const maxRetries = 2;
-
-  async function fetchFile(file, retryCount = 0) {
-    try {
-      const url = window.__toAbs ? window.__toAbs(file.path) : file.path;
-      const res = await fetch(url, {
-        cache: 'no-store',
-        headers: { 'Accept': 'application/json' }
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      allData[file.key] = data;
-    } catch (e) {
-      if (retryCount < maxRetries) {
-        await new Promise(r => setTimeout(r, 600));
-        return fetchFile(file, retryCount + 1);
-      }
-      console.warn(`Failed to load ${file.path}:`, e);
-      allData[file.key] = {}; // keep structure
-    }
+  const cms = await loadHomeDataFromCMS();
+  if (!cms) {
+    console.warn('⚠️ No CMS data available to render home');
+    if (window.showToast) window.showToast('Content unavailable right now', 'error');
+    return;
   }
 
-  try {
-    await Promise.all(files.map(f => fetchFile(f)));
+  const mergedData = {
+    site_title: cms.site_title || 'Guru Nanak Tour & Travels',
+    tagline: cms.tagline || 'Your journey, our responsibility',
+    hero_slides: cms.hero_slides || [],
+    offerings: cms.offerings || [],
+    featured_tours: cms.featured_tours || [],
+    stats: cms.stats || {},
+    testimonials: cms.testimonials || [],
+    partners: cms.partners || [],
+    faqs: cms.faqs || [],
+    contact: cms.contact || {}
+  };
 
-    const mergedData = {
-      site_title: allData.home?.site_title || 'Guru Nanak Tour & Travels',
-      tagline: allData.home?.tagline || 'Your journey, our responsibility',
-      hero_slides: allData.hero?.hero_slides || [],
-      offerings: allData.offerings?.offerings || [],
-      featured_tours: allData.tours?.featured_tours || [],
-      stats: allData.stats?.stats || {},
-      testimonials: allData.testimonials?.testimonials || [],
-      partners: allData.partners?.partners || [],
-      faqs: allData.faqs?.faqs || [],
-      contact: allData.contact?.contact || {}
-    };
-
-    renderHome(mergedData);
-  } catch (e) {
-    console.error('Data load error:', e);
-    showToast('Failed to load page content', 'error');
-  }
+  renderHome(mergedData);
 }
 
 /**
@@ -299,7 +293,7 @@ function renderOfferings(offerings) {
 
   container.innerHTML = offerings.map((o, idx) => {
     const id = o.id || slugify(o.title || `service-${idx + 1}`);
-    const detailsUrl = __toAbs ? __toAbs(`/details/?id=${id}&type=offering`) : `/details/?id=${id}&type=offering`;
+    const detailsUrl = window.__toAbs ? window.__toAbs(`/details/?id=${id}&type=offering`) : `/details/?id=${id}&type=offering`;
     return `
       <article class="card offering-card" id="offer-${id}">
         <div class="card-icon">${escapeHtml(o.icon || '✨')}</div>
@@ -330,7 +324,7 @@ function renderFeaturedTours(tours) {
   function renderTours(count) {
     container.innerHTML = sortedTours.slice(0, count).map((t, idx) => {
       const id = t.id || slugify(t.name || `tour-${idx + 1}`);
-      const detailsUrl = __toAbs ? __toAbs(`/details/?id=${id}&type=tour`) : `/details/?id=${id}&type=tour`;
+      const detailsUrl = window.__toAbs ? window.__toAbs(`/details/?id=${id}&type=tour`) : `/details/?id=${id}&type=tour`;
       return `
         <article class="tour" id="tour-${id}">
           <div class="tour-image-wrapper">
@@ -365,7 +359,7 @@ function renderFeaturedTours(tours) {
 
   const onResize = debounce(() => {
     const newInitial = window.innerWidth < 768 ? 2 : 3;
-    if (newInitial !== initialCount && currentShown < newInitial) {
+    if (currentShown < newInitial) {
       currentShown = newInitial;
       renderTours(currentShown);
     }
@@ -415,23 +409,20 @@ function renderStats(stats) {
   if (packagesEl) packagesEl.textContent = (stats.tour_packages || 0).toLocaleString('en-IN');
   if (destinationsEl) destinationsEl.textContent = (stats.destinations || 0).toLocaleString('en-IN');
 
+  const section = document.getElementById('stats');
+  if (!section) return;
+
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
-      if (el.dataset.animated === 'true') return;
-      el.dataset.animated = 'true';
-
       if (customersEl) animateCounter(customersEl, stats.happy_customers || 0);
       if (packagesEl) animateCounter(packagesEl, stats.tour_packages || 0);
       if (destinationsEl) animateCounter(destinationsEl, stats.destinations || 0);
-
-      obs.unobserve(el);
+      obs.unobserve(entry.target);
     });
   }, { threshold: 0.45 });
 
-  const statsSection = document.getElementById('stats');
-  if (statsSection) observer.observe(statsSection);
+  observer.observe(section);
 }
 
 /* =====================================================
@@ -588,7 +579,6 @@ function renderFAQs(faqs) {
   const container = document.getElementById('faq-list');
   if (!container || !Array.isArray(faqs)) return;
 
-  // Initial render: show first 4, rest hidden with data-hidden
   const initial = Math.min(4, faqs.length);
   container.innerHTML = faqs.map((f, i) => `
     <details class="faq"${i === 0 ? ' open' : ''} ${i >= initial ? 'data-hidden="true" style="display:none;"' : ''}>
@@ -597,7 +587,6 @@ function renderFAQs(faqs) {
     </details>
   `).join('');
 
-  // Add "Show more FAQs" control if there are more
   const moreNeeded = faqs.length > initial;
   if (moreNeeded) {
     const btn = document.createElement('button');
@@ -610,7 +599,6 @@ function renderFAQs(faqs) {
 
     btn.addEventListener('click', () => {
       revealMoreFaqs(container, FAQ_REVEAL_STEP);
-      // Hide button if none left hidden
       if (!container.querySelector('[data-hidden="true"]')) {
         btn.style.display = 'none';
       }
@@ -635,13 +623,11 @@ function setupFAQAccordion(container) {
     faq.addEventListener('click', (e) => {
       if (e.target.closest('.faq-summary')) {
         const isOpening = !faq.open;
-        // Auto close others (accordion)
         if (isOpening) {
           faqs.forEach(otherFaq => {
             if (otherFaq !== faq) otherFaq.open = false;
           });
 
-          // Count opens and progressively reveal more
           faqOpenCount++;
           if (faqOpenCount % 2 === 0) {
             revealMoreFaqs(container, FAQ_REVEAL_STEP);
@@ -657,7 +643,6 @@ function setupFAQAccordion(container) {
    ===================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Prevent unwanted scroll on reload
   try {
     const navEntries = performance.getEntriesByType('navigation');
     const type = navEntries && navEntries[0] ? navEntries[0].type : 'navigate';
