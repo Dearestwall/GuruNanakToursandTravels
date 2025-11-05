@@ -1,5 +1,5 @@
 // =====================================================
-// COMMON.JS - Shared utilities with CMS integration
+// COMMON.JS - Shared utilities for all pages
 // =====================================================
 
 /**
@@ -156,19 +156,16 @@ async function fetchCMSData() {
 
     // Cache the merged data
     cachedCMSData = mergedData;
-    console.log('✅ CMS data loaded successfully', mergedData);
+    console.log('CMS data loaded successfully', mergedData);
     return mergedData;
   } catch (e) {
-    console.error('❌ Error loading CMS data:', e);
-    return mergedData;
+    console.error('Error loading CMS data:', e);
+    return mergedData; // Return partial data
   }
 }
 
-// Export for global use
-window.fetchCMSData = fetchCMSData;
-
 /**
- * Show toast notification with animations
+ * Show toast notification
  */
 function showToast(msg, type = 'info', duration = 3000) {
   let toast = document.getElementById('toast');
@@ -181,25 +178,14 @@ function showToast(msg, type = 'info', duration = 3000) {
   }
   
   toast.textContent = msg;
-  toast.className = 'toast';
-  
-  if (type === 'success') {
-    toast.classList.add('toast-success');
-  } else if (type === 'error') {
-    toast.classList.add('toast-error');
-  } else {
-    toast.classList.add('toast-info');
-  }
-  
-  toast.classList.add('show');
+  toast.style.background = type === 'success' ? '#ecfdf5' : type === 'error' ? '#fee2e2' : '#dbeafe';
+  toast.style.color = type === 'success' ? '#065f46' : type === 'error' ? '#b91c1c' : '#0c4a6e';
+  toast.hidden = false;
   
   setTimeout(() => {
-    toast.classList.remove('show');
+    toast.hidden = true;
   }, duration);
 }
-
-// Export for global use
-window.showToast = showToast;
 
 /**
  * Get URL parameter
@@ -209,18 +195,13 @@ function getQueryParam(name) {
   return params.get(name);
 }
 
-// Export for global use
-window.getQueryParam = getQueryParam;
-
 /**
  * Prefix all root-relative links with correct base
  */
 function prefixInternalLinks(scope = document) {
   scope.querySelectorAll('a[href^="/"]').forEach(a => {
     const raw = a.getAttribute('href');
-    if (!raw.startsWith('//')) {
-      a.setAttribute('href', __toAbs(raw));
-    }
+    a.setAttribute('href', __toAbs(raw));
   });
 }
 
@@ -235,7 +216,7 @@ async function loadPartials() {
     // Load header
     if (headerPh) {
       const headerUrl = __getPartialUrl('header.html');
-      console.log('📄 Loading header from:', headerUrl);
+      console.log('Loading header from:', headerUrl);
       const headerRes = await fetch(headerUrl);
       if (!headerRes.ok) throw new Error(`Header HTTP ${headerRes.status}`);
       const headerHtml = await headerRes.text();
@@ -245,22 +226,21 @@ async function loadPartials() {
     // Load footer
     if (footerPh) {
       const footerUrl = __getPartialUrl('footer.html');
-      console.log('📄 Loading footer from:', footerUrl);
+      console.log('Loading footer from:', footerUrl);
       const footerRes = await fetch(footerUrl);
       if (!footerRes.ok) throw new Error(`Footer HTTP ${footerRes.status}`);
       const footerHtml = await footerRes.text();
       footerPh.innerHTML = footerHtml;
     }
 
-    // Initialize after loading
+    // Initialize header/footer after loading
     setTimeout(() => {
       initializeHeader();
       updateContactButtons();
-      prefixInternalLinks();
-    }, 100);
+    }, 200);
 
   } catch (e) {
-    console.error('❌ Error loading partials:', e);
+    console.error('Error loading partials:', e);
     showToast('⚠️ Failed to load header/footer', 'error');
   }
 }
@@ -269,8 +249,6 @@ async function loadPartials() {
  * Initialize header functionality
  */
 function initializeHeader() {
-  console.log('🎯 Initializing header...');
-  
   // Update year in footer
   const yearEl = document.getElementById('year');
   if (yearEl) {
@@ -284,10 +262,10 @@ function initializeHeader() {
 
   if (searchToggle && searchBar) {
     searchToggle.addEventListener('click', () => {
-      const isActive = searchBar.classList.toggle('active');
-      searchToggle.setAttribute('aria-expanded', isActive);
-      if (isActive && searchInput) {
-        searchInput.focus();
+      searchBar.classList.toggle('active');
+      searchToggle.setAttribute('aria-expanded', searchBar.classList.contains('active'));
+      if (searchBar.classList.contains('active')) {
+        searchInput?.focus();
       }
     });
   }
@@ -314,7 +292,12 @@ function initializeHeader() {
   suggestions.forEach(btn => {
     btn.addEventListener('click', () => {
       const query = btn.dataset.search;
-      location.href = __toAbs(`/tours/?q=${encodeURIComponent(query)}`);
+      const form = btn.closest('.search-container')?.querySelector('form');
+      if (form) {
+        const input = form.querySelector('input[type="search"]');
+        input.value = query;
+        form.submit();
+      }
     });
   });
 
@@ -328,7 +311,6 @@ function initializeHeader() {
     if (mobileMenu) {
       mobileMenu.classList.remove('active');
       mobileMenu.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
     }
     if (menuToggle) {
       menuToggle.classList.remove('open');
@@ -340,7 +322,6 @@ function initializeHeader() {
     if (mobileMenu) {
       mobileMenu.classList.add('active');
       mobileMenu.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
     }
     if (menuToggle) {
       menuToggle.classList.add('open');
@@ -358,62 +339,56 @@ function initializeHeader() {
     });
   }
 
-  if (mobileMenuClose) {
+  // Close menu handlers
+  if (mobileMenuClose && mobileMenu) {
     mobileMenuClose.addEventListener('click', closeMobileMenu);
   }
 
-  if (mobileMenuOverlay) {
+  if (mobileMenuOverlay && mobileMenu) {
     mobileMenuOverlay.addEventListener('click', closeMobileMenu);
   }
 
   // Close menu when clicking links
   const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
   mobileMenuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      setTimeout(closeMobileMenu, 200);
-    });
+    link.addEventListener('click', closeMobileMenu);
   });
+
+  // Prefix all links after header is loaded
+  prefixInternalLinks(document);
 
   // Header show/hide on scroll
   initHeaderScroll();
-  
-  console.log('✅ Header initialized');
 }
 
 /**
- * Header show/hide on scroll with smooth animation
+ * Header show/hide on scroll
  */
 function initHeaderScroll() {
   const header = document.getElementById('siteHeader');
   if (!header) return;
 
   let lastScrollTop = 0;
-  let ticking = false;
+  let scrollTimeout;
 
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    clearTimeout(scrollTimeout);
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-        if (currentScroll > 150) {
-          if (currentScroll > lastScrollTop && currentScroll > 200) {
-            // Scrolling down - hide header
-            header.classList.add('header-hidden');
-          } else {
-            // Scrolling up - show header
-            header.classList.remove('header-hidden');
-            header.classList.add('header-scrolled');
-          }
-        } else {
-          // Near top - always show, remove scrolled class
-          header.classList.remove('header-hidden', 'header-scrolled');
-        }
-
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-        ticking = false;
-      });
-      ticking = true;
+    if (currentScroll > 100) {
+      if (currentScroll > lastScrollTop) {
+        // Scrolling down - hide header
+        header.classList.add('hide');
+      } else {
+        // Scrolling up - show header
+        header.classList.remove('hide');
+      }
+    } else {
+      // Near top - always show
+      header.classList.remove('hide');
     }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   }, { passive: true });
 }
 
@@ -421,37 +396,26 @@ function initHeaderScroll() {
  * Update contact buttons with CMS data
  */
 async function updateContactButtons() {
-  console.log('📞 Updating contact buttons...');
-  
   const data = await fetchCMSData();
-  if (!data || !data.contact) {
-    console.warn('⚠️ No contact data available');
-    return;
-  }
+  if (!data || !data.contact) return;
 
   const contact = data.contact;
   const phoneClean = (contact.phone || '').replace(/\s+/g, '').replace(/^0+/, '');
   const waClean = (contact.whatsapp || '').replace(/\s+/g, '').replace(/^0+/, '');
 
-  const phoneHref = phoneClean ? `tel:${phoneClean.startsWith('+') ? phoneClean : '+' + phoneClean}` : null;
-  const waHref = waClean ? `https://wa.me/${waClean.replace(/^\+/, '')}?text=Hello%20GNTT` : null;
+  const phoneHref = phoneClean ? `tel:${phoneClean.replace(/^\+?/, '+')}` : null;
+  const waHref = waClean ? `https://wa.me/${waClean.replace('+', '')}?text=Hello%20GNTT` : null;
 
   // Update all call buttons
   ['sticky-call', 'cta-call', 'header-call', 'mobile-call'].forEach(id => {
     const el = document.getElementById(id);
-    if (el && phoneHref) {
-      el.href = phoneHref;
-      el.setAttribute('aria-label', `Call ${contact.phone}`);
-    }
+    if (el && phoneHref) el.href = phoneHref;
   });
 
   // Update all WhatsApp buttons
   ['sticky-wa', 'cta-wa', 'header-wa', 'mobile-wa'].forEach(id => {
     const el = document.getElementById(id);
-    if (el && waHref) {
-      el.href = waHref;
-      el.setAttribute('aria-label', `WhatsApp ${contact.whatsapp}`);
-    }
+    if (el && waHref) el.href = waHref;
   });
 
   // Update book buttons
@@ -484,110 +448,18 @@ async function updateContactButtons() {
   if (footerMap && contact.map_link) {
     footerMap.href = contact.map_link;
   }
-  
-  console.log('✅ Contact buttons updated');
-}
-
-/**
- * Initialize back to top button
- */
-function initBackToTop() {
-  const backToTopBtn = document.getElementById('backToTop');
-  if (!backToTopBtn) return;
-
-  // Show/hide on scroll with throttle
-  let ticking = false;
-  
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        if (window.pageYOffset > 300) {
-          backToTopBtn.classList.add('visible');
-        } else {
-          backToTopBtn.classList.remove('visible');
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
-  // Smooth scroll to top
-  backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-}
-
-/**
- * Add ripple effect to buttons
- */
-function addRippleEffect() {
-  document.addEventListener('click', function(e) {
-    const btn = e.target.closest('.btn, .action-btn, .btn-icon');
-    if (!btn) return;
-
-    const ripple = document.createElement('span');
-    ripple.classList.add('ripple');
-    
-    const rect = btn.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    const x = e.clientX - rect.left - size / 2;
-    const y = e.clientY - rect.top - size / 2;
-    
-    ripple.style.width = ripple.style.height = `${size}px`;
-    ripple.style.left = `${x}px`;
-    ripple.style.top = `${y}px`;
-    
-    btn.appendChild(ripple);
-    
-    setTimeout(() => ripple.remove(), 600);
-  });
-}
-
-/**
- * Initialize page animations
- */
-function initPageAnimations() {
-  // Fade in elements on scroll
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe elements with fade-up class
-  document.querySelectorAll('.fade-up, section, .card, .feature, .tour').forEach(el => {
-    observer.observe(el);
-  });
 }
 
 /**
  * Initialize on page load
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 Common.js initializing...');
-  console.log('📍 Current path:', location.pathname);
-  console.log('🏠 Root base:', __ROOT_BASE);
-  console.log('🔗 Base abs:', __BASE_ABS);
+  console.log('Common.js initializing...');
+  console.log('Current path:', location.pathname);
+  console.log('Root base:', __ROOT_BASE);
+  console.log('Base abs:', __BASE_ABS);
   
   loadPartials();
-  initBackToTop();
-  addRippleEffect();
-  
-  setTimeout(() => {
-    initPageAnimations();
-  }, 500);
 });
 
 // Mobile menu close on Escape key
@@ -600,22 +472,6 @@ document.addEventListener('keydown', (e) => {
       menuToggle?.classList.remove('open');
       mobileMenu.setAttribute('aria-hidden', 'true');
       menuToggle?.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    }
-    
-    // Close search bar
-    const searchBar = document.getElementById('searchBar');
-    const searchToggle = document.getElementById('searchToggle');
-    if (searchBar?.classList.contains('active')) {
-      searchBar.classList.remove('active');
-      searchToggle?.setAttribute('aria-expanded', 'false');
     }
   }
 });
-
-// Prevent scroll restoration on navigation
-if ('scrollRestoration' in history) {
-  history.scrollRestoration = 'manual';
-}
-
-console.log('✅ Common.js loaded');
