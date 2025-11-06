@@ -8,23 +8,23 @@
       "link": "https://www.deodal.in"
     },
     {
-      "id": "partner-2",
+      "id": "make-my-trip",
       "name": "MakeMyTrip",
-      "logo": "https://via.placeholder.com/200x80?text=MakeMyTrip",
+      "logo": "https://www.google.com/search?q=makemytrip&client=ms-android-vivo-terr1-rso2&sca_esv=dded0198d961bc80&udm=2&biw=1128&bih=2038&sxsrf=AE3TifMCa0WJJS1FjKNCmn5z0oY_PkV6OA%3A1762417630897&ei=3lsMaezBNsmt4-EPtoW82Qo&ved=0ahUKEwjsqNemjd2QAxXJ1jgGHbYCL6sQ4dUDCBI&uact=5&oq=makemytrip&gs_lp=Egtnd3Mtd2l6LWltZyIKbWFrZW15dHJpcDIIEAAYgAQYsQMyCBAAGIAEGLEDMgUQABiABDILEAAYgAQYsQMYgwEyBRAAGIAEMgsQABiABBixAxiDATILEAAYgAQYsQMYgwEyBRAAGIAEMgUQABiABDIFEAAYgARI6x1Q2wdYxhlwAXgAkAEAmAG_AaABmQ2qAQQwLjEwuAEDyAEA-AEBmAILoAL6DqgCCsICChAjGCcYyQIY6gLCAg0QABiABBixAxhDGIoFwgIOEAAYgAQYsQMYgwEYigXCAgQQABgDwgIKEAAYgAQYsQMYCpgDHpIHBTEuNy4zoAeuMrIHBTAuNy4zuAfcDsIHBTMtOC4zyAe5AQ&sclient=gws-wiz-img",
       "description": "Travel portal integration",
       "link": "https://www.makemytrip.com"
     },
     {
       "id": "partner-3",
       "name": "IRCTC",
-      "logo": "https://via.placeholder.com/200x80?text=IRCTC",
+      "logo": "https://www.google.com/search?q=irctc&client=ms-android-vivo-terr1-rso2&sca_esv=dded0198d961bc80&udm=2&biw=1128&bih=2038&sxsrf=AE3TifMwVqeuVW9_Sd0DcV4nzZrjNOqr1g%3A1762417790482&ei=flwMabiZHYGD4-EPuJToiQ0&ved=0ahUKEwi40OPyjd2QAxWBwTgGHTgKOtEQ4dUDCBI&uact=5&oq=irctc&gs_lp=Egtnd3Mtd2l6LWltZyIFaXJjdGMyCBAAGIAEGLEDMggQABiABBixAzIIEAAYgAQYsQMyCBAAGIAEGLEDMgUQABiABDIIEAAYgAQYsQMyCBAAGIAEGLEDMggQABiABBixAzIIEAAYgAQYsQMyBRAAGIAESJMRULEHWKcOcAF4AJABAJgBtAGgAZMGqgEDMC41uAEDyAEA-AEBmAIGoAKLB6gCCsICChAjGCcYyQIY6gLCAgoQABiABBhDGIoFwgINEAAYgAQYsQMYQxiKBcICCxAAGIAEGLEDGIMBmAMWkgcDMS41oAffF7IHAzAuNbgH9AbCBwUzLTUuMcgHaQ&sclient=gws-wiz-img",
       "description": "Train booking partner",
       "link": "https://www.irctctourism.com"
     },
     {
       "id": "partner-4",
       "name": "Booking.com",
-      "logo": "https://via.placeholder.com/200x80?text=Booking.com",
+      "logo": "https://www.google.com/search?q=booking.com&client=ms-android-vivo-terr1-rso2&sca_esv=dded0198d961bc80&udm=2&biw=1128&bih=2038&sxsrf=AE3TifOboBa-5H2hJxMcbIgMfZBqSdfhPw%3A1762417850578&ei=ulwMacWDI5mR4-EPyMyDmA0&ved=0ahUKEwjFyLePjt2QAxWZyDgGHUjmANMQ4dUDCBI&uact=5&oq=booking.com&gs_lp=Egtnd3Mtd2l6LWltZyILYm9va2luZy5jb20yCxAAGIAEGLEDGIMBMgsQABiABBixAxiDATILEAAYgAQYsQMYgwEyCBAAGIAEGLEDMgUQABiABDIFEAAYgAQyCxAAGIAEGLEDGIMBMgUQABiABDIFEAAYgAQyBRAAGIAESL0ZUIMGWJUXcAF4AJABAJgB5wGgAYIPqgEGMC4xMC4xuAEDyAEA-AEBmAIMoALrEKgCCsICChAjGCcYyQIY6gLCAg4QABiABBixAxiDARiKBcICChAAGIAEGEMYigXCAgsQABiABBixAxiKBZgDEZIHBTEuOC4zoAfqPrIHBTAuOC4zuAfaEMIHBTMtOC40yAfMAQ&sclient=gws-wiz-img",
       "description": "Hotel booking integration",
       "link": "https://www.booking.com"
     }
