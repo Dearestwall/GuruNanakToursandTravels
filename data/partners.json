@@ -1,11 +1,11 @@
 {
   "partners": [
     {
-      "id": "partner-1",
-      "name": "Air India",
-      "logo": "https://via.placeholder.com/200x80?text=Air+India",
-      "description": "Official airline partner",
-      "link": "https://www.airindia.in"
+      "id": "deodap",
+      "name": "DeoDap",
+      "logo": "https://www.google.com/search?client=ms-android-vivo-terr1-rso2&sca_esv=dded0198d961bc80&sxsrf=AE3TifMBt_4Xbl37Wlq99NinEHEO_t_-jQ:1762417628565&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZjSkgYzz5-5RrRWAIniWd7tzPwkE1KJWcRvaH01D-XIWeastqiZIJdfgxUh0jAqXh0guv7UNXeXDK8EgbrT4CB9Q7SynXWRS0iawm-nnjXpi-qTzzCtFU8fLxeO8pe9YMJOe-JyWvz2SEzStBzjZ2tg9TsFv_nBdmGs4iUgF-Bh1SzMgM4ycCqWxoMInY8V_L0TULKQ&q=deodap&sa=X&ved=2ahUKEwjT-Miljd2QAxX_xTgGHeURG9kQtKgLegQIKBAB&biw=980&bih=1770&dpr=2.75",
+      "description": "Official courier partner",
+      "link": "https://www.deodal.in"
     },
     {
       "id": "partner-2",
