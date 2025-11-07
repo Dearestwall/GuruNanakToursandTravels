@@ -1,34 +1,25 @@
 # =====================================================
-# NETLIFY CMS CONFIGURATION
+# config.yml - Netlify CMS Configuration
 # Guru Nanak Tours & Travels
-# Site: https://github.com/dearestwall/GuruNanakToursandTravels
 # =====================================================
 
 backend:
   name: git-gateway
   branch: main
-  repo: dearestwall/GuruNanakToursandTravels
 
 site_url: "https://dearestwall.github.io/GuruNanakToursandTravels"
-base_url: "/GuruNanakToursandTravels/admin"
-display_url: "https://dearestwall.github.io/GuruNanakToursandTravels"
-
 media_folder: "assets/images"
 public_folder: "/GuruNanakToursandTravels/assets/images"
 
-# Publish mode: Editors must submit changes for review
+# Publish settings
 publish_mode: editorial_workflow
-
-# Slug formatting
 slug:
   encoding: "ascii"
   clean_accents: true
 
-# Show unpublished entries in preview pane
-show_preview_links: true
-
 # =====================================================
-# COLLECTIONS
+# DATA COLLECTIONS
+# All save to data/*.json format
 # =====================================================
 
 collections:
@@ -50,12 +41,11 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.title}}"
-            add_to_top: true
             fields:
               - { label: "ID", name: "id", widget: "string", required: true }
               - { label: "Title", name: "title", widget: "string", required: true }
               - { label: "Subtitle", name: "subtitle", widget: "text", required: true }
-              - { label: "Image URL", name: "image", widget: "image", required: true, media_library: { config: { max_file_size: 5242880 } } }
+              - { label: "Image URL", name: "image", widget: "image", required: true }
               - label: "Call-to-Actions"
                 name: "ctas"
                 widget: "list"
@@ -64,19 +54,18 @@ collections:
                 fields:
                   - { label: "Button Label", name: "label", widget: "string", required: true }
                   - { label: "Button Link", name: "href", widget: "string", required: true }
-                  - { label: "Button Style", name: "style", widget: "select", options: ["btn-primary", "btn-secondary"], default: "btn-primary" }
-
+                  - { label: "Button Style", name: "style", widget: "select", options: ["btn-primary", "btn-secondary"], default: "btn-primary", required: false }
 
   # =====================================================
   # GALLERY IMAGES
   # =====================================================
   - name: "gallery"
-    label: "🖼️ Gallery"
-    description: "Manage gallery images & categories"
+    label: "🖼️ Gallery Images"
+    description: "Manage gallery images and categories"
     format: "json"
     files:
       - name: "gallery_images"
-        label: "Images"
+        label: "Gallery Images"
         file: "data/gallery.json"
         fields:
           - label: "Gallery Images"
@@ -84,23 +73,61 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.title}} ({{fields.category}})"
-            add_to_top: true
             fields:
-              - { label: "Image ID", name: "id", widget: "string", required: true, hint: "goa-beach-1" }
-              - { label: "Title", name: "title", widget: "string", required: true }
-              - { label: "Destination", name: "destination", widget: "string", hint: "Location name" }
-              - { label: "Category", name: "category", widget: "select", options: ["mountains", "beaches", "cities", "culture", "nature", "wildlife", "adventure"], required: true }
-              - { label: "Image File", name: "src", widget: "image", required: true, media_library: { config: { max_file_size: 5242880 } } }
-              - { label: "Description", name: "description", widget: "text", hint: "Brief description" }
-              - { label: "Alt Text", name: "alt", widget: "string", hint: "For accessibility" }
-
+              - { 
+                  label: "Image ID", 
+                  name: "id", 
+                  widget: "string", 
+                  required: true,
+                  hint: "Unique ID (e.g., goa-beach-1)"
+                }
+              - { 
+                  label: "Image Title", 
+                  name: "title", 
+                  widget: "string", 
+                  required: true 
+                }
+              - { 
+                  label: "Destination", 
+                  name: "destination", 
+                  widget: "string", 
+                  required: false,
+                  hint: "Location name"
+                }
+              - { 
+                  label: "Category", 
+                  name: "category", 
+                  widget: "select", 
+                  options: ["mountains", "beaches", "cities", "culture", "nature", "wildlife", "adventure"], 
+                  required: true 
+                }
+              - { 
+                  label: "Image File", 
+                  name: "src", 
+                  widget: "image", 
+                  required: true 
+                }
+              - { 
+                  label: "Description", 
+                  name: "description", 
+                  widget: "text", 
+                  required: false,
+                  hint: "Brief description of the photo"
+                }
+              - { 
+                  label: "Alt Text", 
+                  name: "alt", 
+                  widget: "string", 
+                  required: false,
+                  hint: "For accessibility"
+                }
 
   # =====================================================
-  # FEATURED TOURS (LATEST FIRST)
+  # TOURS & PACKAGES
   # =====================================================
   - name: "tours"
-    label: "✈️ Featured Tours"
-    description: "Tour packages (newest first)"
+    label: "✈️ Featured Tours & Packages"
+    description: "Manage tour packages, pricing, itineraries"
     format: "json"
     files:
       - name: "featured_tours"
@@ -112,53 +139,53 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.name}} - ₹{{fields.price}}"
-            add_to_top: true
             fields:
-              - { label: "Tour ID", name: "id", widget: "string", required: true, hint: "goa-beaches-5d4n" }
+              - { 
+                  label: "Tour ID", 
+                  name: "id", 
+                  widget: "string", 
+                  required: true, 
+                  hint: "e.g., goa-beaches-5d4n" 
+                }
               - { label: "Tour Name", name: "name", widget: "string", required: true }
-              - { label: "Tour Image", name: "image", widget: "image", required: true, media_library: { config: { max_file_size: 5242880 } } }
+              - { label: "Tour Image", name: "image", widget: "image", required: true }
               - { label: "Short Summary", name: "summary", widget: "text", required: true }
               - { label: "Full Description", name: "description", widget: "markdown", required: true }
-              - { label: "Destination", name: "destination", widget: "string" }
+              - { label: "Destination", name: "destination", widget: "string", required: false }
               - { label: "Price (₹)", name: "price", widget: "number", value_type: "int", required: true }
-              - { label: "Duration", name: "duration", widget: "string", hint: "5 Days / 4 Nights" }
-              - { label: "Best Season", name: "best_season", widget: "string", hint: "Oct - Mar" }
+              - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g., 5 Days / 4 Nights" }
+              - { label: "Best Season", name: "best_season", widget: "string", required: false, hint: "e.g., October - March" }
               - label: "What's Included"
                 name: "includes"
                 widget: "list"
-                allow_add: true
                 field: { label: "Item", name: "item", widget: "string" }
               - label: "What's Excluded"
                 name: "excludes"
                 widget: "list"
-                allow_add: true
                 field: { label: "Item", name: "item", widget: "string" }
               - label: "Tour Highlights"
                 name: "highlights"
                 widget: "list"
-                allow_add: true
                 field: { label: "Highlight", name: "item", widget: "string" }
               - label: "Tour FAQs"
                 name: "faqs"
                 widget: "list"
                 collapsed: true
-                allow_add: true
                 summary: "Q: {{fields.q}}"
                 fields:
                   - { label: "Question", name: "q", widget: "string", required: true }
                   - { label: "Answer", name: "a", widget: "text", required: true }
 
-
   # =====================================================
   # SERVICES & OFFERINGS
   # =====================================================
   - name: "offerings"
-    label: "💼 Services"
-    description: "Tour services (flights, hotels, visas)"
+    label: "💼 Services & Offerings"
+    description: "Manage tour services, flights, hotels, visas"
     format: "json"
     files:
       - name: "offerings_list"
-        label: "Services"
+        label: "Offerings"
         file: "data/offerings.json"
         fields:
           - label: "Service Offerings"
@@ -166,31 +193,54 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.icon}} {{fields.title}}"
-            add_to_top: true
             fields:
-              - { label: "Service ID", name: "id", widget: "string", required: true, hint: "flight-bookings" }
-              - { label: "Icon (emoji)", name: "icon", widget: "string", required: true, hint: "✈️, 🏨, 🗺️" }
-              - { label: "Title", name: "title", widget: "string", required: true }
-              - { label: "Description", name: "description", widget: "text", required: true }
-              - { label: "Long Description", name: "long_description", widget: "markdown" }
+              - { 
+                  label: "Service ID", 
+                  name: "id", 
+                  widget: "string", 
+                  required: true, 
+                  hint: "e.g., flight-bookings" 
+                }
+              - { 
+                  label: "Icon (emoji)", 
+                  name: "icon", 
+                  widget: "string", 
+                  required: true, 
+                  hint: "e.g., ✈️, 🏨, 🗺️, 📋" 
+                }
+              - { 
+                  label: "Service Title", 
+                  name: "title", 
+                  widget: "string", 
+                  required: true 
+                }
+              - { 
+                  label: "Short Description", 
+                  name: "description", 
+                  widget: "text", 
+                  required: true 
+                }
+              - { 
+                  label: "Long Description", 
+                  name: "long_description", 
+                  widget: "markdown", 
+                  required: false 
+                }
               - label: "Key Features"
                 name: "features"
                 widget: "list"
-                allow_add: true
                 field: { label: "Feature", name: "item", widget: "string" }
               - label: "Benefits"
                 name: "benefits"
                 widget: "list"
-                allow_add: true
                 field: { label: "Benefit", name: "item", widget: "string" }
 
-
   # =====================================================
-  # TESTIMONIALS (LATEST FIRST)
+  # TESTIMONIALS
   # =====================================================
   - name: "testimonials"
-    label: "⭐ Reviews"
-    description: "Customer testimonials (newest first)"
+    label: "⭐ Customer Reviews"
+    description: "Manage customer testimonials & reviews"
     format: "json"
     files:
       - name: "customer_reviews"
@@ -202,27 +252,37 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.name}} - {{fields.rating}}⭐"
-            add_to_top: true
             fields:
-              - { label: "Review ID", name: "id", widget: "string", required: true }
+              - { 
+                  label: "Review ID", 
+                  name: "id", 
+                  widget: "string", 
+                  required: true, 
+                  hint: "e.g., review-1" 
+                }
               - { label: "Customer Name", name: "name", widget: "string", required: true }
-              - { label: "Email", name: "email", widget: "string" }
-              - { label: "Location", name: "location", widget: "string" }
-              - { label: "Rating", name: "rating", widget: "select", options: ["5", "4", "3", "2", "1"], required: true }
-              - { label: "Comment", name: "comment", widget: "text", required: true }
-              - { label: "Photo", name: "photo", widget: "image", media_library: { config: { max_file_size: 5242880 } } }
-              - { label: "Tour Package", name: "tour_package", widget: "string" }
-              - { label: "Travel Date", name: "travel_date", widget: "string", hint: "November 2024" }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "City/Location", name: "location", widget: "string", required: false }
+              - { 
+                  label: "Rating", 
+                  name: "rating", 
+                  widget: "select", 
+                  options: ["5", "4", "3", "2", "1"], 
+                  required: true 
+                }
+              - { label: "Review Comment", name: "comment", widget: "text", required: true }
+              - { label: "Profile Photo", name: "photo", widget: "image", required: false }
+              - { label: "Tour Package", name: "tour_package", widget: "string", required: false }
+              - { label: "Travel Date", name: "travel_date", widget: "string", required: false, hint: "e.g., November 2024" }
               - { label: "Verified", name: "verified", widget: "boolean", default: true }
               - { label: "Helpful Count", name: "helpful_count", widget: "number", value_type: "int", default: 0 }
-
 
   # =====================================================
   # PARTNERS & BRANDS
   # =====================================================
   - name: "partners"
-    label: "🤝 Partners"
-    description: "Brand partnerships & logos"
+    label: "🤝 Partners & Brands"
+    description: "Manage brand partnerships and logos"
     format: "json"
     files:
       - name: "brand_partners"
@@ -234,21 +294,19 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.name}}"
-            add_to_top: true
             fields:
               - { label: "Partner ID", name: "id", widget: "string", required: true }
               - { label: "Partner Name", name: "name", widget: "string", required: true }
-              - { label: "Logo", name: "logo", widget: "image", required: true, media_library: { config: { max_file_size: 5242880 } } }
-              - { label: "Description", name: "description", widget: "text" }
-              - { label: "Website Link", name: "link", widget: "string" }
-
+              - { label: "Logo", name: "logo", widget: "image", required: true }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - { label: "Website Link", name: "link", widget: "string", required: false }
 
   # =====================================================
   # FAQs - GLOBAL
   # =====================================================
   - name: "faqs"
-    label: "❓ FAQs"
-    description: "Frequently asked questions"
+    label: "❓ FAQ - Global"
+    description: "General frequently asked questions"
     format: "json"
     files:
       - name: "global_faqs"
@@ -260,13 +318,23 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.q}}"
-            add_to_top: true
             fields:
-              - { label: "FAQ ID", name: "id", widget: "string", required: true, hint: "faq-1" }
+              - { 
+                  label: "FAQ ID", 
+                  name: "id", 
+                  widget: "string", 
+                  required: true, 
+                  hint: "e.g., faq-1" 
+                }
               - { label: "Question", name: "q", widget: "string", required: true }
               - { label: "Answer", name: "a", widget: "text", required: true }
-              - { label: "Category", name: "category", widget: "string", hint: "Booking, Cancellation" }
-
+              - { 
+                  label: "Category", 
+                  name: "category", 
+                  widget: "string", 
+                  required: false, 
+                  hint: "e.g., Booking, Cancellation" 
+                }
 
   # =====================================================
   # STATISTICS
@@ -284,25 +352,59 @@ collections:
             name: "stats"
             widget: "object"
             fields:
-              - { label: "Happy Customers", name: "happy_customers", widget: "number", value_type: "int" }
-              - { label: "Tour Packages", name: "tour_packages", widget: "number", value_type: "int" }
-              - { label: "Destinations", name: "destinations", widget: "number", value_type: "int" }
-              - { label: "Support", name: "support", widget: "string", default: "24/7" }
-              - { label: "Years of Experience", name: "experience_years", widget: "number", value_type: "int" }
-              - { label: "Success Rate (%)", name: "success_rate", widget: "number", value_type: "int" }
-              - { label: "Average Rating", name: "average_rating", widget: "number", value_type: "float" }
-
+              - { 
+                  label: "Happy Customers", 
+                  name: "happy_customers", 
+                  widget: "number", 
+                  value_type: "int" 
+                }
+              - { 
+                  label: "Tour Packages", 
+                  name: "tour_packages", 
+                  widget: "number", 
+                  value_type: "int" 
+                }
+              - { 
+                  label: "Destinations", 
+                  name: "destinations", 
+                  widget: "number", 
+                  value_type: "int" 
+                }
+              - { 
+                  label: "Support", 
+                  name: "support", 
+                  widget: "string", 
+                  default: "24/7" 
+                }
+              - { 
+                  label: "Years of Experience", 
+                  name: "experience_years", 
+                  widget: "number", 
+                  value_type: "int" 
+                }
+              - { 
+                  label: "Success Rate (%)", 
+                  name: "success_rate", 
+                  widget: "number", 
+                  value_type: "int" 
+                }
+              - { 
+                  label: "Average Rating", 
+                  name: "average_rating", 
+                  widget: "number", 
+                  value_type: "float" 
+                }
 
   # =====================================================
   # CONTACT INFORMATION
   # =====================================================
   - name: "contact"
-    label: "📞 Contact"
+    label: "📞 Contact Information"
     description: "Company contact details & hours"
     format: "json"
     files:
       - name: "company_contact"
-        label: "Contact Info"
+        label: "Contact"
         file: "data/contact.json"
         fields:
           - label: "Contact Details"
@@ -310,62 +412,166 @@ collections:
             widget: "object"
             fields:
               - { label: "Phone", name: "phone", widget: "string", required: true }
-              - { label: "WhatsApp", name: "whatsapp", widget: "string", required: true }
-              - { label: "Email", name: "email", widget: "string", required: true }
-              - { label: "Address", name: "address", widget: "text", required: true }
-              - { label: "Google Maps Link", name: "map_link", widget: "string" }
-              - { label: "Booking Link", name: "booking_link", widget: "string" }
+              - { label: "WhatsApp Number", name: "whatsapp", widget: "string", required: true }
+              - { label: "Email Address", name: "email", widget: "string", required: true }
+              - { label: "Office Address", name: "address", widget: "text", required: true }
+              - { label: "Google Maps Link", name: "map_link", widget: "string", required: false }
+              - { label: "Booking Page Link", name: "booking_link", widget: "string", required: false }
               - label: "Office Hours"
                 name: "office_hours"
                 widget: "object"
                 collapsed: true
                 fields:
-                  - { label: "Monday-Friday", name: "monday_friday", widget: "string", default: "9:00 AM - 7:00 PM" }
-                  - { label: "Saturday", name: "saturday", widget: "string", default: "10:00 AM - 6:00 PM" }
-                  - { label: "Sunday", name: "sunday", widget: "string", default: "Closed" }
+                  - { 
+                      label: "Monday-Friday", 
+                      name: "monday_friday", 
+                      widget: "string", 
+                      default: "9:00 AM - 7:00 PM" 
+                    }
+                  - { 
+                      label: "Saturday", 
+                      name: "saturday", 
+                      widget: "string", 
+                      default: "10:00 AM - 6:00 PM" 
+                    }
+                  - { 
+                      label: "Sunday", 
+                      name: "sunday", 
+                      widget: "string", 
+                      default: "Closed" 
+                    }
               - label: "Social Media"
                 name: "social_media"
                 widget: "object"
                 collapsed: true
                 fields:
-                  - { label: "Facebook", name: "facebook", widget: "string" }
-                  - { label: "Instagram", name: "instagram", widget: "string" }
-                  - { label: "YouTube", name: "youtube", widget: "string" }
-                  - { label: "WhatsApp Group", name: "whatsapp_group", widget: "string" }
-                  - { label: "Twitter", name: "twitter", widget: "string" }
-
+                  - { 
+                      label: "Facebook URL", 
+                      name: "facebook", 
+                      widget: "string", 
+                      required: false 
+                    }
+                  - { 
+                      label: "Instagram Handle", 
+                      name: "instagram", 
+                      widget: "string", 
+                      required: false 
+                    }
+                  - { 
+                      label: "YouTube URL", 
+                      name: "youtube", 
+                      widget: "string", 
+                      required: false 
+                    }
+                  - { 
+                      label: "WhatsApp Group Link", 
+                      name: "whatsapp_group", 
+                      widget: "string", 
+                      required: false 
+                    }
+                  - { 
+                      label: "Twitter URL", 
+                      name: "twitter", 
+                      widget: "string", 
+                      required: false 
+                    }
 
   # =====================================================
-  # BLOG POSTS (LATEST FIRST)
+  # BLOG POSTS
   # =====================================================
-  - name: "blog"
-    label: "📚 Blog"
-    description: "Travel tips & guides (newest first)"
+  - name: "blog_posts"
+    label: "📚 Blog Posts"
+    description: "Travel tips, guides, and updates"
     folder: "data/blog"
     format: "json"
     create: true
     delete: true
     slug: "{{id}}"
-    sort_by: "date"
-    reverse: true
     fields:
-      - { label: "Post ID", name: "id", widget: "string", required: true, hint: "goa-tips-2024" }
-      - { label: "Title", name: "title", widget: "string", required: true }
-      - { label: "Featured Image", name: "image", widget: "image", media_library: { config: { max_file_size: 5242880 } } }
+      - { 
+          label: "Post ID", 
+          name: "id", 
+          widget: "string", 
+          required: true,
+          hint: "e.g., goa-tips-2024"
+        }
+      - { label: "Post Title", name: "title", widget: "string" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Publish Date", name: "date", widget: "datetime", default: "now" }
       - { label: "Author", name: "author", widget: "string", default: "GNTT Team" }
-      - { label: "Category", name: "category", widget: "select", options: ["Travel Tips", "Destination Guide", "News", "How-To", "Adventure"], required: true }
-      - { label: "Tags", name: "tags", widget: "list", allow_add: true, field: { label: "Tag", name: "item", widget: "string" } }
-      - { label: "Content", name: "content", widget: "markdown", required: true }
-      - { label: "Meta Description", name: "meta_description", widget: "text" }
-
+      - { 
+          label: "Category", 
+          name: "category", 
+          widget: "select", 
+          options: ["Travel Tips", "Destination Guide", "News", "How-To", "Adventure"] 
+        }
+      - { 
+          label: "Tags", 
+          name: "tags", 
+          widget: "list", 
+          field: { label: "Tag", name: "item", widget: "string" } 
+        }
+      - { label: "Post Content", name: "content", widget: "markdown" }
+      - { label: "Meta Description", name: "meta_description", widget: "text", required: false }
 
   # =====================================================
-  # NOTIFICATIONS (LATEST FIRST)
+  # SITE SETTINGS
+  # =====================================================
+  - name: "settings"
+    label: "⚙️ Site Settings"
+    description: "Global site configuration"
+    format: "json"
+    files:
+      - name: "general_settings"
+        label: "General Settings"
+        file: "data/settings.json"
+        fields:
+          - { 
+              label: "Site Name", 
+              name: "site_name", 
+              widget: "string", 
+              default: "Guru Nanak Tour & Travels" 
+            }
+          - { 
+              label: "Site Tagline", 
+              name: "tagline", 
+              widget: "string", 
+              default: "Your journey, our responsibility" 
+            }
+          - { label: "Meta Description", name: "meta_description", widget: "text" }
+          - { label: "Meta Keywords", name: "meta_keywords", widget: "string" }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - { label: "Favicon", name: "favicon", widget: "image", required: false }
+          - { label: "Default Image", name: "default_image", widget: "image", required: false }
+          - label: "Default Meta Settings"
+            name: "meta_defaults"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { 
+                  label: "Default Description", 
+                  name: "description", 
+                  widget: "text" 
+                }
+              - { 
+                  label: "Google Analytics ID", 
+                  name: "google_analytics", 
+                  widget: "string", 
+                  required: false 
+                }
+              - { 
+                  label: "Meta Robots", 
+                  name: "robots", 
+                  widget: "string", 
+                  default: "index, follow" 
+                }
+
+  # =====================================================
+  # NOTIFICATIONS
   # =====================================================
   - name: "notifications"
     label: "🔔 Notifications"
-    description: "Banner messages (newest first)"
+    description: "Manage banner and notification messages"
     format: "json"
     files:
       - name: "notification_banners"
@@ -377,38 +583,36 @@ collections:
             widget: "list"
             collapsed: false
             summary: "{{fields.text}}"
-            add_to_top: true
             fields:
-              - { label: "Message Text", name: "text", widget: "string", required: true }
-              - { label: "Link", name: "link", widget: "string" }
-              - { label: "Link Text", name: "link_text", widget: "string", hint: "Learn More" }
-              - { label: "Active", name: "active", widget: "boolean", default: true }
-              - { label: "Type", name: "type", widget: "select", options: ["info", "success", "warning", "error"], default: "info" }
-
-
-  # =====================================================
-  # SITE SETTINGS
-  # =====================================================
-  - name: "settings"
-    label: "⚙️ Settings"
-    description: "Global site configuration"
-    format: "json"
-    files:
-      - name: "general_settings"
-        label: "General Settings"
-        file: "data/settings.json"
-        fields:
-          - { label: "Site Name", name: "site_name", widget: "string", default: "Guru Nanak Tour & Travels" }
-          - { label: "Tagline", name: "tagline", widget: "string", default: "Your journey, our responsibility" }
-          - { label: "Meta Description", name: "meta_description", widget: "text", required: true }
-          - { label: "Meta Keywords", name: "meta_keywords", widget: "string" }
-          - { label: "Logo", name: "logo", widget: "image", media_library: { config: { max_file_size: 5242880 } } }
-          - { label: "Favicon", name: "favicon", widget: "image", media_library: { config: { max_file_size: 5242880 } } }
-          - label: "Meta Defaults"
-            name: "meta_defaults"
-            widget: "object"
-            collapsed: true
-            fields:
-              - { label: "Default Description", name: "description", widget: "text" }
-              - { label: "Google Analytics ID", name: "google_analytics", widget: "string" }
-              - { label: "Meta Robots", name: "robots", widget: "string", default: "index, follow" }
+              - { 
+                  label: "Message Text", 
+                  name: "text", 
+                  widget: "string",
+                  required: true
+                }
+              - { 
+                  label: "Link (optional)", 
+                  name: "link", 
+                  widget: "string", 
+                  required: false 
+                }
+              - { 
+                  label: "Link Text", 
+                  name: "link_text", 
+                  widget: "string", 
+                  required: false,
+                  hint: "e.g., Learn More"
+                }
+              - { 
+                  label: "Active", 
+                  name: "active", 
+                  widget: "boolean", 
+                  default: true 
+                }
+              - { 
+                  label: "Type", 
+                  name: "type", 
+                  widget: "select", 
+                  options: ["info", "success", "warning", "error"],
+                  default: "info"
+                }
