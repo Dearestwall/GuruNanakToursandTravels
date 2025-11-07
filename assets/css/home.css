@@ -959,75 +959,62 @@
 }
 
 /* =====================================================
-   FAQS
+   FAQs ENHANCEMENTS
    ===================================================== */
 
-.faqs {
-  background: var(--bg-alt);
-}
-
-.faq-list {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
 .faq {
-  background: #fff;
-  border-radius: var(--radius);
-  margin-bottom: 1rem;
-  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: var(--transition);
+  transition: all 0.3s var(--curve);
+  margin-bottom: 1rem;
 }
 
-.faq[open] {
-  box-shadow: var(--shadow);
+.faq.fade-in {
+  animation: slideInUp 0.4s var(--curve);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.faq:hover {
+  border-color: var(--brand);
+  box-shadow: var(--shadow-md);
 }
 
 .faq-summary {
-  padding: 1.5rem;
-  font-weight: 600;
-  color: var(--brand);
+  padding: 1.25rem;
+  background: linear-gradient(135deg, var(--pri-50) 0%, var(--bg-50) 100%);
   cursor: pointer;
-  user-select: none;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: var(--transition);
-}
-
-.faq-summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq-summary::after {
-  content: '+';
-  font-size: 1.8rem;
   font-weight: 700;
-  transition: var(--transition);
-  flex-shrink: 0;
-  margin-left: 1rem;
+  color: var(--pri);
+  transition: all 0.3s var(--curve);
+  user-select: none;
 }
 
-.faq[open] .faq-summary::after {
-  content: '−';
-  transform: rotate(180deg);
-}
-
-.faq-summary:hover {
-  background: var(--bg-alt);
+.faq[open] .faq-summary,
+.faq.open .faq-summary {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+  color: #fff;
+  font-weight: 900;
 }
 
 .faq-answer {
-  padding: 0 1.5rem 1.5rem;
-  color: var(--text-light);
+  padding: 1.25rem;
+  color: var(--text);
   line-height: 1.8;
-  font-size: 0.95rem;
-  animation: fadeInDown 0.3s ease-out;
+  animation: slideDown 0.3s var(--curve);
 }
 
-@keyframes fadeInDown {
+@keyframes slideDown {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -1038,40 +1025,26 @@
   }
 }
 
-@media (max-width: 768px) {
-  .faq-summary {
-    padding: 1.25rem;
-    font-size: 0.95rem;
-  }
-
-  .faq-answer {
-    padding: 0 1.25rem 1.25rem;
-    font-size: 0.9rem;
-  }
-
-  .faq-summary::after {
-    font-size: 1.5rem;
-    margin-left: 0.75rem;
-  }
+/* Button styles */
+#showMoreFaqs {
+  padding: 0.875rem 1.75rem;
+  border: 2px solid var(--brand);
+  background: transparent;
+  color: var(--brand);
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s var(--curve);
 }
 
-@media (max-width: 640px) {
-  .faq {
-    margin-bottom: 0.75rem;
-  }
+#showMoreFaqs:hover {
+  background: var(--brand);
+  color: #fff;
+  transform: translateY(-2px);
+}
 
-  .faq-summary {
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
-
-  .faq-answer {
-    padding: 0 1rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .faq-summary::after {
-    font-size: 1.3rem;
-    margin-left: 0.5rem;
-  }
+#showMoreFaqs:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }

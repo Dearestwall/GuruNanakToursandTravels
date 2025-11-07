@@ -7,209 +7,143 @@
   <meta name="description" content="GNTT — Tours, ticketing, hotels, visas, and cabs across India and worldwide. Your journey, our responsibility." />
   <meta name="theme-color" content="#0e5aa7" />
   
-  <link rel="stylesheet" href="assets/css/home.css" />
   <link rel="stylesheet" href="assets/css/common.css" />
   <link rel="stylesheet" href="assets/css/header.css" />
   <link rel="stylesheet" href="assets/css/footer.css" />
-  
-
+  <link rel="stylesheet" href="assets/css/home.css" />
 </head>
 <body>
-  <!-- Header Placeholder -->
   <div id="header-placeholder"></div>
 
   <main id="main" role="main">
-    <!-- ============================================
-         HERO SECTION WITH AUTO-ROTATING SLIDES
-         ============================================ -->
+    <!-- HERO SECTION -->
     <section class="hero" id="hero" aria-label="Featured promotions">
       <div class="hero-container">
         <div class="hero-slider" id="hero-slider" role="region" aria-label="Hero carousel" aria-live="polite">
           <noscript>Please enable JavaScript to view hero banners.</noscript>
         </div>
-
-        <!-- Hero Navigation (will be styled and positioned with CSS) -->
+        
         <div class="hero-nav" aria-label="Hero navigation">
-          <button class="hero-nav-btn hero-prev" id="hero-prev" aria-label="Previous slide">
-            <span>❮</span>
-          </button>
-          <button class="hero-nav-btn hero-next" id="hero-next" aria-label="Next slide">
-            <span>❯</span>
-          </button>
+          <button class="hero-nav-btn hero-prev" id="hero-prev" aria-label="Previous slide">❮</button>
+          <button class="hero-nav-btn hero-next" id="hero-next" aria-label="Next slide">❯</button>
         </div>
-
-        <!-- Hero Indicators (dots) -->
+        
         <div class="hero-dots" id="hero-dots" aria-label="Hero slide indicators"></div>
       </div>
     </section>
 
-    <!-- ============================================
-         WHAT WE OFFER SECTION
-         ============================================ -->
-   <!-- ============================================
-     WHAT WE OFFER SECTION - CLICKABLE CARDS
-     ============================================ -->
-<section class="offerings" id="offerings" aria-labelledby="offerings-title">
-  <div class="container">
-    <div class="section-head">
-      <h2 id="offerings-title" data-i18n="offerings_title">What We Offer</h2>
-      <p data-i18n="offerings_subtitle">Comprehensive travel solutions tailored to your needs</p>
-    </div>
-    <div class="cards" id="offer-cards" role="region" aria-label="Our services">
-      <!-- Injected from home.json via JavaScript -->
-    </div>
-  </div>
-</section>
+    <!-- OFFERINGS SECTION -->
+    <section class="offerings" id="offerings" aria-labelledby="offerings-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="offerings-title">✈️ What We Offer</h2>
+          <p>Comprehensive travel solutions tailored to your needs</p>
+        </div>
+        <div class="cards" id="offer-cards" role="region" aria-label="Our services"></div>
+      </div>
+    </section>
 
-    <!-- ============================================
-         FEATURED TOURS SECTION
-         ============================================ -->
+    <!-- FEATURED TOURS SECTION -->
     <section class="featured-tours" id="featured-tours" aria-labelledby="featured-tours-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="featured-tours-title" data-i18n="featured_tours">Featured Tours</h2>
-          <p data-i18n="featured_tours_subtitle">Handpicked destinations for unforgettable experiences</p>
+          <h2 id="featured-tours-title">🗺️ Featured Tours</h2>
+          <p>Handpicked destinations for unforgettable experiences</p>
         </div>
-
-        <!-- Tours Grid (will show 2-3 on mobile, more on desktop) -->
-        <div class="tour-grid" id="tour-grid" role="region" aria-label="Featured tour packages">
-          <!-- Injected from home.json -->
-        </div>
-
-        <!-- Load More Button (hidden if all tours shown) -->
+        <div class="tour-grid" id="tour-grid" role="region" aria-label="Featured tour packages"></div>
         <div class="load-more-container">
-          <button class="btn btn-load-more" id="load-more-tours" aria-label="Load more tours">
-            Load More Tours →
-          </button>
+          <button class="btn btn-load-more" id="load-more-tours" aria-label="Load more tours">Load More Tours →</button>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         WHY CHOOSE US / ACHIEVEMENTS SECTION
-         ============================================ -->
+    <!-- STATS SECTION -->
     <section class="stats" id="stats" aria-labelledby="stats-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="stats-title" data-i18n="why_choose_us">Why Choose Us</h2>
+          <h2 id="stats-title">📊 Why Choose Us</h2>
         </div>
         <div class="stat-grid" role="region" aria-label="Our achievements">
           <div class="stat">
             <span class="stat-number" id="stat-customers">5,000+</span>
-            <small class="stat-label" data-i18n="happy_customers">Happy Customers</small>
+            <small class="stat-label">Happy Customers</small>
           </div>
           <div class="stat">
             <span class="stat-number" id="stat-packages">150+</span>
-            <small class="stat-label" data-i18n="tour_packages">Tour Packages</small>
+            <small class="stat-label">Tour Packages</small>
           </div>
           <div class="stat">
             <span class="stat-number" id="stat-destinations">50+</span>
-            <small class="stat-label" data-i18n="destinations">Destinations</small>
+            <small class="stat-label">Destinations</small>
           </div>
           <div class="stat">
             <span class="stat-number" id="stat-support">24/7</span>
-            <small class="stat-label" data-i18n="support">Support</small>
+            <small class="stat-label">Support</small>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         CUSTOMER TESTIMONIALS / REVIEWS SECTION
-         (Horizontal Auto-Scroll or Manual)
-         ============================================ -->
+    <!-- TESTIMONIALS SECTION -->
     <section class="testimonials" id="testimonials" aria-labelledby="testimonials-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="testimonials-title" data-i18n="what_customers_say">What Customers Say</h2>
+          <h2 id="testimonials-title">⭐ What Customers Say</h2>
         </div>
-
         <div class="testimonials-wrapper">
-          <button class="carousel-nav carousel-prev" id="testimonials-prev" aria-label="Previous testimonial">
-            <span>❮</span>
-          </button>
-
+          <button class="carousel-nav carousel-prev" id="testimonials-prev" aria-label="Previous testimonial">❮</button>
           <div class="testimonial-carousel" id="testimonial-carousel" role="region" aria-label="Customer testimonials carousel">
-            <div class="testimonial-list" id="testimonial-list">
-              <!-- Injected from home.json -->
-            </div>
+            <div class="testimonial-list" id="testimonial-list"></div>
           </div>
-
-          <button class="carousel-nav carousel-next" id="testimonials-next" aria-label="Next testimonial">
-            <span>❯</span>
-          </button>
+          <button class="carousel-nav carousel-next" id="testimonials-next" aria-label="Next testimonial">❯</button>
         </div>
-
-        <!-- Carousel indicators -->
         <div class="carousel-dots" id="testimonials-dots" aria-label="Testimonial slide indicators"></div>
       </div>
     </section>
 
-    <!-- ============================================
-         TRUSTED PARTNERS SECTION
-         (Horizontal Auto-Scroll)
-         ============================================ -->
+    <!-- PARTNERS SECTION -->
     <section class="partners" id="partners" aria-labelledby="partners-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="partners-title" data-i18n="trusted_partners">Trusted Partners</h2>
+          <h2 id="partners-title">🤝 Trusted Partners</h2>
         </div>
-
         <div class="partners-wrapper">
           <div class="partners-carousel" id="partners-carousel" role="region" aria-label="Our trusted partners">
-            <div class="partner-logos" id="partner-logos">
-              <!-- Injected from home.json -->
-            </div>
+            <div class="partner-logos" id="partner-logos"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         CALL-TO-ACTION SECTION
-         ============================================ -->
+    <!-- CTA SECTION -->
     <section class="cta" id="cta" aria-labelledby="cta-title">
       <div class="container">
-        <h2 id="cta-title" data-i18n="ready_to_plan">Ready to Plan Your Dream Trip?</h2>
-        <p data-i18n="cta_copy">Call, WhatsApp, or send an enquiry — we'll respond with the best options for you.</p>
+        <h2 id="cta-title">🎯 Ready to Plan Your Dream Trip?</h2>
+        <p>Call, WhatsApp, or send an enquiry — we'll respond with the best options for you.</p>
         <div class="cta-actions">
-          <a class="btn btn-call" id="cta-call" href="tel:+916283315156" aria-label="Call us">
-            📞 Call Now
-          </a>
-          <a class="btn btn-wa" id="cta-wa" href="https://wa.me/916283315156" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-            💬 WhatsApp Chat
-          </a>
-          <a class="btn btn-book" id="cta-book" href="/booking/" aria-label="Book now">
-            📝 Book Online
-          </a>
+          <a class="btn btn-call" id="cta-call" href="tel:+916283315156" aria-label="Call us">📞 Call Now</a>
+          <a class="btn btn-wa" id="cta-wa" href="https://wa.me/916283315156" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬 WhatsApp</a>
+          <a class="btn btn-book" id="cta-book" href="/booking/" aria-label="Book now">📝 Book Online</a>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         FAQS SECTION
-         ============================================ -->
+    <!-- FAQs SECTION -->
     <section class="faqs" id="faqs" aria-labelledby="faqs-title">
       <div class="container">
         <div class="section-head">
-          <h2 id="faqs-title" data-i18n="faqs">Frequently Asked Questions</h2>
+          <h2 id="faqs-title">❓ Frequently Asked Questions</h2>
         </div>
-        <div class="faq-list" id="faq-list" role="region" aria-label="Frequently asked questions">
-          <!-- Injected from home.json -->
-        </div>
+        <div class="faq-list" id="faq-list" role="region" aria-label="Frequently asked questions"></div>
       </div>
     </section>
   </main>
 
-  <!-- Footer Placeholder -->
   <div id="footer-placeholder"></div>
 
-  <!-- Scripts -->
   <script src="assets/js/common.js" defer></script>
   <script src="assets/js/header.js" defer></script>
   <script src="assets/js/footer.js" defer></script>
   <script src="assets/js/home.js" defer></script>
-  
-
 </body>
 </html>

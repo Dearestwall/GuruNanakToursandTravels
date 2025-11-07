@@ -1,0 +1,372 @@
+/* =====================================================
+   LEGAL.CSS - Privacy, Terms, Disclaimer Pages
+   ===================================================== */
+
+:root {
+  --pri: #0a3d62;
+  --brand: #0e5aa7;
+  --sec: #f39c12;
+  --text: #1f2937;
+  --text-light: #374151;
+  --muted: #6b7280;
+  --bg: #ffffff;
+  --bg-50: #f9fafb;
+  --bg-100: #f3f4f6;
+  --line: #e5e7eb;
+  --shadow-md: 0 6px 18px rgba(0,0,0,.08);
+  --shadow-lg: 0 18px 40px rgba(0,0,0,.12);
+  --radius: 0.75rem;
+  --radius-lg: 1rem;
+  --curve: cubic-bezier(.2,.8,.2,1);
+}
+
+/* =====================================================
+   BREADCRUMB
+   ===================================================== */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--bg-50) 0%, var(--bg-100) 100%);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+  animation: fadeInDown 0.6s var(--curve);
+}
+
+.breadcrumb a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s var(--curve);
+}
+
+.breadcrumb a:hover {
+  color: var(--sec);
+}
+
+.breadcrumb span {
+  color: var(--muted);
+}
+
+.breadcrumb span::before {
+  content: '/';
+  margin: 0 0.5rem;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =====================================================
+   HERO SECTION
+   ===================================================== */
+
+.legal-hero {
+  background: linear-gradient(135deg, var(--pri) 0%, var(--brand) 100%);
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.legal-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255,255,255,.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.legal-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.legal-hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.legal-hero p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  margin: 0;
+}
+
+.last-updated {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .legal-hero {
+    padding: 2.5rem 1rem;
+  }
+
+  .legal-hero h1 {
+    font-size: 1.75rem;
+  }
+}
+
+/* =====================================================
+   LEGAL CONTAINER & LAYOUT
+   ===================================================== */
+
+.legal-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 80vh;
+}
+
+.legal-content {
+  flex: 1;
+  padding: 3rem 2rem;
+  background: var(--bg);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   TABLE OF CONTENTS
+   ===================================================== */
+
+.toc {
+  background: var(--bg-50);
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 3rem;
+  position: sticky;
+  top: 100px;
+  z-index: 100;
+}
+
+.toc h2 {
+  font-size: 1.25rem;
+  color: var(--pri);
+  margin: 0 0 1rem 0;
+  font-weight: 800;
+}
+
+.toc ol {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.toc li {
+  margin-bottom: 0.5rem;
+}
+
+.toc a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s var(--curve);
+}
+
+.toc a:hover {
+  color: var(--sec);
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .toc {
+    position: static;
+  }
+}
+
+/* =====================================================
+   CONTENT SECTIONS
+   ===================================================== */
+
+section {
+  margin-bottom: 3rem;
+  scroll-margin-top: 120px;
+}
+
+section h2 {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--pri);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--sec);
+  display: inline-block;
+}
+
+section h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--brand);
+  margin: 1.5rem 0 0.75rem 0;
+}
+
+section p {
+  color: var(--text-light);
+  line-height: 1.8;
+  margin: 0 0 1rem 0;
+}
+
+section ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+section li {
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+section li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--sec);
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+/* =====================================================
+   EMPHASIS & SPECIAL BOXES
+   ===================================================== */
+
+.emphasis {
+  font-weight: 700;
+  color: var(--pri);
+  background: rgba(14, 90, 167, 0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border-left: 3px solid var(--brand);
+}
+
+.emphasis-box {
+  background: linear-gradient(135deg, var(--pri-50) 0%, var(--bg-50) 100%);
+  border-left: 4px solid var(--brand);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.emphasis-box p {
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  color: var(--pri);
+}
+
+.emphasis-box ul {
+  margin: 0;
+}
+
+/* =====================================================
+   CONTACT BOX
+   ===================================================== */
+
+.contact-box {
+  background: var(--bg-50);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.contact-box p {
+  margin: 0;
+  line-height: 2;
+}
+
+.contact-box strong {
+  color: var(--pri);
+  font-weight: 800;
+}
+
+.contact-box a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s var(--curve);
+}
+
+.contact-box a:hover {
+  color: var(--sec);
+  text-decoration: underline;
+}
+
+/* =====================================================
+   LINKS
+   ===================================================== */
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s var(--curve);
+}
+
+a:hover {
+  color: var(--sec);
+  text-decoration: underline;
+}
+
+section a {
+  font-weight: 700;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .legal-content {
+    padding: 2rem 1rem;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+  }
+
+  section h3 {
+    font-size: 1.1rem;
+  }
+
+  .breadcrumb {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .contact-box {
+    padding: 1rem;
+  }
+
+  .toc {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .legal-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .legal-hero p {
+    font-size: 1rem;
+  }
+
+  section li {
+    padding-left: 1.25rem;
+  }
+}
