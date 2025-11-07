@@ -1,5 +1,5 @@
 /* =====================================================
-   LEGAL.CSS - Privacy, Terms, Disclaimer Pages
+   LEGAL.CSS - COMPACT & RESPONSIVE
    ===================================================== */
 
 :root {
@@ -14,31 +14,31 @@
   --bg-100: #f3f4f6;
   --line: #e5e7eb;
   --shadow-md: 0 6px 18px rgba(0,0,0,.08);
-  --shadow-lg: 0 18px 40px rgba(0,0,0,.12);
-  --radius: 0.75rem;
-  --radius-lg: 1rem;
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
   --curve: cubic-bezier(.2,.8,.2,1);
 }
 
 /* =====================================================
-   BREADCRUMB
+   BREADCRUMB - COMPACT
    ===================================================== */
 
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
   background: linear-gradient(135deg, var(--bg-50) 0%, var(--bg-100) 100%);
   border-bottom: 1px solid var(--line);
-  font-size: 0.9rem;
-  animation: fadeInDown 0.6s var(--curve);
+  font-size: 0.8rem;
+  overflow-x: auto;
 }
 
 .breadcrumb a {
   color: var(--brand);
   text-decoration: none;
   font-weight: 600;
+  white-space: nowrap;
   transition: color 0.3s var(--curve);
 }
 
@@ -48,26 +48,30 @@
 
 .breadcrumb span {
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .breadcrumb span::before {
   content: '/';
-  margin: 0 0.5rem;
+  margin: 0 0.25rem;
 }
 
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+@media (max-width: 640px) {
+  .breadcrumb {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    gap: 0.15rem;
+  }
 }
 
 /* =====================================================
-   HERO SECTION
+   HERO SECTION - COMPACT
    ===================================================== */
 
 .legal-hero {
   background: linear-gradient(135deg, var(--pri) 0%, var(--brand) 100%);
   color: #fff;
-  padding: 4rem 2rem;
+  padding: 2.5rem 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -87,36 +91,46 @@
 }
 
 .legal-hero h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 900;
-  margin: 0 0 1rem 0;
-  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.01em;
 }
 
 .legal-hero p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   opacity: 0.95;
   margin: 0;
 }
 
 .last-updated {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   opacity: 0.85;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .legal-hero {
-    padding: 2.5rem 1rem;
+    padding: 1.75rem 1rem;
   }
 
   .legal-hero h1 {
-    font-size: 1.75rem;
+    font-size: 1.25rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .legal-hero p {
+    font-size: 0.85rem;
+  }
+
+  .last-updated {
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
   }
 }
 
 /* =====================================================
-   LEGAL CONTAINER & LAYOUT
+   CONTAINER & LAYOUT
    ===================================================== */
 
 .legal-container {
@@ -127,45 +141,45 @@
 
 .legal-content {
   flex: 1;
-  padding: 3rem 2rem;
+  padding: 2rem 1rem;
   background: var(--bg);
 }
 
 .container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 /* =====================================================
-   TABLE OF CONTENTS
+   TABLE OF CONTENTS - COMPACT MOBILE-FIRST
    ===================================================== */
 
 .toc {
   background: var(--bg-50);
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: 2rem;
-  margin-bottom: 3rem;
-  position: sticky;
-  top: 100px;
-  z-index: 100;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  position: static;
 }
 
 .toc h2 {
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   color: var(--pri);
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   font-weight: 800;
 }
 
 .toc ol {
   list-style: decimal;
   margin: 0;
-  padding-left: 1.5rem;
+  padding-left: 1.25rem;
+  columns: 1;
 }
 
 .toc li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
 }
 
 .toc a {
@@ -173,63 +187,101 @@
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s var(--curve);
+  line-height: 1.4;
 }
 
-.toc a:hover {
+.toc a:hover,
+.toc a:focus {
   color: var(--sec);
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+/* Two column layout on tablets and above */
+@media (min-width: 768px) {
   .toc {
-    position: static;
+    position: sticky;
+    top: 80px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .toc ol {
+    columns: 2;
+    gap: 1rem;
+  }
+
+  .toc li {
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 640px) {
+  .toc {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .toc h2 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .toc ol {
+    padding-left: 1rem;
+  }
+
+  .toc li {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
   }
 }
 
 /* =====================================================
-   CONTENT SECTIONS
+   CONTENT SECTIONS - COMPACT
    ===================================================== */
 
 section {
-  margin-bottom: 3rem;
-  scroll-margin-top: 120px;
+  margin-bottom: 1.5rem;
+  scroll-margin-top: 100px;
 }
 
 section h2 {
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   font-weight: 900;
   color: var(--pri);
-  margin: 0 0 1rem 0;
-  padding-bottom: 0.75rem;
-  border-bottom: 3px solid var(--sec);
+  margin: 0 0 0.6rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--sec);
   display: inline-block;
 }
 
 section h3 {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--brand);
-  margin: 1.5rem 0 0.75rem 0;
+  margin: 1rem 0 0.5rem 0;
 }
 
 section p {
   color: var(--text-light);
-  line-height: 1.8;
-  margin: 0 0 1rem 0;
+  line-height: 1.6;
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
 }
 
 section ul {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
 }
 
 section li {
   color: var(--text-light);
-  line-height: 1.8;
-  margin-bottom: 0.75rem;
-  padding-left: 1.5rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
   position: relative;
+  font-size: 0.95rem;
 }
 
 section li::before {
@@ -238,66 +290,122 @@ section li::before {
   left: 0;
   color: var(--sec);
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  section {
+    margin-bottom: 1rem;
+  }
+
+  section h2 {
+    font-size: 1.15rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.35rem;
+  }
+
+  section h3 {
+    font-size: 0.95rem;
+    margin: 0.75rem 0 0.35rem 0;
+  }
+
+  section p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  section li {
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+    padding-left: 1rem;
+  }
 }
 
 /* =====================================================
-   EMPHASIS & SPECIAL BOXES
+   EMPHASIS & BOXES - COMPACT
    ===================================================== */
 
 .emphasis {
   font-weight: 700;
   color: var(--pri);
   background: rgba(14, 90, 167, 0.05);
-  padding: 0.5rem 0.75rem;
+  padding: 0.35rem 0.5rem;
   border-radius: var(--radius);
-  border-left: 3px solid var(--brand);
+  border-left: 2px solid var(--brand);
+  font-size: 0.95rem;
 }
 
 .emphasis-box {
   background: linear-gradient(135deg, var(--pri-50) 0%, var(--bg-50) 100%);
-  border-left: 4px solid var(--brand);
+  border-left: 3px solid var(--brand);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  margin: 1.5rem 0;
+  padding: 1rem;
+  margin: 1rem 0;
 }
 
 .emphasis-box p {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   font-weight: 700;
   color: var(--pri);
+  font-size: 0.9rem;
 }
 
 .emphasis-box ul {
   margin: 0;
 }
 
+@media (max-width: 640px) {
+  .emphasis {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .emphasis-box {
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+  }
+
+  .emphasis-box p {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
 /* =====================================================
-   CONTACT BOX
+   CONTACT BOX - COMPACT
    ===================================================== */
 
 .contact-box {
   background: var(--bg-50);
   border: 2px dashed var(--line);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  margin: 1.5rem 0;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
 }
 
 .contact-box p {
   margin: 0;
-  line-height: 2;
+  line-height: 1.7;
+  font-size: 0.9rem;
 }
 
 .contact-box strong {
   color: var(--pri);
   font-weight: 800;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.contact-box strong:first-child {
+  margin-top: 0;
 }
 
 .contact-box a {
   color: var(--brand);
   text-decoration: none;
   font-weight: 700;
+  word-break: break-word;
   transition: color 0.3s var(--curve);
 }
 
@@ -306,8 +414,26 @@ section li::before {
   text-decoration: underline;
 }
 
+@media (max-width: 640px) {
+  .contact-box {
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+  }
+
+  .contact-box p {
+    line-height: 1.6;
+    font-size: 0.85rem;
+  }
+
+  .contact-box strong {
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+  }
+}
+
 /* =====================================================
-   LINKS
+   LINKS - GLOBAL
    ===================================================== */
 
 a {
@@ -317,7 +443,8 @@ a {
   transition: color 0.3s var(--curve);
 }
 
-a:hover {
+a:hover,
+a:focus {
   color: var(--sec);
   text-decoration: underline;
 }
@@ -327,12 +454,72 @@ section a {
 }
 
 /* =====================================================
-   RESPONSIVE
+   PRINT STYLES
    ===================================================== */
 
-@media (max-width: 768px) {
+@media print {
+  .breadcrumb,
+  .toc,
+  #header-placeholder,
+  #footer-placeholder {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+
+  section {
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .toc {
+    position: static;
+  }
+}
+
+/* =====================================================
+   TABLET LAYOUT (768px - 1024px)
+   ===================================================== */
+
+@media (min-width: 768px) and (max-width: 1024px) {
   .legal-content {
-    padding: 2rem 1rem;
+    padding: 1.75rem;
+  }
+
+  section {
+    margin-bottom: 1.25rem;
+  }
+
+  section h2 {
+    font-size: 1.35rem;
+  }
+
+  .container {
+    max-width: 750px;
+  }
+}
+
+/* =====================================================
+   DESKTOP LAYOUT (1024px+)
+   ===================================================== */
+
+@media (min-width: 1024px) {
+  .legal-content {
+    padding: 2rem;
+  }
+
+  .container {
+    max-width: 850px;
+  }
+
+  section {
+    margin-bottom: 1.75rem;
   }
 
   section h2 {
@@ -340,33 +527,46 @@ section a {
   }
 
   section h3 {
-    font-size: 1.1rem;
-  }
-
-  .breadcrumb {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .contact-box {
-    padding: 1rem;
+    font-size: 1.15rem;
   }
 
   .toc {
-    padding: 1.5rem;
+    max-width: 250px;
+    float: right;
+    margin: 0 0 1.5rem 1.5rem;
   }
 }
 
-@media (max-width: 640px) {
-  .legal-hero h1 {
-    font-size: 1.5rem;
-  }
+/* =====================================================
+   ANIMATIONS
+   ===================================================== */
 
-  .legal-hero p {
-    font-size: 1rem;
+@keyframes highlight {
+  0% {
+    background-color: rgba(243, 156, 18, 0.15);
   }
+  100% {
+    background-color: transparent;
+  }
+}
 
-  section li {
-    padding-left: 1.25rem;
+section.highlight {
+  animation: highlight 2s ease-out;
+  padding: 0.5rem;
+  border-radius: var(--radius-lg);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.breadcrumb {
+  animation: fadeInDown 0.4s var(--curve);
 }
