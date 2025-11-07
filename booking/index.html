@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title id="page-title">Book Your Journey — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" id="page-desc" content="Book tours, flights, hotels with GNTT" />
+  <meta name="description" id="page-desc" content="Book tours, flights, hotels, and visa assistance with Guru Nanak Tour & Travels" />
   
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
@@ -13,20 +13,23 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  
+  <div class="gtranslate_wrapper"></div>
   <div id="header-placeholder"></div>
 
   <main id="main" class="booking-container">
     <!-- Breadcrumb -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a>
+      <a href="../index.html">Home</a>
       <span aria-current="page">Booking</span>
     </nav>
 
     <!-- Hero -->
     <section class="booking-hero">
       <div class="container">
-        <h1>Book Your Journey</h1>
-        <p>Fill in the details below and we'll get you started</p>
+        <h1>📝 Book Your Journey</h1>
+        <p>Fill in the details below and we'll get you started on your adventure</p>
+        <div class="hero-divider"></div>
       </div>
     </section>
 
@@ -34,50 +37,62 @@
     <section class="booking-main">
       <div class="container">
         <div class="booking-grid">
+          
           <!-- Form -->
           <div class="booking-form-wrapper">
-            <form id="bookingForm" class="booking-form">
+            <form id="bookingForm" class="booking-form" novalidate>
               <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+              <input type="hidden" name="from_name" value="GNTT Booking">
+              <input type="hidden" name="redirect" value="https://web3forms.com/success">
 
-              <!-- Trip Type -->
-              <fieldset class="form-group">
-                <legend>What would you like to book?</legend>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="trip_type" value="tour" checked>
-                    <span>Tour Package</span>
+              <!-- Trip Type - COMPACT LAYOUT -->
+              <fieldset class="form-group form-section trip-type-section">
+                <legend class="section-title">📌 What would you like to book?</legend>
+                <div class="trip-type-grid">
+                  <label class="trip-type-card">
+                    <input type="radio" name="trip_type" value="tour" checked required>
+                    <span class="trip-type-icon">🗺️</span>
+                    <span class="trip-type-label">Tour</span>
                   </label>
-                  <label class="radio-label">
-                    <input type="radio" name="trip_type" value="flight">
-                    <span>Flight</span>
+                  
+                  <label class="trip-type-card">
+                    <input type="radio" name="trip_type" value="flight" required>
+                    <span class="trip-type-icon">✈️</span>
+                    <span class="trip-type-label">Flight</span>
                   </label>
-                  <label class="radio-label">
-                    <input type="radio" name="trip_type" value="hotel">
-                    <span>Hotel</span>
+                  
+                  <label class="trip-type-card">
+                    <input type="radio" name="trip_type" value="hotel" required>
+                    <span class="trip-type-icon">🏨</span>
+                    <span class="trip-type-label">Hotel</span>
                   </label>
-                  <label class="radio-label">
-                    <input type="radio" name="trip_type" value="visa">
-                    <span>Visa Assistance</span>
+                  
+                  <label class="trip-type-card">
+                    <input type="radio" name="trip_type" value="visa" required>
+                    <span class="trip-type-icon">📋</span>
+                    <span class="trip-type-label">Visa</span>
                   </label>
                 </div>
               </fieldset>
 
-              <!-- Package/Service Name (Pre-filled) -->
-              <div class="form-group">
-                <label for="package_name">Package/Service Name *</label>
+              <!-- Package/Service Name -->
+              <div class="form-group form-section">
+                <label for="package_name" class="section-title">📍 Package/Service Name *</label>
                 <input 
                   type="text" 
                   id="package_name" 
                   name="package_name" 
                   placeholder="e.g., Goa Beach Paradise"
                   required
+                  class="form-input"
                 />
+                <small class="form-help">Enter the name of the package or service you're interested in</small>
               </div>
 
-              <!-- Number of Travelers -->
-              <div class="form-row">
+              <!-- Number of Travelers & Date -->
+              <div class="form-row form-section">
                 <div class="form-group">
-                  <label for="travelers_count">Number of Travelers *</label>
+                  <label for="travelers_count" class="section-title">👥 Number of Travelers *</label>
                   <input 
                     type="number" 
                     id="travelers_count" 
@@ -86,22 +101,26 @@
                     max="20"
                     value="1"
                     required
+                    class="form-input"
                   />
+                  <small class="form-help">Max 20</small>
                 </div>
+                
                 <div class="form-group">
-                  <label for="trip_date">Preferred Travel Date *</label>
+                  <label for="trip_date" class="section-title">📅 Preferred Date *</label>
                   <input 
                     type="date" 
                     id="trip_date" 
                     name="trip_date"
                     required
+                    class="form-input"
                   />
                 </div>
               </div>
 
               <!-- Personal Information -->
-              <fieldset class="form-fieldset">
-                <legend>Your Information</legend>
+              <fieldset class="form-fieldset form-section">
+                <legend class="section-title">👤 Your Information</legend>
 
                 <div class="form-row">
                   <div class="form-group">
@@ -110,16 +129,21 @@
                       type="text" 
                       id="first_name" 
                       name="first_name"
+                      placeholder="John"
                       required
+                      class="form-input"
                     />
                   </div>
+                  
                   <div class="form-group">
                     <label for="last_name">Last Name *</label>
                     <input 
                       type="text" 
                       id="last_name" 
                       name="last_name"
+                      placeholder="Doe"
                       required
+                      class="form-input"
                     />
                   </div>
                 </div>
@@ -131,16 +155,21 @@
                       type="email" 
                       id="email" 
                       name="email"
+                      placeholder="your.email@example.com"
                       required
+                      class="form-input"
                     />
                   </div>
+                  
                   <div class="form-group">
                     <label for="phone">Phone Number *</label>
                     <input 
                       type="tel" 
                       id="phone" 
                       name="phone"
+                      placeholder="+91 98765 43210"
                       required
+                      class="form-input"
                     />
                   </div>
                 </div>
@@ -152,6 +181,7 @@
                     id="address" 
                     name="address"
                     placeholder="Street address"
+                    class="form-input"
                   />
                 </div>
 
@@ -162,76 +192,124 @@
                       type="text" 
                       id="city" 
                       name="city"
+                      placeholder="Your city"
+                      class="form-input"
                     />
                   </div>
+                  
                   <div class="form-group">
                     <label for="country">Country</label>
                     <input 
                       type="text" 
                       id="country" 
                       name="country"
+                      placeholder="Your country"
+                      class="form-input"
                     />
                   </div>
                 </div>
               </fieldset>
 
               <!-- Special Requests -->
-              <div class="form-group">
-                <label for="special_requests">Special Requests/Notes</label>
+              <div class="form-group form-section">
+                <label for="special_requests" class="section-title">✨ Special Requests/Notes</label>
                 <textarea 
                   id="special_requests" 
                   name="special_requests"
-                  rows="4"
+                  rows="3"
                   placeholder="Any special requirements or preferences?"
+                  class="form-input"
                 ></textarea>
               </div>
 
               <!-- Terms -->
-              <label class="checkbox-label">
-                <input type="checkbox" name="terms" required />
-                <span>I agree to the terms and conditions</span>
+              <label class="checkbox-label form-section">
+                <input 
+                  type="checkbox" 
+                  name="terms" 
+                  required
+                  id="terms-checkbox"
+                />
+                <span>I agree to the <a href="#" target="_blank">terms</a> and <a href="#" target="_blank">privacy policy</a></span>
               </label>
 
               <!-- Submit -->
-              <button type="submit" class="btn btn-primary btn-large">
-                Submit Booking Inquiry
-              </button>
+              <div class="form-actions form-section">
+                <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
+                  🚀 Submit Booking Inquiry
+                </button>
+                <p class="form-note">Our team will contact you within 24 hours</p>
+              </div>
 
-              <div id="bookingResult" class="result-message" hidden></div>
+              <!-- Result Message -->
+              <div id="bookingResult" class="result-message" hidden role="alert"></div>
             </form>
           </div>
 
           <!-- Sidebar -->
           <aside class="booking-sidebar">
-            <!-- Summary -->
-            <div class="booking-summary">
-              <h3>Booking Summary</h3>
+            <!-- Booking Summary -->
+            <div class="booking-summary card">
+              <h3>📋 Summary</h3>
+              <div class="summary-divider"></div>
+              
+              <div class="summary-item">
+                <span class="label">Service:</span>
+                <span id="summary-type" class="value">Tour</span>
+              </div>
+              
               <div class="summary-item">
                 <span class="label">Package:</span>
-                <span id="summary-package" class="value">Select a package</span>
+                <span id="summary-package" class="value">-</span>
               </div>
+              
               <div class="summary-item">
                 <span class="label">Travelers:</span>
                 <span id="summary-travelers" class="value">1</span>
               </div>
+              
               <div class="summary-item">
                 <span class="label">Date:</span>
-                <span id="summary-date" class="value">Not selected</span>
+                <span id="summary-date" class="value">-</span>
               </div>
             </div>
 
             <!-- Contact Info -->
-            <div class="contact-info-card">
-              <h3>Need Help?</h3>
-              <p><strong>Call us:</strong> <a id="sidebar-phone" href="tel:">+91 6283315156</a></p>
-              <p><strong>Email:</strong> <a id="sidebar-email" href="mailto:">info@gntt.com</a></p>
-              <p><strong>Hours:</strong><br>Mon-Fri: 9 AM - 7 PM<br>Sat: 10 AM - 6 PM</p>
+            <div class="contact-info-card card">
+              <h3>🆘 Need Help?</h3>
+              
+              <div class="contact-item">
+                <span>📞</span>
+                <a id="sidebar-phone" href="tel:+916283315156">+91 6283315156</a>
+              </div>
+
+              <div class="contact-item">
+                <span>✉️</span>
+                <a id="sidebar-email" href="mailto:info@gntt.com">info@gntt.com</a>
+              </div>
+
+              <div class="contact-item">
+                <span>💬</span>
+                <a id="sidebar-whatsapp" href="https://wa.me/916283315156" target="_blank">WhatsApp</a>
+              </div>
+
+              <div class="office-hours">
+                <strong>Hours</strong>
+                <p>Mon-Fri: 9 AM - 7 PM</p>
+                <p>Sat: 10 AM - 6 PM</p>
+              </div>
             </div>
 
             <!-- Info Box -->
-            <div class="info-box">
-              <h4>💡 Pro Tip</h4>
-              <p>Our team will contact you within 24 hours to confirm your booking and answer any questions.</p>
+            <div class="info-box card">
+              <div class="info-icon">💡</div>
+              <h4>Pro Tips</h4>
+              <ul>
+                <li>✓ Confirm within 24 hrs</li>
+                <li>✓ Flexible payment</li>
+                <li>✓ Free consultation</li>
+                <li>✓ 15+ years trusted</li>
+              </ul>
             </div>
           </aside>
         </div>
@@ -239,12 +317,14 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
   <div id="toast" class="toast" role="alert"></div>
 
-    <script src="../assets/js/common.js" defer></script>
+  <!-- Scripts -->
+  <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
-   <script src="../assets/js/booking.js" defer></script>
+  <script src="../assets/js/booking.js" defer></script>
 </body>
 </html>

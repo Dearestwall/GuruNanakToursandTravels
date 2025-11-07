@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title id="page-title">Contact Us — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" id="page-desc" content="Get in touch with Guru Nanak Tour & Travels" />
+  <meta name="description" id="page-desc" content="Get in touch with Guru Nanak Tour & Travels - call, email, or visit us" />
   
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
@@ -13,20 +13,23 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  
+  <div class="gtranslate_wrapper"></div>
   <div id="header-placeholder"></div>
 
   <main id="main" class="contact-container">
     <!-- Breadcrumb -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a>
+      <a href="../index.html">Home</a>
       <span aria-current="page">Contact</span>
     </nav>
 
     <!-- Hero -->
     <section class="contact-hero">
       <div class="container">
-        <h1>Get In Touch</h1>
+        <h1>💬 Get In Touch</h1>
         <p>We'd love to hear from you. Reach out anytime!</p>
+        <div class="hero-divider"></div>
       </div>
     </section>
 
@@ -34,72 +37,174 @@
     <section class="contact-main">
       <div class="container">
         <div class="contact-grid">
+          
           <!-- Contact Form -->
           <div class="contact-form-wrapper">
-            <h2>Send us a Message</h2>
-            <form id="contactForm" class="contact-form">
-              <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+            <div class="form-header">
+              <h2>📨 Send us a Message</h2>
+              <p>We'll respond within 24 hours</p>
+            </div>
 
+            <form id="contactForm" class="contact-form" novalidate>
+              <input type="hidden" name="access_key" value="ad236cf0-3ad7-45a1-b50c-f410840cf9dd">
+              <input type="hidden" name="from_name" value="GNTT Contact">
+              <input type="hidden" name="redirect" value="https://web3forms.com/success">
+
+              <!-- Name & Email -->
               <div class="form-row">
                 <div class="form-group">
                   <label for="contact-name">Full Name *</label>
-                  <input type="text" id="contact-name" name="name" required />
+                  <input 
+                    type="text" 
+                    id="contact-name" 
+                    name="name" 
+                    placeholder="Your full name"
+                    required 
+                    class="form-input"
+                  />
+                  <small class="form-help">First and last name</small>
                 </div>
+                
                 <div class="form-group">
                   <label for="contact-email">Email Address *</label>
-                  <input type="email" id="contact-email" name="email" required />
+                  <input 
+                    type="email" 
+                    id="contact-email" 
+                    name="email" 
+                    placeholder="your.email@example.com"
+                    required 
+                    class="form-input"
+                  />
+                  <small class="form-help">We'll reply to this email</small>
                 </div>
               </div>
 
+              <!-- Phone -->
               <div class="form-group">
                 <label for="contact-phone">Phone Number</label>
-                <input type="tel" id="contact-phone" name="phone" />
+                <input 
+                  type="tel" 
+                  id="contact-phone" 
+                  name="phone" 
+                  placeholder="+91 98765 43210"
+                  class="form-input"
+                />
+                <small class="form-help">Optional - for faster response</small>
               </div>
 
+              <!-- Subject -->
               <div class="form-group">
                 <label for="contact-subject">Subject *</label>
-                <input type="text" id="contact-subject" name="subject" required />
+                <select id="contact-subject" name="subject" required class="form-input">
+                  <option value="">-- Select a subject --</option>
+                  <option value="tour-inquiry">🗺️ Tour Inquiry</option>
+                  <option value="booking-help">📝 Booking Help</option>
+                  <option value="flight-booking">✈️ Flight Booking</option>
+                  <option value="hotel-booking">🏨 Hotel Booking</option>
+                  <option value="visa-help">📋 Visa Assistance</option>
+                  <option value="feedback">⭐ Feedback</option>
+                  <option value="other">💬 Other</option>
+                </select>
+                <small class="form-help">Choose the reason for your message</small>
               </div>
 
+              <!-- Message -->
               <div class="form-group">
                 <label for="contact-message">Message *</label>
-                <textarea id="contact-message" name="message" rows="6" required></textarea>
+                <textarea 
+                  id="contact-message" 
+                  name="message" 
+                  rows="5"
+                  placeholder="Tell us how we can help..."
+                  required
+                  class="form-input"
+                ></textarea>
+                <small class="form-help">Minimum 10 characters</small>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-large">Send Message</button>
-              <div id="contactResult" class="result-message" hidden></div>
+              <!-- Checkbox -->
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  name="subscribe" 
+                  id="subscribe"
+                />
+                <span>Subscribe to our newsletter for travel tips & offers</span>
+              </label>
+
+              <!-- Submit -->
+              <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
+                🚀 Send Message
+              </button>
+
+              <!-- Result Message -->
+              <div id="contactResult" class="result-message" hidden role="alert"></div>
             </form>
           </div>
 
           <!-- Contact Info Sidebar -->
           <aside class="contact-sidebar">
-            <!-- Direct Contact -->
-            <div class="contact-card">
-              <h3>📞 Phone</h3>
-              <p><a id="call-link" href="tel:">+91 6283315156</a></p>
-              <p class="hint">Mon-Fri: 9 AM - 7 PM | Sat: 10 AM - 6 PM</p>
+            <!-- Phone -->
+            <div class="contact-card card">
+              <div class="card-icon">📞</div>
+              <h3>Phone</h3>
+              <p><a id="call-link" href="tel:+916283315156" class="contact-link">+91 6283315156</a></p>
+              <p class="hint">Mon-Fri: 9 AM - 7 PM<br>Sat: 10 AM - 6 PM</p>
             </div>
 
-            <div class="contact-card">
-              <h3>📧 Email</h3>
-              <p><a id="email-link" href="mailto:">patticsc72@gmail.com</a></p>
+            <!-- Email -->
+            <div class="contact-card card">
+              <div class="card-icon">✉️</div>
+              <h3>Email</h3>
+              <p><a id="email-link" href="mailto:info@gntt.com" class="contact-link">info@gntt.com</a></p>
+              <p class="hint">Response within 24 hours</p>
             </div>
 
-            <div class="contact-card">
-              <h3>📍 Address</h3>
-              <p id="contact-address">Court Road near Police Station, Patti 143416, Punjab, India</p>
-              <a id="map-link" href="#" target="_blank" rel="noopener" class="btn btn-sm" style="margin-top: 1rem;">
-                📍 View on Map
+            <!-- WhatsApp -->
+            <div class="contact-card card">
+              <div class="card-icon">💬</div>
+              <h3>WhatsApp</h3>
+              <p><a id="whatsapp-link" href="https://wa.me/916283315156" target="_blank" rel="noopener" class="contact-link">Message Us</a></p>
+              <p class="hint">Quick response available</p>
+            </div>
+
+            <!-- Address -->
+            <div class="contact-card card">
+              <div class="card-icon">📍</div>
+              <h3>Address</h3>
+              <p id="contact-address">Court Road, Patti 143416, Punjab, India</p>
+              <a id="map-link" href="#map-section" class="btn btn-sm btn-outline" style="margin-top: 1rem;">
+                📍 View Map
               </a>
             </div>
 
             <!-- Social Links -->
-            <div class="social-links">
+            <div class="social-card card">
               <h3>Follow Us</h3>
               <div class="social-icons">
-                <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook">f</a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram">📷</a>
-                <a href="https://youtube.com" target="_blank" rel="noopener" title="YouTube">▶</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook" class="social-icon">f</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram" class="social-icon">📷</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener" title="YouTube" class="social-icon">▶</a>
+                <a href="https://twitter.com" target="_blank" rel="noopener" title="Twitter" class="social-icon">𝕏</a>
+              </div>
+            </div>
+
+            <!-- Hours -->
+            <div class="hours-card card">
+              <h3>🕐 Business Hours</h3>
+              <div class="hours-list">
+                <div class="hour-item">
+                  <span>Monday - Friday</span>
+                  <span class="time">9:00 AM - 7:00 PM</span>
+                </div>
+                <div class="hour-item">
+                  <span>Saturday</span>
+                  <span class="time">10:00 AM - 6:00 PM</span>
+                </div>
+                <div class="hour-item">
+                  <span>Sunday</span>
+                  <span class="time closed">Closed</span>
+                </div>
               </div>
             </div>
           </aside>
@@ -107,26 +212,41 @@
       </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="map-section">
-      <div id="contactMap" class="contact-map"></div>
-    </section>
+  
 
     <!-- FAQs Section -->
     <section class="contact-faqs">
       <div class="container">
-        <h2>Frequently Asked Questions</h2>
+        <h2>❓ Frequently Asked Questions</h2>
+        <p class="section-subtitle">Quick answers to common questions</p>
         <div id="contactFaqList" class="faq-list"></div>
+        <button id="showMoreFaq" class="btn btn-outline" style="margin-top: 2rem; display: none;">
+          📖 Show More Questions
+        </button>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="contact-cta">
+      <div class="container">
+        <h2>Ready to Plan Your Next Adventure?</h2>
+        <p>Browse our amazing tours and start your journey today</p>
+        <div class="cta-buttons">
+          <a href="../tours/index.html" class="btn btn-primary">🗺️ Browse Tours</a>
+          <a href="../booking/index.html" class="btn btn-secondary">📝 Book Now</a>
+        </div>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
   <div id="toast" class="toast" role="alert"></div>
 
-   <script src="../assets/js/common.js" defer></script>
+  <!-- Scripts -->
+  <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
-   <script src="../assets/js/contact.js" defer></script>
+  <script src="../assets/js/contact.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 // =====================================================
 // DETAILS.JS - Tour/Service details page
+// Enhanced with proper sharing & copy functionality
 // =====================================================
 
 let cmsData = null;
@@ -14,7 +15,10 @@ async function loadDetails() {
   const type = getQueryParam('type') || 'tour';
 
   if (!id) {
-    showError('No item ID provided');
+    showError('No item ID provided. Redirecting to homepage...');
+    setTimeout(() => {
+      window.location.href = __toAbs('/index.html');
+    }, 2000);
     return;
   }
 
@@ -22,7 +26,10 @@ async function loadDetails() {
 
   cmsData = await fetchCMSData();
   if (!cmsData) {
-    showError('Failed to load data');
+    showError('Failed to load data. Redirecting to homepage...');
+    setTimeout(() => {
+      window.location.href = __toAbs('/index.html');
+    }, 2000);
     return;
   }
 
@@ -35,7 +42,10 @@ async function loadDetails() {
   }
 
   if (!item) {
-    showError(`${type === 'tour' ? 'Tour' : 'Service'} not found`);
+    showError(`${type === 'tour' ? 'Tour' : 'Service'} not found. Redirecting to homepage...`);
+    setTimeout(() => {
+      window.location.href = __toAbs('/index.html');
+    }, 2000);
     return;
   }
 
@@ -68,10 +78,10 @@ function renderDetails(item, type) {
   if (breadcrumbType) {
     if (type === 'tour') {
       breadcrumbType.textContent = 'Tours';
-      breadcrumbType.href = __toAbs('/tours/');
+      breadcrumbType.href = __toAbs('/tours/index.html');
     } else {
       breadcrumbType.textContent = 'Services';
-      breadcrumbType.href = __toAbs('/services/');
+      breadcrumbType.href = __toAbs('/services/index.html');
     }
   }
 
@@ -95,20 +105,52 @@ function renderDetails(item, type) {
     renderOfferingSections(item);
   }
 
-  // Sidebar price/duration
-  if (type === 'tour' && item.price) {
-    const sidebarPrice = document.getElementById('sidebar-price');
-    if (sidebarPrice) {
-      sidebarPrice.textContent = `₹${item.price.toLocaleString('en-IN')}`;
+  // Sidebar price/duration (TOURS ONLY)
+  if (type === 'tour') {
+    if (item.price) {
+      const sidebarPrice = document.getElementById('sidebar-price');
+      if (sidebarPrice) {
+        sidebarPrice.textContent = `₹${item.price.toLocaleString('en-IN')}`;
+      }
     }
-  }
 
-  if (item.duration) {
-    const durationCard = document.getElementById('sidebar-duration');
-    if (durationCard) {
-      durationCard.style.display = 'flex';
-      const durationValue = document.getElementById('duration-value');
-      if (durationValue) durationValue.textContent = item.duration;
+    if (item.duration) {
+      const durationCard = document.getElementById('sidebar-duration');
+      if (durationCard) {
+        durationCard.style.display = 'flex';
+        const durationValue = document.getElementById('duration-value');
+        if (durationValue) durationValue.textContent = item.duration;
+      }
+    }
+
+    // Show "Book This Package" button (TOURS ONLY)
+    const bookBtn = document.getElementById('book-package-btn');
+    if (bookBtn) {
+      bookBtn.style.display = 'inline-flex';
+      bookBtn.href = __toAbs(`/booking/index.html?id=${item.id}&type=tour`);
+      bookBtn.addEventListener('click', (e) => {
+        // Store in session for auto-fill
+        sessionStorage.setItem('lastBookingData', JSON.stringify({ id: item.id, type: 'tour' }));
+      });
+    }
+  } else {
+    // Hide/style differently for offerings
+    const bookBtn = document.getElementById('book-package-btn');
+    if (bookBtn) {
+      bookBtn.style.display = 'none'; // Hide for offerings
+    }
+
+    // Show contact CTA instead
+    const contactCTA = document.getElementById('contact-cta');
+    if (contactCTA) {
+      contactCTA.style.display = 'block';
+      contactCTA.innerHTML = `
+        <div class="cta-section">
+          <h3>Interested in this service?</h3>
+          <p>Contact our team to customize this service for your needs.</p>
+          <a href="${__toAbs('/contact/index.html')}" class="btn btn-primary">Get in Touch</a>
+        </div>
+      `;
     }
   }
 
@@ -147,7 +189,6 @@ function renderTourSections(tour) {
     `;
   }
 
-  // Optional highlights
   if (tour.highlights && tour.highlights.length > 0) {
     html += `
       <div class="details-section">
@@ -281,7 +322,7 @@ function renderRelated(currentType) {
 }
 
 /**
- * Render detail page FAQs with progressive reveal
+ * Render detail page FAQs - NOT OPEN INITIALLY
  */
 function renderDetailFAQs() {
   const container = document.getElementById('details-faq-list');
@@ -293,93 +334,168 @@ function renderDetailFAQs() {
     return;
   }
 
-  const initial = Math.min(3, faqs.length);
+  // Show all FAQs but CLOSED initially
   container.innerHTML = faqs.map((faq, i) => `
-    <details class="faq"${i === 0 ? ' open' : ''} ${i >= initial ? 'data-hidden="true" style="display:none;"' : ''}>
+    <details class="faq" data-faq-index="${i}">
       <summary class="faq-summary">${faq.q}</summary>
       <div class="faq-answer">${faq.a}</div>
     </details>
   `).join('');
 
-  // Show more button
-  if (faqs.length > initial) {
-    const moreBtn = document.createElement('button');
-    moreBtn.className = 'btn btn-outline';
-    moreBtn.textContent = 'Show more FAQs';
-    moreBtn.style.marginTop = '1rem';
-    container.parentElement?.appendChild(moreBtn);
-    moreBtn.addEventListener('click', () => {
-      const hidden = Array.from(container.querySelectorAll('.faq[data-hidden="true"]'));
-      hidden.slice(0, 2).forEach(el => {
-        el.style.display = '';
-        el.removeAttribute('data-hidden');
-      });
-      if (!container.querySelector('.faq[data-hidden="true"]')) {
-        moreBtn.style.display = 'none';
-      }
-    });
+  // Use the FAQAccordion from common.js if available
+  if (typeof FAQAccordion !== 'undefined') {
+    new FAQAccordion('#details-faq-list', { initialShow: 3 });
+    console.log('[DETAILS] FAQ Accordion initialized');
+  } else {
+    // Fallback: setup basic accordion
+    setupDetailFAQAccordion(container);
   }
-
-  setupDetailFAQAccordion(container);
 }
 
 /**
- * Setup FAQ accordion
+ * Setup FAQ accordion - only one open at a time
+ * Fallback if FAQAccordion class not available
  */
 function setupDetailFAQAccordion(container) {
   const faqs = container.querySelectorAll('.faq');
+  
   faqs.forEach(faq => {
-    faq.addEventListener('click', (e) => {
-      if (e.target.closest('.faq-summary')) {
-        if (!faq.open) {
-          faqs.forEach(other => { if (other !== faq) other.open = false; });
-        }
+    faq.addEventListener('toggle', (e) => {
+      if (faq.open) {
+        // Close all others
+        faqs.forEach(other => {
+          if (other !== faq) other.open = false;
+        });
       }
     });
   });
 }
 
+/* =====================================================
+   SHARING & COPY FUNCTIONALITY (ENHANCED)
+   ===================================================== */
+
 /**
- * Update share buttons
+ * Update share buttons with proper URLs and handlers
  */
 function updateShareButtons(item) {
-  const shareUrl = encodeURIComponent(location.href);
-  const shareText = encodeURIComponent(`Check out ${item.name || item.title} from GNTT`);
+  // Get the current page URL
+  const pageUrl = location.href;
+  const pageTitle = item.name || item.title;
+  
+  console.log('[SHARE] Setting up share buttons for:', pageTitle);
+  console.log('[SHARE] URL:', pageUrl);
 
+  // Facebook Share
   const fbBtn = document.getElementById('shareBtn-facebook');
   if (fbBtn) {
-    fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+    fbBtn.href = fbUrl;
     fbBtn.target = '_blank';
-    fbBtn.rel = 'noopener';
+    fbBtn.rel = 'noopener noreferrer';
+    
+    fbBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.open(fbUrl, 'facebook-share', 'width=600,height=400');
+      showToast('📘 Opening Facebook share...', 'info');
+      console.log('[SHARE] Facebook clicked');
+      return false;
+    });
   }
 
+  // WhatsApp Share
   const waBtn = document.getElementById('shareBtn-whatsapp');
   if (waBtn) {
-    waBtn.href = `https://wa.me/?text=${shareText}%20${shareUrl}`;
+    const waText = `Check out "${pageTitle}" on Guru Nanak Tours & Travels`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(waText + ' ' + pageUrl)}`;
+    waBtn.href = waUrl;
     waBtn.target = '_blank';
-    waBtn.rel = 'noopener';
+    waBtn.rel = 'noopener noreferrer';
+    
+    waBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.open(waUrl, 'whatsapp-share', 'width=600,height=400');
+      showToast('💬 Opening WhatsApp...', 'info');
+      console.log('[SHARE] WhatsApp clicked');
+      return false;
+    });
   }
 
+  // Copy Link
   const copyBtn = document.getElementById('shareBtn-copy');
   if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(location.href).then(() => {
-        showToast('✅ Link copied to clipboard!', 'success');
-      });
+    copyBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      try {
+        console.log('[SHARE] Copying URL to clipboard:', pageUrl);
+        
+        // Try modern Clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(pageUrl);
+          showToast('✅ Link copied to clipboard!', 'success');
+          console.log('[SHARE] Copied via Clipboard API');
+        } else {
+          // Fallback for older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = pageUrl;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          showToast('✅ Link copied to clipboard!', 'success');
+          console.log('[SHARE] Copied via execCommand');
+        }
+      } catch (err) {
+        console.error('[SHARE] Copy failed:', err);
+        showToast('❌ Failed to copy link', 'error');
+      }
     });
+  }
+
+  console.log('[SHARE] All share buttons configured');
+}
+
+/**
+ * Fallback sharing using Web Share API (if available)
+ */
+async function shareNatively(title, text, url) {
+  if (!navigator.share) {
+    console.warn('[SHARE] Web Share API not available');
+    return false;
+  }
+
+  try {
+    await navigator.share({
+      title: title,
+      text: text,
+      url: url
+    });
+    console.log('[SHARE] Native share successful');
+    return true;
+  } catch (err) {
+    if (err.name !== 'AbortError') {
+      console.error('[SHARE] Native share error:', err);
+    }
+    return false;
   }
 }
 
 /**
- * Show error
+ * Show error with redirect
  */
 function showError(msg) {
   const main = document.getElementById('main');
   if (main) {
     main.innerHTML = `
       <div class="error-message">
-        <p>⚠️ ${msg}</p>
-        <a href="${__toAbs('/')} " class="btn">← Go Back</a>
+        <div class="error-icon">⚠️</div>
+        <h2>${msg}</h2>
+        <p>Redirecting you to homepage...</p>
+        <a href="${__toAbs('/index.html')}" class="btn btn-primary">← Go Back Now</a>
       </div>
     `;
   }
@@ -389,6 +505,7 @@ function showError(msg) {
  * Initialize page
  */
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('[DETAILS] Page initialized');
   setTimeout(() => {
     loadDetails();
   }, 200);

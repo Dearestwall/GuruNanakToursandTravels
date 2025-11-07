@@ -20,12 +20,11 @@
 
   <main id="main" class="details-container">
     <!-- Breadcrumb -->
-<nav class="breadcrumb" aria-label="Breadcrumb">
-  <a href="/">Home</a>
-  <span id="breadcrumb-type">Services</span>
-  <span aria-current="page" id="breadcrumb-current">Details</span>
-</nav>
-
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span id="breadcrumb-type">Services</span>
+      <span aria-current="page" id="breadcrumb-current">Details</span>
+    </nav>
 
     <!-- Details Hero -->
     <section class="details-hero" id="detailsHero">
@@ -77,9 +76,12 @@
               </div>
 
               <div class="cta-buttons">
-                <a href="/booking/" class="btn btn-primary">📝 Book Now</a>
+                <a href="../booking/index.html" id="book-package-btn" class="btn btn-primary" style="display: none;">📝 Book Now</a>
                 <a href="https://wa.me/916283315156?text=I%20am%20interested%20in%20this%20package" target="_blank" rel="noopener" class="btn btn-secondary">💬 WhatsApp</a>
               </div>
+
+              <!-- Contact CTA for Offerings -->
+              <div id="contact-cta" style="display: none;"></div>
             </div>
 
             <!-- FAQ Section -->
@@ -101,11 +103,11 @@
                   <span>Price per person</span>
                   <span class="price" id="sidebar-price">₹0</span>
                 </div>
-                <div class="price-item" id="sidebar-duration">
+                <div class="price-item" id="sidebar-duration" style="display: none;">
                   <span>Duration</span>
                   <span id="duration-value">N/A</span>
                 </div>
-                <a href="/booking/" class="btn btn-primary full-width">Book This Package</a>
+                <a href="../booking/index.html" id="book-package-btn-sidebar" class="btn btn-primary full-width" style="display: none;">Book This Package</a>
                 <a href="https://wa.me/916283315156" target="_blank" rel="noopener" class="btn btn-outline full-width">Enquire Now</a>
               </div>
             </div>

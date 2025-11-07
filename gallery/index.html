@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title id="page-title">Gallery — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" id="page-desc" content="Gallery of tours and destinations" />
+  <meta name="description" id="page-desc" content="Gallery of beautiful travel moments from our past tours and journeys" />
   
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
@@ -13,32 +13,39 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  
+  <div class="gtranslate_wrapper"></div>
   <div id="header-placeholder"></div>
 
   <main id="main" class="gallery-container">
     <!-- Breadcrumb -->
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a>
+      <a href="../index.html">Home</a>
       <span aria-current="page">Gallery</span>
     </nav>
 
     <!-- Hero -->
     <section class="gallery-hero">
       <div class="container">
-        <h1>Our Travel Gallery</h1>
-        <p>Explore beautiful moments from our past journeys</p>
+        <h1>📸 Our Travel Gallery</h1>
+        <p>Explore beautiful moments and memories from our past journeys</p>
+        <div class="gallery-count">
+          <span id="imageCount">0</span> Photos
+        </div>
       </div>
     </section>
 
     <!-- Filters -->
     <section class="gallery-filters">
       <div class="container">
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="mountains">🏔️ Mountains</button>
-          <button class="filter-btn" data-filter="beaches">🏖️ Beaches</button>
-          <button class="filter-btn" data-filter="cities">🏙️ Cities</button>
-          <button class="filter-btn" data-filter="culture">🕉️ Culture</button>
+        <div class="filter-wrapper">
+          <label class="filter-label">Filter by Category:</label>
+          <div class="filter-buttons" id="filterButtons" role="group" aria-label="Gallery filters">
+            <button class="filter-btn active" data-filter="all" aria-pressed="true">
+              ✓ All
+            </button>
+          </div>
+          <button id="clearFilters" class="btn-clear" title="Reset filters">↻ Reset</button>
         </div>
       </div>
     </section>
@@ -46,21 +53,92 @@
     <!-- Gallery Grid -->
     <section class="gallery-section">
       <div class="container">
-        <div id="galleryGrid" class="gallery-grid"></div>
+        <div id="galleryGrid" class="gallery-grid" role="region" aria-label="Gallery grid"></div>
+        
+        <!-- No images message -->
+        <div id="noImages" class="no-images" style="display: none;">
+          <div class="no-images-icon">📷</div>
+          <h3>No images found</h3>
+          <p>No photos match your current filter</p>
+          <button class="btn btn-primary" onclick="resetFilters()">View All Photos</button>
+        </div>
+
+        <!-- Loading state -->
+        <div id="galleryLoading" class="gallery-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Loading gallery...</p>
+        </div>
       </div>
     </section>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="lightbox">
-      <button class="lightbox-close" type="button">✕</button>
-      <img id="lightboxImage" src="" alt="Enlarged gallery image" />
-    </div>
+    <!-- Stats Section -->
+    <section class="gallery-stats">
+      <div class="container">
+        <div class="stat-card">
+          <span class="stat-number" id="totalPhotos">0</span>
+          <span class="stat-label">Total Photos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="totalCategories">0</span>
+          <span class="stat-label">Categories</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="totalDestinations">0</span>
+          <span class="stat-label">Destinations</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gallery-cta">
+      <div class="container">
+        <h2>Want to be part of our next adventure?</h2>
+        <p>Book a tour and create your own memorable moments</p>
+        <div class="cta-buttons">
+          <a href="../tours/index.html" class="btn btn-primary">🗺️ Browse Tours</a>
+          <a href="../booking/index.html" class="btn btn-secondary">📝 Book Now</a>
+        </div>
+      </div>
+    </section>
   </main>
+
+   <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+    <button class="lightbox-close" type="button" aria-label="Close lightbox">✕</button>
+    
+    <div class="lightbox-content">
+      <!-- Main Image -->
+      <div class="lightbox-main">
+        <img id="lightboxImage" src="" alt="Enlarged gallery image" class="lightbox-img" />
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <button class="lightbox-nav prev" id="prevImage" aria-label="Previous image">❮</button>
+      <button class="lightbox-nav next" id="nextImage" aria-label="Next image">❯</button>
+      
+      <!-- Counter -->
+      <div class="lightbox-counter" id="lightboxCounter"></div>
+
+      <!-- Related Images Thumbnails -->
+      <div class="lightbox-related" id="lightboxRelated"></div>
+    </div>
+  </div>
+
+
+    <!-- Navigation -->
+    <button class="lightbox-nav prev" id="prevImage" aria-label="Previous image">❮</button>
+    <button class="lightbox-nav next" id="nextImage" aria-label="Next image">❯</button>
+    
+    <!-- Counter -->
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
 
   <div id="footer-placeholder"></div>
   <div id="toast" class="toast" role="alert"></div>
 
-   <script src="../assets/js/common.js" defer></script>
+  <!-- Scripts -->
+  <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
   <script src="../assets/js/gallery.js" defer></script>

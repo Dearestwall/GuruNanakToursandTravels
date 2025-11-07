@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Tours & Packages — GNTT</title>
+  <title id="page-title">Tours & Packages — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Discover our amazing tour packages across India and beyond" />
+  <meta name="description" id="page-desc" content="Discover our amazing tour packages across India and beyond" />
   <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
@@ -14,14 +14,35 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
+  <!-- Header -->
   <div id="header-placeholder"></div>
 
   <main id="main">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span aria-current="page">Tours</span>
+    </nav>
+
     <!-- Page Hero -->
     <section class="page-hero tours-hero">
       <div class="container">
-        <h1>Tour Packages</h1>
+        <h1>🗺️ Tour Packages</h1>
         <p>Discover unforgettable journeys across India and beyond</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">50+</span>
+            <span class="stat-label">Destinations</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Happy Travelers</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -29,22 +50,42 @@
     <section class="tours-filters">
       <div class="container">
         <div class="filter-bar">
-          <input type="text" id="searchTours" placeholder="Search packages..." class="search-input" />
-          <select id="filterDuration" class="filter-select">
-            <option value="">All Durations</option>
-            <option value="3">3 Days</option>
-            <option value="4">4 Days</option>
-            <option value="5">5 Days</option>
-            <option value="6">6+ Days</option>
-          </select>
-          <select id="filterPrice" class="filter-select">
-            <option value="">All Prices</option>
-            <option value="0-10000">Below ₹10,000</option>
-            <option value="10000-20000">₹10,000 - ₹20,000</option>
-            <option value="20000-50000">₹20,000 - ₹50,000</option>
-            <option value="50000">₹50,000+</option>
-          </select>
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              id="searchTours" 
+              placeholder="🔍 Search packages by name or destination..." 
+              class="search-input" 
+              aria-label="Search tours"
+            />
+          </div>
+
+          <div class="filter-group">
+            <label for="filterDuration" class="filter-label">Duration</label>
+            <select id="filterDuration" class="filter-select" aria-label="Filter by duration">
+              <option value="">All Durations</option>
+              <option value="3">3 Days</option>
+              <option value="4">4 Days</option>
+              <option value="5">5 Days</option>
+              <option value="6">6+ Days</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterPrice" class="filter-label">Price Range</label>
+            <select id="filterPrice" class="filter-select" aria-label="Filter by price">
+              <option value="">All Prices</option>
+              <option value="0-10000">Below ₹10,000</option>
+              <option value="10000-20000">₹10K - ₹20K</option>
+              <option value="20000-50000">₹20K - ₹50K</option>
+              <option value="50000">₹50K+</option>
+            </select>
+          </div>
+
+          <button id="clearFilters" class="btn-clear" title="Clear all filters">✕ Clear</button>
         </div>
+
+        <div class="filter-tags" id="filterTags"></div>
       </div>
     </section>
 
@@ -53,7 +94,10 @@
       <div class="container">
         <div id="toursGrid" class="tour-grid"></div>
         <div id="noResults" class="no-results" style="display:none;">
-          <p>No packages found. Try adjusting your filters.</p>
+          <div class="no-results-icon">😔</div>
+          <h3>No packages found</h3>
+          <p>Try adjusting your filters or browse all packages</p>
+          <button class="btn btn-primary" id="resetFilters">See All Packages</button>
         </div>
       </div>
     </section>
@@ -61,7 +105,7 @@
     <!-- Pagination -->
     <section class="pagination-section">
       <div class="container">
-        <div id="pagination" class="pagination"></div>
+        <div id="pagination" class="pagination" role="navigation" aria-label="Pagination"></div>
       </div>
     </section>
 
@@ -69,14 +113,22 @@
     <section class="cta-section">
       <div class="container">
         <h2>Can't Find What You're Looking For?</h2>
-        <p>We offer customized tour packages tailored to your preferences</p>
-        <a href="/booking/" class="btn btn-primary">📝 Customize Your Package</a>
+        <p>We offer customized tour packages tailored to your preferences and budget</p>
+        <div class="cta-buttons">
+          <a href="../booking/index.html" class="btn btn-primary">📝 Customize Your Package</a>
+          <a href="../contact/index.html" class="btn btn-secondary">💬 Contact Our Team</a>
+        </div>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
 
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert"></div>
+
+  <!-- Scripts -->
   <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>

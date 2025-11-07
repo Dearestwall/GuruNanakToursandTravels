@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Our Services — GNTT</title>
+  <title id="page-title">Our Services — GNTT</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Explore our comprehensive travel and tour services" />
- <link rel="stylesheet" href="../assets/css/common.css" />
+  <meta name="description" id="page-desc" content="Explore our comprehensive travel and tour services including flights, hotels, visas, and more" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
   <link rel="stylesheet" href="../assets/css/header.css" />
   <link rel="stylesheet" href="../assets/css/footer.css" />
   <link rel="stylesheet" href="../assets/css/services.css" />
@@ -14,60 +14,75 @@
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="gtranslate_wrapper"></div>
 
+  <!-- Header -->
   <div id="header-placeholder"></div>
 
   <main id="main">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../index.html">Home</a>
+      <span aria-current="page">Services</span>
+    </nav>
+
     <!-- Page Hero -->
     <section class="page-hero services-hero">
       <div class="container">
-        <h1>Our Services</h1>
+        <h1>🛫 Our Services</h1>
         <p>Everything you need for your perfect travel experience</p>
+        <div class="hero-tagline">
+          From flights to visas, we handle every detail of your journey
+        </div>
       </div>
     </section>
 
     <!-- Services Grid -->
     <section class="services-grid-section">
       <div class="container">
-        <div id="servicesGrid" class="services-grid"></div>
-      </div>
-    </section>
-
-    <!-- Service Detail Section -->
-    <section class="service-detail" id="serviceDetail" style="display:none;">
-      <div class="container">
-        <div class="service-detail-content">
-          <h2 id="serviceName"></h2>
-          <p id="serviceDescription"></p>
-          <div id="serviceFeatures" class="features-list"></div>
-          <a href="/booking/" class="btn btn-primary">Enquire Now</a>
+        <div class="section-header">
+          <h2>Our Travel Solutions</h2>
+          <p>Comprehensive services designed for modern travelers</p>
         </div>
+        <div id="servicesGrid" class="services-grid"></div>
       </div>
     </section>
 
     <!-- Why Our Services Section -->
     <section class="services-benefits">
       <div class="container">
-        <h2>Why Choose Our Services?</h2>
+        <div class="section-header">
+          <h2>Why Choose Our Services?</h2>
+          <p>Excellence in every aspect of your travel</p>
+        </div>
         <div class="benefits-grid">
           <article class="benefit-card">
             <div class="benefit-icon">💎</div>
             <h3>Premium Quality</h3>
-            <p>Best-in-class services with attention to every detail</p>
+            <p>Best-in-class services with meticulous attention to every detail</p>
           </article>
           <article class="benefit-card">
             <div class="benefit-icon">💰</div>
-            <h3>Affordable Pricing</h3>
-            <p>Competitive rates without compromising quality</p>
+            <h3>Competitive Pricing</h3>
+            <p>Affordable rates without compromising quality or experience</p>
           </article>
           <article class="benefit-card">
             <div class="benefit-icon">🕐</div>
             <h3>24/7 Support</h3>
-            <p>Round-the-clock customer assistance</p>
+            <p>Round-the-clock customer assistance whenever you need us</p>
           </article>
           <article class="benefit-card">
             <div class="benefit-icon">✨</div>
-            <h3>Customization</h3>
-            <p>Personalized packages tailored to your needs</p>
+            <h3>Full Customization</h3>
+            <p>Personalized packages tailored to your specific needs</p>
+          </article>
+          <article class="benefit-card">
+            <div class="benefit-icon">🎯</div>
+            <h3>Expert Team</h3>
+            <p>Experienced travel consultants with 15+ years in the industry</p>
+          </article>
+          <article class="benefit-card">
+            <div class="benefit-icon">🌍</div>
+            <h3>Global Network</h3>
+            <p>Partner network across 50+ countries for seamless service</p>
           </article>
         </div>
       </div>
@@ -76,21 +91,27 @@
     <!-- CTA Section -->
     <section class="cta-section">
       <div class="container">
-        <h2>Let's Plan Your Perfect Trip</h2>
-        <p>Contact us today for personalized recommendations</p>
+        <h2>Ready to Start Your Journey?</h2>
+        <p>Let us help you plan the perfect travel experience</p>
         <div class="cta-buttons">
-          <a href="/booking/" class="btn btn-primary">📝 Book a Service</a>
-          <a href="https://wa.me/916283315156" target="_blank" rel="noopener" class="btn btn-secondary">💬 Chat with Us</a>
+          <a href="../booking/index.html" class="btn btn-primary">📝 Book a Service</a>
+          <a href="https://wa.me/916283315156?text=Hello%20GNTT!%20I%20want%20to%20know%20about%20your%20services" target="_blank" rel="noopener" class="btn btn-secondary">💬 Chat with Us</a>
+          <a href="../contact/index.html" class="btn btn-outline">📞 Contact Us</a>
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
 
+  <!-- Toast -->
+  <div id="toast" class="toast" role="alert"></div>
+
+  <!-- Scripts -->
   <script src="../assets/js/common.js" defer></script>
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
-   <script src="../assets/js/services.js" defer></script>
+  <script src="../assets/js/services.js" defer></script>
 </body>
 </html>
