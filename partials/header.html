@@ -1,14 +1,15 @@
-<!-- Animated Notification Banner -->
-<div class="notification-banner" role="banner">
-  <div class="banner-content">
-    <span>📍 Patti's Only Licensed Shop for Tours & Travels | Trusted Since Day One! | 📍 Patti's Only Licensed Shop for Tours & Travels | Trusted Since Day One!</span>
+<!-- Notification Banner -->
+<div class="notification-banner" id="notificationBanner" role="banner" aria-label="Site notifications">
+  <div class="banner-content" id="bannerContent">
+    <span class="banner-text">📍 Patti's Only Licensed Shop for Tours & Travels | Trusted Since Day One!</span>
+    <span class="banner-text" aria-hidden="true">📍 Patti's Only Licensed Shop for Tours & Travels | Trusted Since Day One!</span>
   </div>
 </div>
 
 <!-- Header -->
 <header class="site-header" id="siteHeader" role="banner">
   <div class="header-container">
-    <!-- Brand/Logo Section -->
+    <!-- Brand/Logo -->
     <a href="/" class="header-brand" aria-label="GNTT Home">
       <img 
         src="https://i.ibb.co/wFXBHmNh/image.png" 
@@ -17,6 +18,7 @@
         width="56" 
         height="56" 
         loading="eager"
+        decoding="async"
       />
       <div class="brand-text">
         <span class="brand-name" translate="no">Guru Nanak Tour & Travels</span>
@@ -25,7 +27,7 @@
     </a>
 
     <!-- Desktop Navigation -->
-    <nav class="header-nav desktop-nav" aria-label="Main navigation">
+    <nav class="header-nav" aria-label="Main navigation">
       <a href="/" class="nav-item" data-page="home">
         <span class="nav-icon">🏠</span>
         <span class="nav-text">Home</span>
@@ -58,22 +60,22 @@
 
     <!-- Header Actions -->
     <div class="header-actions">
-      <!-- Search Button (Mobile/Tablet) -->
+      <!-- Search Toggle (Mobile only) -->
       <button 
-        class="action-btn search-btn" 
+        class="action-btn search-toggle mobile-only" 
         id="searchToggle" 
-        aria-label="Open search" 
+        aria-label="Toggle search" 
         aria-expanded="false"
         type="button"
         title="Search"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <svg class="icon-search" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </button>
 
-      <!-- Mobile Menu Toggle -->
+      <!-- Hamburger Menu (Mobile only) -->
       <button 
         class="action-btn menu-toggle mobile-only" 
         id="menuToggle" 
@@ -83,105 +85,151 @@
         type="button"
         title="Menu"
       >
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
+        <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="6" y1="4" x2="6" y2="20" class="hamburger-line line-1"></line>
+          <line x1="12" y1="4" x2="12" y2="20" class="hamburger-line line-2"></line>
+          <line x1="18" y1="4" x2="18" y2="20" class="hamburger-line line-3"></line>
+        </svg>
       </button>
     </div>
   </div>
 
-  <!-- Desktop Search Bar (Below main header) -->
-  <div class="header-search-section desktop-search" role="search">
-    <div class="search-container">
-      <form action="/tours/" method="get" class="search-form" id="headerSearchForm">
-        <label for="header-search-input" class="sr-only">Search tours, destinations, or services</label>
-        <input 
-          id="header-search-input" 
-          name="q" 
-          type="search" 
-          class="search-input"
-          placeholder="Search for tours, destinations, services..." 
-          autocomplete="off"
-        />
-        <button type="submit" class="search-submit" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+  <!-- Desktop Search Section -->
+  <div class="header-search-section" role="search" aria-label="Search">
+    <div class="search-wrapper">
+      <form action="/tours/" method="get" class="search-form" id="desktopSearchForm">
+        <label for="desktop-search-input" class="sr-only">Search tours, destinations, or services</label>
+        <div class="search-input-wrapper">
+          <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
-        </button>
+          <input 
+            id="desktop-search-input" 
+            name="q" 
+            type="search" 
+            class="search-input"
+            placeholder="Search tours, destinations, services..." 
+            autocomplete="off"
+            aria-autocomplete="list"
+            aria-controls="desktopSearchResults"
+          />
+          <button type="submit" class="search-submit" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Live Search Results (Desktop) -->
+        <div class="search-results-dropdown" id="desktopSearchResults" role="listbox" hidden>
+          <div class="search-results-content"></div>
+        </div>
       </form>
+
       <div class="search-suggestions">
-        <span class="suggestion-label">Popular:</span>
-        <button type="button" class="suggestion-item" data-search="Dubai">Dubai</button>
-        <button type="button" class="suggestion-item" data-search="Goa">Goa</button>
-        <button type="button" class="suggestion-item" data-search="Flights">✈️ Flights</button>
-        <button type="button" class="suggestion-item" data-search="Hotels">🏨 Hotels</button>
-      </div>
+        <span class="suggestion-label"></span>
+         </div>
     </div>
 
-    <!-- Quick Action Buttons -->
+    <!-- Quick Action Buttons (Desktop only) -->
     <div class="header-quick-actions">
-      <a class="btn-icon call-icon" id="header-call" href="tel:+916283315156" title="Call us">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <a class="btn-icon call-icon" id="header-call" href="tel:+916283315156" title="Call us" aria-label="Call +91 6283315156">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
       </a>
-      <a class="btn-icon whatsapp-icon" id="header-wa" href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" title="Chat on WhatsApp">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      <a class="btn-icon whatsapp-icon" id="header-wa" href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp chat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          <circle cx="9" cy="10" r="1"></circle>
+          <circle cx="12" cy="10" r="1"></circle>
+          <circle cx="15" cy="10" r="1"></circle>
         </svg>
       </a>
     </div>
   </div>
 
-  <!-- Mobile Search Bar (Below header on mobile) -->
-  <div class="header-search-bar mobile-search" id="searchBar" role="search" aria-hidden="true">
-    <div class="search-container">
+  <!-- Mobile Search Section -->
+  <div class="mobile-search-section" id="mobileSearchSection" hidden aria-hidden="true">
+    <div class="mobile-search-wrapper">
       <form action="/tours/" method="get" class="search-form" id="mobileSearchForm">
         <label for="mobile-search-input" class="sr-only">Search tours, destinations, or services</label>
-        <input 
-          id="mobile-search-input" 
-          name="q" 
-          type="search" 
-          class="search-input"
-          placeholder="Search..." 
-          autocomplete="off"
-        />
-        <button type="submit" class="search-submit" aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <div class="search-input-wrapper">
+          <svg class="search-icon-input" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
-        </button>
+          <input 
+            id="mobile-search-input" 
+            name="q" 
+            type="search" 
+            class="search-input"
+            placeholder="Search tours, destinations..." 
+            autocomplete="off"
+            aria-autocomplete="list"
+            aria-controls="mobileSearchResults"
+          />
+          <button type="submit" class="search-submit" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" fill="none"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Live Search Results (Mobile) -->
+        <div class="search-results-dropdown" id="mobileSearchResults" role="listbox" hidden>
+          <div class="search-results-content"></div>
+        </div>
       </form>
+
       <div class="search-suggestions">
-        <span class="suggestion-label">Popular:</span>
-        <button type="button" class="suggestion-item" data-search="Goa">Goa</button>
-        <button type="button" class="suggestion-item" data-search="Flights">Flights</button>
-        <button type="button" class="suggestion-item" data-search="Hotels">Hotels</button>
-      </div>
+        <span class="suggestion-label"></span>
+        </div>
     </div>
 
-    <!-- Mobile Action Buttons Row -->
+    <!-- Mobile Action Buttons -->
     <div class="mobile-action-buttons">
-      <a class="btn btn-call" id="mobile-call" href="tel:+916283315156">📞 Call</a>
-      <a class="btn btn-wa" id="mobile-wa" href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="btn btn-book" id="mobile-book" href="/booking/">📝 Book</a>
+      <a class="mobile-action-btn btn-call" id="mobile-call" href="tel:+916283315156">
+        <svg class="icon-phone" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span>Call</span>
+      </a>
+      <a class="mobile-action-btn btn-whatsapp" id="mobile-wa" href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener">
+        <svg class="icon-whatsapp" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          <circle cx="9" cy="10" r="0.5"></circle>
+          <circle cx="12" cy="10" r="0.5"></circle>
+          <circle cx="15" cy="10" r="0.5"></circle>
+        </svg>
+        <span>WhatsApp</span>
+      </a>
+      <a class="mobile-action-btn btn-book" id="mobile-book" href="/booking/">
+        <svg class="icon-booking" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="11" x2="12" y2="17"></line>
+          <line x1="9" y1="14" x2="15" y2="14"></line>
+        </svg>
+        <span>Book Now</span>
+      </a>
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" aria-hidden="true">
+  <!-- Mobile Menu Drawer -->
+  <nav class="mobile-menu" id="mobileMenu" hidden aria-hidden="true">
+    <div class="mobile-menu-overlay" id="menuOverlay"></div>
     <div class="mobile-menu-content">
       <div class="mobile-menu-header">
-        <h2 class="mobile-menu-title">Menu</h2>
-        <button 
-          class="mobile-menu-close" 
-          id="mobileMenuClose" 
-          aria-label="Close menu"
-          type="button"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <div class="mobile-menu-brand">
+          <img src="https://i.ibb.co/wFXBHmNh/image.png" alt="GNTT" class="mobile-menu-logo" width="40" height="40" />
+          <span class="mobile-menu-title">Menu</span>
+        </div>
+        <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Close menu" type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -189,24 +237,38 @@
       </div>
 
       <ul class="mobile-menu-list">
-        <li><a href="/" class="mobile-menu-link">🏠 Home</a></li>
-        <li><a href="/about/" class="mobile-menu-link">ℹ️ About</a></li>
-        <li><a href="/services/" class="mobile-menu-link">⚙️ Services</a></li>
-        <li><a href="/tours/" class="mobile-menu-link">🗺️ Tours</a></li>
-        <li><a href="/gallery/" class="mobile-menu-link">📷 Gallery</a></li>
-        <li><a href="/booking/" class="mobile-menu-link">📝 Booking</a></li>
-        <li><a href="/contact/" class="mobile-menu-link">📞 Contact</a></li>
+        <li><a href="/" class="mobile-menu-link" data-page="home"><span class="link-icon">🏠</span><span>Home</span></a></li>
+        <li><a href="/about/" class="mobile-menu-link" data-page="about"><span class="link-icon">ℹ️</span><span>About Us</span></a></li>
+        <li><a href="/services/" class="mobile-menu-link" data-page="services"><span class="link-icon">⚙️</span><span>Our Services</span></a></li>
+        <li><a href="/tours/" class="mobile-menu-link" data-page="tours"><span class="link-icon">🗺️</span><span>Tour Packages</span></a></li>
+        <li><a href="/gallery/" class="mobile-menu-link" data-page="gallery"><span class="link-icon">📷</span><span>Gallery</span></a></li>
+        <li><a href="/booking/" class="mobile-menu-link" data-page="booking"><span class="link-icon">📝</span><span>Book Now</span></a></li>
+        <li><a href="/contact/" class="mobile-menu-link" data-page="contact"><span class="link-icon">📞</span><span>Contact Us</span></a></li>
         <li class="mobile-menu-divider"></li>
-        <li><a href="/legal/privacy.html" class="mobile-menu-link">🔒 Privacy</a></li>
-        <li><a href="/legal/terms.html" class="mobile-menu-link">📄 Terms</a></li>
+        <li><a href="/legal/privacy.html" class="mobile-menu-link secondary"><span class="link-icon">🔒</span><span>Privacy Policy</span></a></li>
+        <li><a href="/legal/terms.html" class="mobile-menu-link secondary"><span class="link-icon">📄</span><span>Terms & Conditions</span></a></li>
       </ul>
 
-      <div class="mobile-menu-contact">
-        <a href="tel:+916283315156" class="mobile-cta-btn call">📞 +91 6283315156</a>
-        <a href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" class="mobile-cta-btn whatsapp">💬 WhatsApp</a>
-        <a href="/booking/" class="mobile-cta-btn book">📝 Book Now</a>
+      <div class="mobile-menu-footer">
+        <div class="mobile-footer-contact">
+          <h3 class="footer-contact-title">Get in Touch</h3>
+          <a href="tel:+916283315156" class="mobile-cta-btn call">
+            <svg class="icon-phone" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <span>+91 6283315156</span>
+          </a>
+          <a href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" class="mobile-cta-btn whatsapp">
+            <svg class="icon-whatsapp" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              <circle cx="9" cy="10" r="0.5"></circle>
+              <circle cx="12" cy="10" r="0.5"></circle>
+              <circle cx="15" cy="10" r="0.5"></circle>
+            </svg>
+            <span>Chat on WhatsApp</span>
+          </a>
+        </div>
       </div>
     </div>
-    <div class="mobile-menu-overlay"></div>
   </nav>
 </header>

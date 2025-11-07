@@ -387,3 +387,17 @@ collections:
             name: "keywords"
             widget: "list"
             field: { label: "Keyword", name: "item", widget: "string" }
+  - name: "notifications"
+    label: "Notifications"
+    files:
+      - name: "banner"
+        label: "Banner Notifications"
+        file: "data/notifications.json"
+        fields:
+          - label: "Messages"
+            name: "messages"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "Link (optional)", name: "link", widget: "string", required: false }
+              - { label: "Active", name: "active", widget: "boolean", default: true }
