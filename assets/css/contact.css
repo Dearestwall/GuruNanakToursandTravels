@@ -828,3 +828,164 @@
     width: 100%;
   }
 }
+/* =====================================================
+   SOCIAL ICONS
+   ===================================================== */
+
+.social-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.social-card h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(0);
+  border-radius: 50%;
+  transition: transform 0.4s ease;
+}
+
+.social-icon:hover::before {
+  transform: scale(1);
+}
+
+.social-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.social-icon:hover svg {
+  transform: scale(1.1);
+}
+
+/* Brand-specific colors on hover */
+.social-icon.facebook:hover {
+  background: #1877f2;
+}
+
+.social-icon.instagram:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-icon.youtube:hover {
+  background: #ff0000;
+}
+
+.social-icon.twitter:hover {
+  background: #000000;
+}
+
+.social-icon.linkedin:hover {
+  background: #0077b5;
+}
+
+/* Active state */
+.social-icon:active {
+  transform: translateY(-2px);
+}
+
+/* Focus state for accessibility */
+.social-icon:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .social-icons {
+    gap: 0.75rem;
+  }
+  
+  .social-icon {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .social-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Animation on load */
+@keyframes socialBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.social-icon {
+  animation: socialBounce 2s ease-in-out infinite;
+}
+
+.social-icon:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.social-icon:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.social-icon:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.social-icon:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.social-icon:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+/* Stop animation on hover */
+.social-icon:hover {
+  animation: none;
+}

@@ -384,7 +384,7 @@
     <div class="auth-error-icon" aria-hidden="true">🔒</div>
     <h1>Authentication Required</h1>
     <p>You must be logged in with an authorized account to access the admin dashboard.</p>
-    <button class="auth-error-btn" onclick="netlifyIdentity.open()" type="button">
+    <button class="auth-error-btn" onclick="window.netlifyIdentity.open('login')" type="button">
       Sign In
     </button>
   </div>
@@ -411,6 +411,9 @@
       const loadingStatus = document.getElementById('loadingStatus');
       const successMessage = document.getElementById('success-message');
       const successText = document.getElementById('success-text');
+
+      // State
+      let authCheckComplete = false;
 
       // Utility Functions
       function updateStatus(message) {
@@ -445,11 +448,36 @@
         }, 3000);
       }
 
+      // Auto-open login modal if not authenticated
+      function checkAuthAndOpenModal() {
+        if (!authCheckComplete) {
+          return;
+        }
+
+        const currentUser = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+        
+        if (!currentUser) {
+          console.log('[ADMIN] ⚠️ No user authenticated - opening login modal');
+          updateStatus('Opening login...');
+          
+          // Auto-open the login modal after 1 second
+          setTimeout(() => {
+            if (window.netlifyIdentity) {
+              window.netlifyIdentity.open('login');
+            }
+          }, 1000);
+        }
+      }
+
       // Initialize Netlify Identity
       if (window.netlifyIdentity) {
         updateStatus('🔐 Checking authentication...');
 
+        // Initialize identity
+        window.netlifyIdentity.init();
+
         netlifyIdentity.on('init', user => {
+          authCheckComplete = true;
           updateStatus('✓ Authentication check complete');
 
           if (!user) {
@@ -458,16 +486,10 @@
             
             setTimeout(() => {
               showAuthError();
-            }, 2000);
+              // Auto-open login modal
+              checkAuthAndOpenModal();
+            }, 1500);
 
-            // Login handler
-            netlifyIdentity.on('login', (user) => {
-              console.log('[ADMIN] ✓ User logged in:', user.email);
-              showSuccess('Welcome back, ' + (user.user_metadata?.full_name || 'Admin') + '!');
-              setTimeout(() => {
-                window.location.reload();
-              }, 1000);
-            });
           } else {
             const userName = user.user_metadata?.full_name || user.email;
             console.log('[ADMIN] ✓ User authenticated:', userName);
@@ -475,8 +497,25 @@
             
             setTimeout(() => {
               hideLoading();
-            }, 1500);
+            }, 1000);
           }
+        });
+
+        // Login handler
+        netlifyIdentity.on('login', (user) => {
+          console.log('[ADMIN] ✓ User logged in:', user.email);
+          const userName = user.user_metadata?.full_name || 'Admin';
+          showSuccess('Welcome back, ' + userName + '!');
+          
+          // Hide auth error and loading
+          authError.classList.remove('show');
+          loadingScreen.classList.remove('hidden');
+          updateStatus('Loading dashboard...');
+          
+          // Reload to load CMS
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         });
 
         // Logout handler
@@ -494,10 +533,17 @@
           showAuthError();
         });
 
-        // Close handler
+        // Close handler (when user closes modal without logging in)
         netlifyIdentity.on('close', () => {
           console.log('[ADMIN] Modal closed');
+          
+          const currentUser = window.netlifyIdentity.currentUser();
+          if (!currentUser) {
+            console.log('[ADMIN] Still not authenticated after modal close');
+            showAuthError();
+          }
         });
+
       } else {
         console.error('[ADMIN] ❌ Netlify Identity not loaded');
         updateStatus('Error: Identity service unavailable');
@@ -544,21 +590,20 @@
 
       // Keyboard Shortcuts
       document.addEventListener('keydown', (e) => {
-        // Ctrl/Cmd + K - Command palette
+        // Ctrl/Cmd + K - Open login if not authenticated
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
-          console.log('[ADMIN] ⌨️ Command palette triggered');
-        }
-
-        // Ctrl/Cmd + S - Save
-        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-          e.preventDefault();
-          console.log('[ADMIN] ⌨️ Save shortcut triggered');
+          const currentUser = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+          if (!currentUser && window.netlifyIdentity) {
+            window.netlifyIdentity.open('login');
+          }
         }
 
         // Escape - Close modals
         if (e.key === 'Escape') {
-          console.log('[ADMIN] ⌨️ Escape pressed');
+          if (window.netlifyIdentity) {
+            window.netlifyIdentity.close();
+          }
         }
       });
 
@@ -591,11 +636,6 @@
           return e.returnValue;
         }
       });
-
-      // Service Worker Support
-      if ('serviceWorker' in navigator) {
-        console.log('[ADMIN] ✓ Service Worker supported');
-      }
 
       // Browser Compatibility Check
       const isModernBrowser = 

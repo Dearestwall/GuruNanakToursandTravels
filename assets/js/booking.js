@@ -1,14 +1,328 @@
 // =====================================================
-// BOOKING.JS - Booking form with smart validation
+// BOOKING.JS - FINAL PRODUCTION VERSION
 // =====================================================
 
+// Configuration
+const CONFIG = {
+  accessKey: 'ad236cf0-3ad7-45a1-b50c-f410840cf9dd',
+  apiUrl: 'https://api.web3forms.com/submit',
+  autoSaveInterval: 30000, // 30 seconds
+  maxFileSize: 5 * 1024 * 1024 // 5MB
+};
+
+// Data
+const COUNTRIES = [
+  'India', 'United States', 'United Kingdom', 'Canada', 'Australia',
+  'Germany', 'France', 'Italy', 'Spain', 'Netherlands',
+  'Switzerland', 'Singapore', 'Japan', 'South Korea', 'UAE',
+  'Thailand', 'Malaysia', 'Indonesia', 'Philippines', 'Vietnam',
+  'China', 'Russia', 'Brazil', 'Mexico', 'Argentina'
+];
+
+const INDIAN_CITIES = [
+  'Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai',
+  'Kolkata', 'Pune', 'Ahmedabad', 'Jaipur', 'Surat',
+  'Lucknow', 'Kanpur', 'Nagpur', 'Indore', 'Thane',
+  'Bhopal', 'Visakhapatnam', 'Pimpri-Chinchwad', 'Patna', 'Vadodara',
+  'Ghaziabad', 'Ludhiana', 'Agra', 'Nashik', 'Faridabad',
+  'Meerut', 'Rajkot', 'Kalyan-Dombivali', 'Vasai-Virar', 'Varanasi',
+  'Srinagar', 'Aurangabad', 'Dhanbad', 'Amritsar', 'Navi Mumbai',
+  'Allahabad', 'Ranchi', 'Howrah', 'Coimbatore', 'Jabalpur',
+  'Gwalior', 'Vijayawada', 'Jodhpur', 'Madurai', 'Raipur',
+  'Kota', 'Chandigarh', 'Guwahati', 'Solapur', 'Hubli–Dharwad'
+];
+
+// State
 let autoFilledData = {};
 let tourData = null;
 let validationErrors = {};
+let autoSaveTimer = null;
+let isDirty = false;
+let activeAutocomplete = null;
 
-/**
- * Get auto-fill data from query params or session storage
- */
+// =====================================================
+// AUTOCOMPLETE FUNCTIONALITY
+// =====================================================
+
+function createAutocomplete(input, suggestions, onSelect) {
+  removeAutocomplete();
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'autocomplete-dropdown';
+  wrapper.id = 'autocomplete-dropdown';
+
+  const filteredSuggestions = suggestions.filter(item => 
+    item.toLowerCase().includes(input.value.toLowerCase())
+  ).slice(0, 8);
+
+  if (filteredSuggestions.length === 0) {
+    wrapper.innerHTML = '<div class="autocomplete-item no-results">No results found</div>';
+  } else {
+    filteredSuggestions.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'autocomplete-item';
+      
+      const regex = new RegExp(`(${input.value})`, 'gi');
+      const highlighted = item.replace(regex, '<strong>$1</strong>');
+      div.innerHTML = highlighted;
+      
+      div.addEventListener('click', () => {
+        input.value = item;
+        onSelect(item);
+        removeAutocomplete();
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      
+      wrapper.appendChild(div);
+    });
+  }
+
+  const rect = input.getBoundingClientRect();
+  wrapper.style.top = `${rect.bottom + window.scrollY}px`;
+  wrapper.style.left = `${rect.left + window.scrollX}px`;
+  wrapper.style.width = `${rect.width}px`;
+
+  document.body.appendChild(wrapper);
+  activeAutocomplete = wrapper;
+
+  let selectedIndex = -1;
+  const items = wrapper.querySelectorAll('.autocomplete-item:not(.no-results)');
+
+  input.addEventListener('keydown', function handleKeydown(e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+      updateSelection();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, -1);
+      updateSelection();
+    } else if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault();
+      items[selectedIndex].click();
+      input.removeEventListener('keydown', handleKeydown);
+    } else if (e.key === 'Escape') {
+      removeAutocomplete();
+      input.removeEventListener('keydown', handleKeydown);
+    }
+  });
+
+  function updateSelection() {
+    items.forEach((item, index) => {
+      if (index === selectedIndex) {
+        item.classList.add('selected');
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  }
+}
+
+function removeAutocomplete() {
+  if (activeAutocomplete) {
+    activeAutocomplete.remove();
+    activeAutocomplete = null;
+  }
+}
+
+function setupAutocomplete(inputId, suggestions, onSelect) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+
+  input.setAttribute('autocomplete', 'off');
+
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length > 0) {
+      createAutocomplete(input, suggestions, onSelect);
+    }
+  });
+
+  input.addEventListener('input', debounce(() => {
+    if (input.value.trim().length > 0) {
+      createAutocomplete(input, suggestions, onSelect);
+    } else {
+      removeAutocomplete();
+    }
+  }, 200));
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => {
+      removeAutocomplete();
+    }, 200);
+  });
+}
+
+function getCitiesForCountry(country) {
+  if (country.toLowerCase() === 'india') {
+    return INDIAN_CITIES;
+  }
+  return [
+    'Capital City', 'Major City 1', 'Major City 2', 'Major City 3',
+    'Other City 1', 'Other City 2', 'Other City 3'
+  ];
+}
+
+// =====================================================
+// UTILITY FUNCTIONS
+// =====================================================
+
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+function formatPhoneNumber(value) {
+  const cleaned = value.replace(/\D/g, '');
+  if (cleaned.length <= 3) return cleaned;
+  if (cleaned.length <= 6) return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
+  if (cleaned.length <= 10) return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
+  return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6, 10)}`;
+}
+
+function sanitizeInput(value) {
+  return value.replace(/[<>]/g, '').trim();
+}
+
+function calculateEstimatedPrice(tripType, travelers, days) {
+  const basePrices = {
+    'tour': 5000,
+    'flight': 8000,
+    'hotel': 3000,
+    'visa': 2000
+  };
+  
+  const basePrice = basePrices[tripType] || 5000;
+  const travelersMultiplier = parseInt(travelers) || 1;
+  const daysMultiplier = Math.max(1, days / 2);
+  
+  return Math.round(basePrice * travelersMultiplier * daysMultiplier);
+}
+
+// =====================================================
+// AUTO-SAVE FUNCTIONALITY
+// =====================================================
+
+function autoSaveFormData() {
+  const form = document.getElementById('bookingForm');
+  if (!form || !isDirty) return;
+
+  const formData = new FormData(form);
+  const data = {};
+  
+  formData.forEach((value, key) => {
+    // Skip access_key from auto-save
+    if (key !== 'access_key') {
+      data[key] = value;
+    }
+  });
+
+  try {
+    localStorage.setItem('booking_draft', JSON.stringify({
+      data: data,
+      timestamp: Date.now()
+    }));
+    console.log('[BOOKING] ✓ Auto-saved');
+    showToast('💾 Draft saved', 'info', 2000);
+  } catch (e) {
+    console.error('[BOOKING] Auto-save failed:', e);
+  }
+}
+
+function restoreFormData() {
+  try {
+    const saved = localStorage.getItem('booking_draft');
+    if (!saved) return false;
+
+    const { data, timestamp } = JSON.parse(saved);
+    
+    const age = Date.now() - timestamp;
+    if (age > 24 * 60 * 60 * 1000) {
+      localStorage.removeItem('booking_draft');
+      return false;
+    }
+
+    const form = document.getElementById('bookingForm');
+    if (!form) return false;
+
+    Object.keys(data).forEach(key => {
+      const input = form.querySelector(`[name="${key}"]`);
+      if (input) {
+        if (input.type === 'radio') {
+          const radio = form.querySelector(`[name="${key}"][value="${data[key]}"]`);
+          if (radio) radio.checked = true;
+        } else if (input.type === 'checkbox') {
+          input.checked = data[key] === 'on';
+        } else {
+          input.value = data[key];
+        }
+      }
+    });
+
+    updateBookingSummary();
+    console.log('[BOOKING] ✓ Draft restored');
+    
+    // Show styled reload message
+    showDraftRestoredBanner(timestamp);
+    
+    return true;
+  } catch (e) {
+    console.error('[BOOKING] Restore failed:', e);
+    return false;
+  }
+}
+
+function showDraftRestoredBanner(timestamp) {
+  const banner = document.createElement('div');
+  banner.className = 'draft-restored-banner';
+  banner.innerHTML = `
+    <div class="banner-icon">📋</div>
+    <div class="banner-content">
+      <strong>Draft Restored</strong>
+      <p>From ${new Date(timestamp).toLocaleString('en-IN', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })}</p>
+    </div>
+    <button class="banner-close" onclick="this.parentElement.remove()">×</button>
+  `;
+  
+  document.body.appendChild(banner);
+  
+  setTimeout(() => {
+    banner.classList.add('show');
+  }, 100);
+  
+  setTimeout(() => {
+    banner.classList.remove('show');
+    setTimeout(() => banner.remove(), 300);
+  }, 5000);
+}
+
+function clearSavedDraft() {
+  localStorage.removeItem('booking_draft');
+  console.log('[BOOKING] ✓ Draft cleared');
+}
+
+// =====================================================
+// AUTO-FILL FUNCTIONS
+// =====================================================
+
 function getAutoFillData() {
   const id = getQueryParam('id');
   const type = getQueryParam('type');
@@ -17,7 +331,6 @@ function getAutoFillData() {
     return { id, type };
   }
   
-  // Check session storage
   const stored = sessionStorage.getItem('lastBookingData');
   if (stored) {
     try {
@@ -31,9 +344,6 @@ function getAutoFillData() {
   return null;
 }
 
-/**
- * Auto-fill booking form with tour details
- */
 async function autoFillBookingForm() {
   const data = getAutoFillData();
   if (!data || data.type !== 'tour') {
@@ -41,7 +351,7 @@ async function autoFillBookingForm() {
     return;
   }
 
-  const { id, type } = data;
+  const { id } = data;
   console.log('[BOOKING] Auto-filling for:', id);
   
   const cmsData = await fetchCMSData();
@@ -55,14 +365,12 @@ async function autoFillBookingForm() {
 
   tourData = item;
 
-  // Set trip type to tour
   const tourRadio = document.querySelector('input[name="trip_type"][value="tour"]');
   if (tourRadio) {
     tourRadio.checked = true;
     tourRadio.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  // Set package name
   const packageInput = document.getElementById('package_name');
   if (packageInput) {
     packageInput.value = item.name || '';
@@ -73,7 +381,6 @@ async function autoFillBookingForm() {
 
   updateBookingSummary();
 
-  // Scroll to form
   const form = document.getElementById('bookingForm');
   if (form) {
     setTimeout(() => {
@@ -85,9 +392,6 @@ async function autoFillBookingForm() {
   console.log('[BOOKING] Auto-fill complete');
 }
 
-/**
- * Load contact info into sidebar
- */
 async function loadContactInfo() {
   const cmsData = await fetchCMSData();
   if (!cmsData || !cmsData.contact) return;
@@ -117,25 +421,23 @@ async function loadContactInfo() {
   console.log('[BOOKING] Contact info loaded');
 }
 
-/**
- * Validate field value
- */
+// =====================================================
+// VALIDATION FUNCTIONS
+// =====================================================
+
 function validateField(input) {
   const name = input.name;
   const value = input.value.trim();
   let isValid = true;
   let errorMsg = '';
 
-  // Clear previous error state
   input.classList.remove('error');
   removeFieldError(name);
 
-  // Required field check
   if (input.hasAttribute('required') && !value) {
     isValid = false;
     errorMsg = '⚠️ This field is required';
   }
-  // Email validation
   else if (input.type === 'email' && value) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -143,7 +445,6 @@ function validateField(input) {
       errorMsg = '❌ Please enter a valid email address';
     }
   }
-  // Phone validation
   else if (input.type === 'tel' && value) {
     const phoneRegex = /^[\d\s+\-().]{7,}$/;
     if (!phoneRegex.test(value)) {
@@ -151,7 +452,6 @@ function validateField(input) {
       errorMsg = '❌ Please enter a valid phone number';
     }
   }
-  // Number validation
   else if (input.type === 'number') {
     const num = parseInt(value);
     if (value && (isNaN(num) || num < 1 || num > 20)) {
@@ -159,7 +459,6 @@ function validateField(input) {
       errorMsg = '❌ Number must be between 1 and 20';
     }
   }
-  // Date validation (past date check)
   else if (input.type === 'date' && value) {
     const selectedDate = new Date(value + 'T00:00:00');
     const today = new Date();
@@ -182,9 +481,6 @@ function validateField(input) {
   return isValid;
 }
 
-/**
- * Remove field error indicator
- */
 function removeFieldError(fieldName) {
   const errorEl = document.querySelector(`[data-error-for="${fieldName}"]`);
   if (errorEl) {
@@ -193,20 +489,15 @@ function removeFieldError(fieldName) {
   delete validationErrors[fieldName];
 }
 
-/**
- * Show field error with tooltip
- */
 function showFieldError(input) {
   const name = input.name;
   const error = validationErrors[name];
 
   if (!error) return;
 
-  // Remove existing error element
   const existing = document.querySelector(`[data-error-for="${name}"]`);
   if (existing) existing.remove();
 
-  // Create error tooltip
   const errorEl = document.createElement('div');
   errorEl.className = 'field-error-tooltip';
   errorEl.setAttribute('data-error-for', name);
@@ -215,10 +506,8 @@ function showFieldError(input) {
     <span class="error-text">${error.message}</span>
   `;
 
-  // Insert after input
   input.parentElement.appendChild(errorEl);
 
-  // Animate
   setTimeout(() => {
     errorEl.classList.add('show');
   }, 10);
@@ -226,9 +515,6 @@ function showFieldError(input) {
   console.log('[VALIDATION] Error shown for:', name, error.message);
 }
 
-/**
- * Scroll to and highlight first error
- */
 function scrollToFirstError() {
   const errors = Object.values(validationErrors);
   if (errors.length === 0) return;
@@ -236,11 +522,9 @@ function scrollToFirstError() {
   const firstError = errors[0];
   const element = firstError.element;
 
-  // Add pulse animation
   element.classList.add('error-pulse');
 
-  // Scroll with offset
-  const offset = 100;
+  const offset = 120;
   const top = element.getBoundingClientRect().top + window.scrollY - offset;
   
   window.scrollTo({
@@ -248,13 +532,11 @@ function scrollToFirstError() {
     behavior: 'smooth'
   });
 
-  // Focus element
   setTimeout(() => {
     element.focus();
     showToast(firstError.message, 'error');
-  }, 300);
+  }, 400);
 
-  // Show all error tooltips
   errors.forEach(error => {
     showFieldError(error.element);
   });
@@ -262,16 +544,16 @@ function scrollToFirstError() {
   console.log('[VALIDATION] Scrolled to first error');
 }
 
-/**
- * Update booking summary in real-time
- */
+// =====================================================
+// UI UPDATE FUNCTIONS
+// =====================================================
+
 function updateBookingSummary() {
   const typeRadio = document.querySelector('input[name="trip_type"]:checked');
   const packageInput = document.getElementById('package_name');
   const travelersInput = document.getElementById('travelers_count');
   const dateInput = document.getElementById('trip_date');
 
-  // Trip type
   if (typeRadio) {
     const summaryType = document.getElementById('summary-type');
     if (summaryType) {
@@ -285,7 +567,6 @@ function updateBookingSummary() {
     }
   }
 
-  // Package
   if (packageInput) {
     const summaryPackage = document.getElementById('summary-package');
     if (summaryPackage) {
@@ -293,48 +574,113 @@ function updateBookingSummary() {
     }
   }
 
-  // Travelers
   if (travelersInput) {
     const summaryTravelers = document.getElementById('summary-travelers');
     if (summaryTravelers) {
       const count = parseInt(travelersInput.value) || 1;
-      summaryTravelers.textContent = count === 1 ? '1' : count;
+      summaryTravelers.textContent = count;
     }
   }
 
-  // Date
   if (dateInput && dateInput.value) {
     const date = new Date(dateInput.value + 'T00:00:00');
     const summaryDate = document.getElementById('summary-date');
     if (summaryDate) {
       summaryDate.textContent = date.toLocaleDateString('en-IN', {
         month: 'short',
-        day: 'numeric'
+        day: 'numeric',
+        year: 'numeric'
       });
     }
   }
 
-  console.log('[BOOKING] Summary updated');
+  updateEstimatedPrice();
 }
 
-/**
- * Initialize booking form
- */
+function updateEstimatedPrice() {
+  const typeRadio = document.querySelector('input[name="trip_type"]:checked');
+  const travelersInput = document.getElementById('travelers_count');
+  const dateInput = document.getElementById('trip_date');
+  
+  if (!typeRadio || !travelersInput || !dateInput || !dateInput.value) return;
+
+  const tripType = typeRadio.value;
+  const travelers = travelersInput.value;
+  
+  const tripDate = new Date(dateInput.value);
+  const today = new Date();
+  const days = Math.ceil((tripDate - today) / (1000 * 60 * 60 * 24));
+  
+  const estimated = calculateEstimatedPrice(tripType, travelers, days);
+  
+  const priceElement = document.getElementById('summary-price');
+  if (priceElement) {
+    priceElement.textContent = `₹${estimated.toLocaleString('en-IN')}`;
+  }
+}
+
+function showCharacterCount(textarea, maxLength) {
+  const current = textarea.value.length;
+  const countEl = textarea.parentElement.querySelector('.char-count');
+  
+  if (countEl) {
+    countEl.textContent = `${current}/${maxLength}`;
+    countEl.style.color = current > maxLength * 0.9 ? '#e74c3c' : '#95a5a6';
+  }
+}
+
+// =====================================================
+// FORM INITIALIZATION & SUBMISSION
+// =====================================================
+
 function initBookingForm() {
   const form = document.getElementById('bookingForm');
   const result = document.getElementById('bookingResult');
 
   if (!form) return;
 
-  // Real-time validation on input
+  const hasDraft = restoreFormData();
+  if (hasDraft) {
+    isDirty = true;
+  }
+
+  setupAutocomplete('country', COUNTRIES, (selectedCountry) => {
+    console.log('[AUTOCOMPLETE] Country selected:', selectedCountry);
+    const cityInput = document.getElementById('city');
+    if (cityInput) {
+      cityInput.value = '';
+      cityInput.placeholder = `Enter city in ${selectedCountry}`;
+    }
+  });
+
+  setupAutocomplete('city', INDIAN_CITIES, (selectedCity) => {
+    console.log('[AUTOCOMPLETE] City selected:', selectedCity);
+  });
+
+  const countryInput = document.getElementById('country');
+  if (countryInput) {
+    countryInput.addEventListener('change', () => {
+      const cities = getCitiesForCountry(countryInput.value);
+      setupAutocomplete('city', cities, (selectedCity) => {
+        console.log('[AUTOCOMPLETE] City selected:', selectedCity);
+      });
+    });
+  }
+
   form.querySelectorAll('[required]').forEach(input => {
     input.addEventListener('blur', () => {
       validateField(input);
     });
 
     input.addEventListener('input', () => {
+      isDirty = true;
+      
       if (input.classList.contains('error')) {
         validateField(input);
+      }
+      
+      if (input.type === 'text' || input.type === 'email') {
+        input.value = sanitizeInput(input.value);
       }
     });
 
@@ -344,23 +690,44 @@ function initBookingForm() {
     });
   });
 
-  // Real-time summary updates
+  const phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', (e) => {
+      const formatted = formatPhoneNumber(e.target.value);
+      e.target.value = formatted;
+    });
+  }
+
+  const textarea = document.getElementById('special_requests');
+  if (textarea) {
+    const maxLength = 500;
+    textarea.setAttribute('maxlength', maxLength);
+    
+    const charCounter = document.createElement('small');
+    charCounter.className = 'char-count form-help';
+    charCounter.textContent = `0/${maxLength}`;
+    textarea.parentElement.appendChild(charCounter);
+    
+    textarea.addEventListener('input', () => {
+      showCharacterCount(textarea, maxLength);
+    });
+  }
+
   form.addEventListener('change', updateBookingSummary);
   form.addEventListener('input', debounce(updateBookingSummary, 300));
 
-  // Form submission
+  autoSaveTimer = setInterval(autoSaveFormData, CONFIG.autoSaveInterval);
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     console.log('[BOOKING] Form submission started');
     validationErrors = {};
 
-    // Validate all required fields
     form.querySelectorAll('[required]').forEach(input => {
       validateField(input);
     });
 
-    // Check for errors
     if (Object.keys(validationErrors).length > 0) {
       console.log('[BOOKING] Validation failed. Errors:', Object.keys(validationErrors));
       scrollToFirstError();
@@ -368,11 +735,10 @@ function initBookingForm() {
       return;
     }
 
-    // Validate terms checkbox
     const termsCheckbox = document.getElementById('terms-checkbox');
-    if (!termsCheckbox.checked) {
+    if (!termsCheckbox || !termsCheckbox.checked) {
       showToast('❌ Please accept the terms and conditions', 'error');
-      termsCheckbox.focus();
+      if (termsCheckbox) termsCheckbox.focus();
       return;
     }
 
@@ -382,35 +748,36 @@ function initBookingForm() {
     submitBtn.textContent = '⏳ Submitting...';
 
     const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+    
+    // IMPORTANT: Only add access_key once, check if it exists
+    if (!formData.has('access_key')) {
+      formData.append('access_key', CONFIG.accessKey);
+    }
 
     if (result) {
       result.textContent = '⏳ Submitting your booking...';
       result.hidden = false;
       result.className = 'result-message result-loading';
-      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch(CONFIG.apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: json
+        body: formData
       });
 
       const data = await response.json();
 
-      if (response.status === 200) {
+      if (response.ok && data.success) {
+        const email = formData.get('email');
+        
         if (result) {
           result.innerHTML = `
             <div class="result-success">
-              <h3>✅ Booking Submitted Successfully!</h3>
+              <div class="result-icon">✅</div>
+              <h3>Booking Submitted Successfully!</h3>
               <p>Thank you for your interest. We will contact you within 24 hours.</p>
-              <p><strong>Confirmation email sent to:</strong> ${object.email}</p>
+              <p><strong>Confirmation sent to:</strong> ${email}</p>
             </div>
           `;
           result.className = 'result-message result-success';
@@ -418,8 +785,10 @@ function initBookingForm() {
         
         form.reset();
         validationErrors = {};
+        isDirty = false;
         updateBookingSummary();
         sessionStorage.removeItem('lastBookingData');
+        clearSavedDraft();
         
         showToast('✅ Booking submitted successfully!', 'success');
 
@@ -432,7 +801,8 @@ function initBookingForm() {
         if (result) {
           result.innerHTML = `
             <div class="result-error">
-              <h3>❌ Submission Failed</h3>
+              <div class="result-icon">❌</div>
+              <h3>Submission Failed</h3>
               <p>${data.message || 'Please try again later.'}</p>
             </div>
           `;
@@ -448,7 +818,8 @@ function initBookingForm() {
       if (result) {
         result.innerHTML = `
           <div class="result-error">
-            <h3>❌ Network Error</h3>
+            <div class="result-icon">⚠️</div>
+            <h3>Network Error</h3>
             <p>Please check your internet connection and try again.</p>
           </div>
         `;
@@ -465,18 +836,13 @@ function initBookingForm() {
   console.log('[BOOKING] Form initialized');
 }
 
-/**
- * Setup form interactions
- */
 function setupFormInteractions() {
-  // Set minimum date to today
   const dateInput = document.getElementById('trip_date');
   if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
     dateInput.min = today;
   }
 
-  // Input focus animations
   document.querySelectorAll('.form-input').forEach(input => {
     input.addEventListener('focus', function() {
       this.parentElement.classList.add('focused');
@@ -489,22 +855,43 @@ function setupFormInteractions() {
     });
   });
 
+  window.addEventListener('beforeunload', (e) => {
+    if (isDirty) {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+      return e.returnValue;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.form-input') && !e.target.closest('.autocomplete-dropdown')) {
+      removeAutocomplete();
+    }
+  });
+
   console.log('[BOOKING] Form interactions setup');
 }
 
-/**
- * Initialize page
- */
+// =====================================================
+// INITIALIZATION
+// =====================================================
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('[BOOKING] 📝 Page initialized');
   
   setTimeout(async () => {
-    loadContactInfo();
+    await loadContactInfo();
     setupFormInteractions();
     initBookingForm();
     await autoFillBookingForm();
     updateBookingSummary();
-  }, 200);
+  }, 300);
+});
+
+window.addEventListener('unload', () => {
+  if (autoSaveTimer) {
+    clearInterval(autoSaveTimer);
+  }
 });
 
 console.log('[BOOKING] ✅ Script loaded');
