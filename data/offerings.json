@@ -1,6 +1,25 @@
 {
   "offerings": [
     {
+      "meta_keywords": "visa, passport, travel permit, documentation",
+      "link_label": "Learn More",
+      "link_href": "/details/",
+      "title": "Courier Services",
+      "icon": "📋",
+      "long_description": "Get expert guidance on visa requirements, documentation, and application processes for major travel destinations.",
+      "id": "Courier-services",
+      "benefits": [
+        "Fast delivery"
+      ],
+      "description": "Expert Courier services and documentation for 50+ countries",
+      "features": [
+        "Courier Services for 50+ countries",
+        "Collaborated with top courier partnerz",
+        "Licensed services",
+        "Fast-track processing available"
+      ]
+    },
+    {
       "meta_keywords": "flight booking, airlines, tickets, travel",
       "link_label": "Learn More",
       "link_href": "/details/",
@@ -44,25 +63,6 @@
         "Resorts and home stays",
         "Group accommodation discounts",
         "Last-minute deals available"
-      ]
-    },
-    {
-      "meta_keywords": "visa, passport, travel permit, documentation",
-      "link_label": "Learn More",
-      "link_href": "/details/",
-      "title": "Courier Services",
-      "icon": "📋",
-      "long_description": "Get expert guidance on visa requirements, documentation, and application processes for major travel destinations.",
-      "id": "Courier-services",
-      "benefits": [
-        "Fast delivery"
-      ],
-      "description": "Expert Courier services and documentation for 50+ countries",
-      "features": [
-        "Courier Services for 50+ countries",
-        "Collaborated with top courier partnerz",
-        "Licensed services",
-        "Fast-track processing available"
       ]
     },
     {
