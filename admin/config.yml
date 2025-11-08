@@ -7,12 +7,13 @@
 backend:
   name: git-gateway
   branch: main
-  repo: dearestwall/GuruNanakToursandTravels
 
+# GitHub Pages URLs
 site_url: "https://dearestwall.github.io/GuruNanakToursandTravels"
 display_url: "https://dearestwall.github.io/GuruNanakToursandTravels"
 logo_url: "https://i.ibb.co/wFXBHmNh/image.png"
 
+# Media settings
 media_folder: "assets/images"
 public_folder: "/GuruNanakToursandTravels/assets/images"
 
@@ -24,6 +25,7 @@ slug:
   sanitize_replacement: "-"
 
 show_preview_links: true
+
 
 # =====================================================
 # DATA COLLECTIONS - NEWEST FIRST
