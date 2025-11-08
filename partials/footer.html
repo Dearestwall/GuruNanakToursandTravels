@@ -1,74 +1,105 @@
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer" role="contentinfo" id="main-footer">
   <div class="footer-wrapper">
+    <!-- Back to Top Button with 3D Effect -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
+
     <div class="footer-content">
       <div class="container">
         <div class="footer-top">
           
+          <!-- Brand Column -->
           <div class="footer-col footer-brand-col">
             <div class="footer-brand-header">
-              <img 
-                src="https://i.ibb.co/wFXBHmNh/image.png" 
-                alt="GNTT Logo" 
-                class="footer-logo"
-                width="56" 
-                height="56"
-                loading="lazy"
-              />
+              <div class="footer-logo-wrapper">
+                <img 
+                  src="https://i.ibb.co/wFXBHmNh/image.png" 
+                  alt="GNTT Logo" 
+                  class="footer-logo"
+                  width="60" 
+                  height="60"
+                  loading="lazy"
+                />
+              </div>
               <div class="footer-brand-info">
                 <h3 class="footer-brand-name" translate="no">Guru Nanak Tour & Travels</h3>
                 <p class="footer-brand-tagline">Your journey, our responsibility</p>
               </div>
             </div>
 
+            <p class="footer-brand-description">
+              Trusted travel partner since 2015. We provide exceptional tour packages, 
+              flight bookings, hotel reservations, and visa assistance across India and worldwide.
+            </p>
+
             <div class="footer-address-info">
               <address>
+                <p><strong>📍 Office Address:</strong></p>
                 <p>Court Road near Police Station</p>
                 <p>Patti 143416, Punjab, India</p>
               </address>
             </div>
 
             <div class="footer-hours">
-              <h4>Business Hours</h4>
-              <p>Mon–Sat: 9:00 AM – 7:00 PM</p>
-              <p>Sunday: Closed</p>
+              <h4>🕒 Business Hours</h4>
+              <ul>
+                <li><span>Mon–Fri:</span> 9:00 AM – 7:00 PM</li>
+                <li><span>Saturday:</span> 10:00 AM – 6:00 PM</li>
+                <li><span>Sunday:</span> Closed</li>
+              </ul>
+            </div>
+
+            <div class="footer-badges">
+              <span class="badge badge-verified">✓ Verified</span>
+              <span class="badge badge-rated">★ 4.8/5</span>
+              <span class="badge badge-secure">🔒 Secure</span>
             </div>
           </div>
 
+          <!-- Quick Links Column -->
           <div class="footer-col footer-links-col">
             <h3 class="footer-col-title">Quick Links</h3>
-            <nav class="footer-links-nav">
-              <a href="/">Home</a>
-              <a href="/about/">About Us</a>
-              <a href="/services/">Services</a>
-              <a href="/tours/">Tours</a>
-              <a href="/gallery/">Gallery</a>
-              <a href="/booking/">Booking</a>
-              <a href="/contact/">Contact</a>
+            <nav class="footer-links-nav footer-nav-horizontal" aria-label="Quick links">
+              <a href="/" class="footer-link">🏠 Home</a>
+              <a href="/about/" class="footer-link">ℹ️ About</a>
+              <a href="/services/" class="footer-link">💼 Services</a>
+              <a href="/tours/" class="footer-link">✈️ Tours</a>
+              <a href="/gallery/" class="footer-link">🖼️ Gallery</a>
+              <a href="/booking/" class="footer-link">📝 Book</a>
+              <a href="/contact/" class="footer-link">📞 Contact</a>
+              <a href="/blog/" class="footer-link">📚 Blog</a>
             </nav>
           </div>
 
+          <!-- Services Column -->
           <div class="footer-col footer-services-col">
             <h3 class="footer-col-title">Our Services</h3>
-            <nav class="footer-services-nav">
-              <a href="/services/?id=flight-bookings">✈️ Flights</a>
-              <a href="/services/?id=hotel-stays">🏨 Hotels</a>
-              <a href="/services/?id=tour-packages">🗺️ Tours</a>
-              <a href="/services/?id=visa-assistance">📋 Visa</a>
+            <nav class="footer-services-nav footer-nav-horizontal" aria-label="Services">
+              <a href="/services/?id=flight-bookings" class="footer-link">✈️ Flights</a>
+              <a href="/services/?id=hotel-stays" class="footer-link">🏨 Hotels</a>
+              <a href="/services/?id=tour-packages" class="footer-link">🗺️ Tours</a>
+              <a href="/services/?id=visa-assistance" class="footer-link">📋 Visa</a>
+              <a href="/services/?id=cab-services" class="footer-link">🚗 Cabs</a>
+              <a href="/services/?id=travel-insurance" class="footer-link">🛡️ Insurance</a>
             </nav>
           </div>
 
+          <!-- Contact & Social Column -->
           <div class="footer-col footer-contact-col">
-            <h3 class="footer-col-title">Contact & Follow</h3>
+            <h3 class="footer-col-title">Get In Touch</h3>
             
             <div class="footer-contact-info">
-              <a href="tel:+916283315156" class="contact-link">
+              <a href="tel:+916283315156" class="contact-link phone-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
                 <span>+91 6283315156</span>
               </a>
 
-              <a href="mailto:patticsc72@gmail.com" class="contact-link">
+              <a href="mailto:patticsc72@gmail.com" class="contact-link email-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
@@ -76,14 +107,14 @@
                 <span>patticsc72@gmail.com</span>
               </a>
 
-              <a href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" class="contact-link">
+              <a href="https://wa.me/916283315156?text=Hello%20GNTT" target="_blank" rel="noopener" class="contact-link whatsapp-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path>
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                 </svg>
-                <span>Chat Now</span>
+                <span>WhatsApp</span>
               </a>
 
-              <a href="https://maps.google.com/?q=Guru+Nanak+Tour+%26+Travels+Patti" target="_blank" rel="noopener" class="contact-link">
+              <a href="https://maps.app.goo.gl/DLYHWqCLf8XE4cd87" target="_blank" rel="noopener" class="contact-link map-link">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
@@ -92,44 +123,53 @@
               </a>
             </div>
 
-            <!-- Social Media Links -->
+            <!-- Newsletter Signup -->
+            <div class="footer-newsletter">
+              <h4>📧 Stay Updated</h4>
+              <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Your email" required aria-label="Email for newsletter" />
+                <button type="submit" aria-label="Subscribe">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </form>
+            </div>
+
+            <!-- Social Media Links with Proper Logos -->
             <div class="footer-social-links">
-              <a href="https://instagram.com/buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link instagram-link" title="Follow on Instagram" aria-label="Instagram">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z" fill="white"></path>
-                  <circle cx="17.5" cy="6.5" r="1.5" fill="white"></circle>
+              <a href="https://instagram.com/buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link instagram-link" title="Follow on Instagram" aria-label="Instagram" data-social="instagram">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </a>
 
-              <a href="https://youtube.com/@buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link youtube-link" title="Subscribe on YouTube" aria-label="YouTube">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" fill="white"></rect>
-                  <path d="M21.5 11c0 .55-.45 1-1 1h-14c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v2z" fill="#CD201F"></path>
-                  <path d="M9 8.5v7l6-3.5-6-3.5z" fill="white"></path>
+              <a href="https://youtube.com/@buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link youtube-link" title="Subscribe on YouTube" aria-label="YouTube" data-social="youtube">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
               </a>
 
-              <a href="https://facebook.com/buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link facebook-link" title="Like on Facebook" aria-label="Facebook">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3" fill="#1877F2"></rect>
-                  <path d="M12.5 18V12h2l.3-2h-2.3V9c0-.5.1-1 1-1h1V6c-.2 0-1-.1-2 0-2 0-3.5 1.3-3.5 3.5V10h-2v2h2v6h2z" fill="white"></path>
+              <a href="https://facebook.com/buy24hstore" target="_blank" rel="noopener noreferrer" class="social-link facebook-link" title="Like on Facebook" aria-label="Facebook" data-social="facebook">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Footer Middle: Legal Links -->
+        <!-- Footer Middle: Legal Links (Horizontal on Mobile) -->
         <div class="footer-middle">
-          <nav class="footer-legal-nav" aria-label="Legal">
-            <a href="/privacy">Privacy Policy</a>
+          <nav class="footer-legal-nav footer-legal-horizontal" aria-label="Legal information">
+            <a href="/privacy/" class="legal-link">Privacy</a>
             <span class="divider">•</span>
-            <a href="/terms/">Terms of Service</a>
+            <a href="/terms/" class="legal-link">Terms</a>
             <span class="divider">•</span>
-            <a href="/disclaimer/">Disclaimer</a>
+            <a href="/disclaimer/" class="legal-link">Disclaimer</a>
             <span class="divider">•</span>
-            <a href="/contact/">Support</a>
+            <a href="/contact/" class="legal-link">Support</a>
           </nav>
         </div>
       </div>
@@ -145,12 +185,17 @@
 
           <div class="footer-store-link">
             <span>Visit our store:</span>
-            <a href="https://www.buy24hstore.com" target="_blank" rel="noopener">buy24hstore.com</a>
+            <a href="https://www.buy24hstore.com" target="_blank" rel="noopener" class="store-link">buy24hstore.com</a>
           </div>
 
           <div class="footer-credit">
-            <span>Developed with <span class="heart">❤️</span> by</span>
-            <a href="https://instagram.com/thrillyverse" target="_blank" rel="noopener" translate="no">Thrillyverse</a>
+            <span>Designed with <span class="heart">❤️</span> by</span>
+            <a href="https://instagram.com/thrillyverse" target="_blank" rel="noopener" translate="no" class="thrillyverse-link" id="thrillyverseLink">
+              <span class="thrillyverse-text">Thrillyverse</span>
+              <svg class="thrillyverse-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>

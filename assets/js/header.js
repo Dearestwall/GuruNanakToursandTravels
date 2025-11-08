@@ -1,5 +1,4 @@
-// assets/js/header.js - PRODUCTION READY
-// Advanced Search • Proper URL Linking • Smart Error Handling
+// assets/js/header.js - ULTRA RESPONSIVE WITH CLICK-OUTSIDE CLOSE
 (function () {
   'use strict';
 
@@ -56,7 +55,6 @@
     return d.innerHTML; 
   };
   
-  // URL slug generator - CLEAN AND READABLE
   const slugify = (str) => {
     return str.toLowerCase()
       .replace(/[^\w\s-]/g, '')
@@ -65,7 +63,6 @@
       .trim();
   };
 
-  // Duration formatter - converts various formats to "7d6n"
   const formatDuration = (duration) => {
     if (!duration) return '';
     
@@ -86,14 +83,11 @@
     return '';
   };
 
-  // Generate tour ID - matches details.js expectation
   const generateTourId = (tour) => {
-    // Use CMS id if available (IMPORTANT!)
     if (tour.id && tour.id !== 'tour') {
       return tour.id;
     }
     
-    // Generate from name + duration if id is missing
     const nameSlug = slugify(tour.name);
     const durationFormatted = formatDuration(tour.duration);
     
@@ -103,16 +97,13 @@
     return nameSlug;
   };
 
-  // Generate service ID
   const generateServiceId = (service) => {
-    // Use CMS id if available (IMPORTANT!)
     if (service.id && service.id !== 'offering') {
       return service.id;
     }
     return slugify(service.title);
   };
 
-  // Smooth scroll to element
   const smoothScroll = (target, offset = 106) => {
     const element = typeof target === 'string' ? qs(target) : target;
     if (!element) return;
@@ -184,7 +175,7 @@
     content.innerHTML = html + ' • ' + html;
   }
 
-  // Build search index - uses CMS IDs directly
+  // Build search index
   async function buildSearchIndex() {
     if (cache.index) return cache.index;
 
@@ -198,75 +189,19 @@
 
     const docs = [];
 
-    // MAIN PAGES
-    docs.push({ 
-      title: 'Home', 
-      type: 'page', 
-      url: __toAbs('/index.html'), 
-      excerpt: 'Guru Nanak Tour & Travels - Your journey, our responsibility',
-      icon: '🏠',
-      keywords: ['home', 'main', 'start', 'welcome']
-    });
+    // PAGES
+    docs.push({ title: 'Home', type: 'page', url: __toAbs('/index.html'), excerpt: 'Guru Nanak Tour & Travels - Your journey, our responsibility', icon: '🏠', keywords: ['home', 'main', 'start', 'welcome'] });
+    docs.push({ title: 'About Us', type: 'page', url: __toAbs('/about/index.html'), excerpt: 'Learn about our story, mission, and team', icon: 'ℹ️', keywords: ['about', 'story', 'mission', 'team'] });
+    docs.push({ title: 'Our Services', type: 'page', url: __toAbs('/services/index.html'), excerpt: 'Flight booking, hotels, visa assistance & tour packages', icon: '⚙️', keywords: ['services', 'booking', 'flight', 'hotel', 'visa'] });
+    docs.push({ title: 'Tour Packages', type: 'page', url: __toAbs('/tours/index.html'), excerpt: 'Browse our curated tour packages and destinations', icon: '🗺️', keywords: ['tours', 'packages', 'destinations', 'travel'] });
+    docs.push({ title: 'Gallery', type: 'page', url: __toAbs('/gallery/index.html'), excerpt: 'Memories & moments from our past tours', icon: '📷', keywords: ['gallery', 'photos', 'memories', 'pictures'] });
+    docs.push({ title: 'Book Now', type: 'page', url: __toAbs('/booking/index.html'), excerpt: 'Reserve your dream trip with us today', icon: '📝', keywords: ['booking', 'reserve', 'book', 'reservation'] });
+    docs.push({ title: 'Contact Us', type: 'page', url: __toAbs('/contact/index.html'), excerpt: 'Get in touch with our team for any queries', icon: '📞', keywords: ['contact', 'email', 'phone', 'support', 'help'] });
 
-    docs.push({ 
-      title: 'About Us', 
-      type: 'page', 
-      url: __toAbs('/about/index.html'), 
-      excerpt: 'Learn about our story, mission, and team',
-      icon: 'ℹ️',
-      keywords: ['about', 'story', 'mission', 'team']
-    });
-
-    docs.push({ 
-      title: 'Our Services', 
-      type: 'page', 
-      url: __toAbs('/services/index.html'), 
-      excerpt: 'Flight booking, hotels, visa assistance & tour packages',
-      icon: '⚙️',
-      keywords: ['services', 'booking', 'flight', 'hotel', 'visa']
-    });
-
-    docs.push({ 
-      title: 'Tour Packages', 
-      type: 'page', 
-      url: __toAbs('/tours/index.html'), 
-      excerpt: 'Browse our curated tour packages and destinations',
-      icon: '🗺️',
-      keywords: ['tours', 'packages', 'destinations', 'travel']
-    });
-
-    docs.push({ 
-      title: 'Gallery', 
-      type: 'page', 
-      url: __toAbs('/gallery/index.html'), 
-      excerpt: 'Memories & moments from our past tours',
-      icon: '📷',
-      keywords: ['gallery', 'photos', 'memories', 'pictures']
-    });
-
-    docs.push({ 
-      title: 'Book Now', 
-      type: 'page', 
-      url: __toAbs('/booking/index.html'), 
-      excerpt: 'Reserve your dream trip with us today',
-      icon: '📝',
-      keywords: ['booking', 'reserve', 'book', 'reservation']
-    });
-
-    docs.push({ 
-      title: 'Contact Us', 
-      type: 'page', 
-      url: __toAbs('/contact/index.html'), 
-      excerpt: 'Get in touch with our team for any queries',
-      icon: '📞',
-      keywords: ['contact', 'email', 'phone', 'support', 'help']
-    });
-
-    // INDIVIDUAL TOUR PACKAGES - Use CMS id directly!
+    // TOURS
     const tlist = tours?.featured_tours || [];
     tlist.forEach(t => {
       const tourId = generateTourId(t);
-      
       docs.push({
         title: t.name,
         type: 'tour',
@@ -277,11 +212,11 @@
         duration: t.duration || '2d1n',
         price: t.price || null,
         destination: t.destination || '',
-        cmsId: t.id  // Store CMS ID for verification
+        cmsId: t.id
       });
     });
 
-    // SERVICES/OFFERINGS - Use CMS id directly!
+    // SERVICES
     (offerings?.offerings || []).forEach(o => {
       const serviceId = generateServiceId(o);
       docs.push({
@@ -295,9 +230,8 @@
       });
     });
 
-    // FAQs with anchor links
+    // FAQs
     (faqs?.faqs || []).forEach((f, idx) => {
-      const faqSlug = slugify(f.q);
       docs.push({
         title: f.q,
         type: 'faq',
@@ -343,7 +277,7 @@
     return cache.index;
   }
 
-  // Levenshtein distance for fuzzy matching
+  // Levenshtein distance
   function levenshtein(a, b) {
     const m = a.length, n = b.length;
     const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
@@ -359,7 +293,7 @@
     return dp[m][n];
   }
 
-  // Advanced search with fuzzy matching
+  // Search
   async function search(query) {
     if (!query || query.length < CONFIG.minChars) return { exact: [], nearest: [] };
     const idx = await buildSearchIndex();
@@ -408,7 +342,7 @@
     return escapeHtml(text).replace(re, '<span class="search-result-highlight">$1</span>');
   }
 
-  // Render search results - NO AUTO REDIRECT!
+  // Render results
   function renderResults(results, drop, q) {
     if (!drop) return;
     const content = drop.querySelector('.search-results-content');
@@ -416,7 +350,6 @@
 
     const { exact, nearest } = results;
 
-    // NO RESULTS - Show friendly error message
     if (!exact.length && !nearest.length) {
       content.innerHTML = `
         <div class="search-no-results">
@@ -488,7 +421,6 @@
     drop.classList.add('show');
     drop.removeAttribute('hidden');
 
-    // Click handlers with smooth scrolling
     qsa('.search-result-item', drop).forEach(item => {
       on(item, 'click', (e) => {
         const url = item.getAttribute('href');
@@ -586,7 +518,7 @@
       });
     }
 
-    // Close on click outside
+    // CRITICAL: Close on click outside
     on(document, 'click', (e) => {
       if (dDrop && !dDrop.contains(e.target) && dIn && !dIn.contains(e.target)) {
         clearResults(dDrop);
@@ -615,7 +547,7 @@
     });
   }
 
-  // Header scroll behavior
+  // Header scroll
   function bindScroll() {
     const header = qs(SEL.header), banner = qs(SEL.banner);
     if (!header) return;
@@ -653,37 +585,46 @@
     }, { passive: true });
   }
 
-  // Mobile search toggle
+  // Search toggle
   function bindSearchToggle() {
     const toggle = qs(SEL.searchToggle), section = qs(SEL.mobileSearchSection);
     if (!toggle || !section) return;
+    
+    const openSearch = () => {
+      section.removeAttribute('hidden');
+      section.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      setTimeout(() => qs(SEL.mobileInput)?.focus(), 100);
+    };
+
+    const closeSearch = () => {
+      section.setAttribute('hidden', '');
+      section.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
     
     on(toggle, 'click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       const isHidden = section.hasAttribute('hidden');
       if (isHidden) {
-        section.removeAttribute('hidden');
-        section.setAttribute('aria-hidden', 'false');
-        toggle.setAttribute('aria-expanded', 'true');
-        setTimeout(() => qs(SEL.mobileInput)?.focus(), 100);
+        openSearch();
       } else {
-        section.setAttribute('hidden', '');
-        section.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
+        closeSearch();
       }
     });
     
+    // CRITICAL: Close search when clicking outside
     on(document, 'click', (e) => {
-      if (!section.hasAttribute('hidden') && !section.contains(e.target) && !toggle.contains(e.target)) {
-        section.setAttribute('hidden', '');
-        section.setAttribute('aria-hidden', 'true');
-        toggle.setAttribute('aria-expanded', 'false');
+      if (!section.hasAttribute('hidden') && 
+          !section.contains(e.target) && 
+          !toggle.contains(e.target)) {
+        closeSearch();
       }
     });
   }
 
-  // Mobile menu
+  // Mobile menu - WITH CLICK-OUTSIDE CLOSE
   function bindMobileMenu() {
     const btn = qs(SEL.menuToggle), menu = qs(SEL.mobileMenu), 
           ovl = qs(SEL.menuOverlay), cls = qs(SEL.menuClose);
@@ -694,6 +635,11 @@
       menu.setAttribute('aria-hidden', 'false');
       btn.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
+      
+      // Add click listener after small delay
+      setTimeout(() => {
+        document.addEventListener('click', outsideClickHandler);
+      }, 100);
     };
     
     const close = () => {
@@ -701,6 +647,20 @@
       menu.setAttribute('aria-hidden', 'true');
       btn.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
+      
+      // Remove click listener
+      document.removeEventListener('click', outsideClickHandler);
+    };
+
+    // CRITICAL: Click outside handler
+    const outsideClickHandler = (e) => {
+      const menuContent = qs('.mobile-menu-content', menu);
+      
+      if (!menu.hasAttribute('hidden') && 
+          !menuContent.contains(e.target) && 
+          !btn.contains(e.target)) {
+        close();
+      }
     };
     
     on(btn, 'click', (e) => {
@@ -729,7 +689,7 @@
     });
   }
 
-  // Active nav highlighting
+  // Active nav
   function activateNav() {
     const path = location.pathname;
     
@@ -745,7 +705,7 @@
     });
   }
 
-  // Update contact buttons
+  // Update contact
   async function updateContact() {
     const c = await getJSON(PATH.contact());
     if (!c || !c.contact) return;
@@ -770,6 +730,8 @@
   }
 
   async function init() {
+    console.log('[HEADER] Initializing ultra-responsive header...');
+    
     enforceZIndexHierarchy();
     
     await renderBanner();
@@ -781,9 +743,11 @@
     updateContact();
     
     buildSearchIndex();
+    
+    console.log('[HEADER] ✅ Ultra-responsive header ready with click-outside-close!');
   }
 
-  // Initialize on DOM ready
+  // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
