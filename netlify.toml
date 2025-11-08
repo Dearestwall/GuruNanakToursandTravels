@@ -1,10 +1,28 @@
-# Deploy only /admin as the Netlify site (admin-only surface)
+# Netlify Configuration
 [build]
-  publish = "admin"
-  functions = "netlify/functions"
+  publish = "."
+  command = "echo 'No build command'"
 
-# Make /admin resolve to the CMS root
+# Redirect rules
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+  force = false
+
 [[redirects]]
   from = "/admin"
-  to = "/"
+  to = "/admin/index.html"
+  status = 200
+
+# Admin panel redirect
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
