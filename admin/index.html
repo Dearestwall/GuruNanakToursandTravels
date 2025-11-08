@@ -11,12 +11,10 @@
   
   <!-- Favicon -->
   <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="../assets/images/logo.png" />
   
   <!-- Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   
-  <!-- Custom Admin Styles -->
   <style>
     * {
       margin: 0;
@@ -35,17 +33,13 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* =====================================================
-       LOADING SCREEN
-       ===================================================== */
     .cms-loading {
       display: flex;
       flex-direction: column;
@@ -80,8 +74,6 @@
       font-size: 2rem;
       font-weight: 900;
       margin-bottom: 1rem;
-      text-align: center;
-      letter-spacing: -0.02em;
     }
 
     .cms-loading p {
@@ -111,9 +103,6 @@
       margin-top: 1rem;
     }
 
-    /* =====================================================
-       AUTHENTICATION ERROR
-       ===================================================== */
     .auth-error {
       display: none;
       flex-direction: column;
@@ -165,97 +154,17 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
-    /* =====================================================
-       CMS CUSTOM THEME
-       ===================================================== */
-    #nc-root {
-      --nc-primary-color: var(--brand);
-      --nc-accent-color: var(--sec);
-      --nc-background-color: var(--bg);
-    }
-
-    /* Custom CMS header */
-    .nc-appHeader-container {
-      background: linear-gradient(135deg, var(--pri) 0%, var(--brand) 100%) !important;
-      border-bottom: 3px solid var(--sec) !important;
-    }
-
-    .nc-appHeaderButton-button {
-      color: white !important;
-    }
-
-    /* Collection items */
-    .nc-entryListing-card {
-      transition: all 0.3s ease !important;
-      border-radius: var(--radius) !important;
-    }
-
-    .nc-entryListing-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow) !important;
-      border-left: 3px solid var(--sec) !important;
-    }
-
-    /* Buttons */
-    .nc-button-primary {
-      background: var(--brand) !important;
-      border-color: var(--brand) !important;
-      transition: all 0.3s ease !important;
-    }
-
-    .nc-button-primary:hover {
-      background: var(--pri) !important;
-      transform: translateY(-2px);
-    }
-
-    /* Form controls */
-    .nc-controlPane-widget {
-      border-radius: var(--radius) !important;
-    }
-
-    /* Toast notifications */
-    .nc-notification {
-      border-radius: var(--radius) !important;
-      box-shadow: var(--shadow) !important;
-    }
-
-    /* Responsive tweaks */
     @media (max-width: 768px) {
-      .cms-loading h1 {
-        font-size: 1.5rem;
-      }
-
-      .loading-logo {
-        width: 80px;
-        height: 80px;
-      }
-
-      .spinner {
-        width: 40px;
-        height: 40px;
-      }
+      .cms-loading h1 { font-size: 1.5rem; }
+      .loading-logo { width: 80px; height: 80px; }
+      .spinner { width: 40px; height: 40px; }
     }
 
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--pri); }
 
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--brand);
-      border-radius: 5px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--pri);
-    }
-
-    /* Accessibility */
     .sr-only {
       position: absolute;
       width: 1px;
@@ -270,7 +179,6 @@
   </style>
 </head>
 <body>
-  <!-- Loading screen while CMS initializes -->
   <div id="cms-loading" class="cms-loading">
     <img 
       src="https://i.ibb.co/wFXBHmNh/image.png" 
@@ -285,27 +193,22 @@
     <div class="loading-status" id="loadingStatus">Initializing...</div>
   </div>
 
-  <!-- Authentication Error Screen -->
   <div id="auth-error" class="auth-error">
     <div class="auth-error-icon">🔒</div>
     <h1>Authentication Required</h1>
-    <p>You must be logged in to access the admin dashboard. Please sign in with your authorized account.</p>
+    <p>You must be logged in to access the admin dashboard.</p>
     <button class="auth-error-btn" onclick="netlifyIdentity.open()">Sign In</button>
   </div>
 
-  <!-- CMS will render here -->
   <script src="https://unpkg.com/netlify-cms@^2.10.192/dist/netlify-cms.js"></script>
 
-  <!-- Custom Admin Scripts -->
   <script>
     console.log('[ADMIN] Initializing GNTT Admin Dashboard...');
 
-    // DOM elements
     const loadingScreen = document.getElementById('cms-loading');
     const authError = document.getElementById('auth-error');
     const loadingStatus = document.getElementById('loadingStatus');
 
-    // Update loading status
     function updateStatus(message) {
       if (loadingStatus) {
         loadingStatus.textContent = message;
@@ -313,7 +216,6 @@
       console.log('[ADMIN]', message);
     }
 
-    // Show/hide screens
     function showLoading() {
       loadingScreen.classList.remove('hidden');
       authError.classList.remove('show');
@@ -328,55 +230,34 @@
       authError.classList.add('show');
     }
 
-    // Initialize Netlify Identity
-    if (window.netlifyIdentity) {
-      updateStatus('Checking authentication...');
+    // CRITICAL: Manually register CMS config to fix path issues
+    if (window.CMS) {
+      updateStatus('Loading configuration...');
 
-      netlifyIdentity.on('init', user => {
-        updateStatus('Authentication check complete');
-
-        if (!user) {
-          console.log('[ADMIN] No user authenticated');
-          updateStatus('Please sign in');
+      // Fetch config.yml manually
+      fetch('./config.yml')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Config not found: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(configYaml => {
+          updateStatus('Configuration loaded');
+          console.log('[ADMIN] Config loaded successfully');
           
-          // Redirect to login after 2 seconds
-          setTimeout(() => {
-            showAuthError();
-          }, 2000);
-
-          netlifyIdentity.on('login', () => {
-            console.log('[ADMIN] User logged in, redirecting...');
-            document.location.href = '/admin/';
-          });
-        } else {
-          console.log('[ADMIN] User authenticated:', user.user_metadata?.full_name || user.email);
-          updateStatus('Welcome, ' + (user.user_metadata?.full_name || 'Admin') + '!');
-          
-          // Hide loading screen after CMS loads
+          // CMS will auto-initialize with the config
           setTimeout(() => {
             hideLoading();
           }, 1500);
-        }
-      });
+        })
+        .catch(error => {
+          console.error('[ADMIN] Config load error:', error);
+          updateStatus('Error loading configuration');
+          alert('Failed to load CMS configuration. Please ensure config.yml exists in /admin/ folder.');
+        });
 
-      netlifyIdentity.on('logout', () => {
-        console.log('[ADMIN] User logged out, redirecting...');
-        document.location.href = '/';
-      });
-
-      netlifyIdentity.on('error', err => {
-        console.error('[ADMIN] Identity error:', err);
-        updateStatus('Authentication error');
-        showAuthError();
-      });
-    } else {
-      console.error('[ADMIN] Netlify Identity not loaded');
-      updateStatus('Error: Identity service not available');
-      setTimeout(showAuthError, 2000);
-    }
-
-    // CMS initialization monitoring
-    if (window.CMS) {
+      // Register event listeners
       CMS.registerEventListener({
         name: 'prePublish',
         handler: ({ entry }) => {
@@ -395,17 +276,48 @@
       console.log('[ADMIN] CMS event listeners registered');
     }
 
+    // Initialize Netlify Identity
+    if (window.netlifyIdentity) {
+      updateStatus('Checking authentication...');
+
+      netlifyIdentity.on('init', user => {
+        updateStatus('Authentication check complete');
+
+        if (!user) {
+          console.log('[ADMIN] No user authenticated');
+          updateStatus('Please sign in');
+          
+          setTimeout(() => {
+            showAuthError();
+          }, 2000);
+
+          netlifyIdentity.on('login', () => {
+            console.log('[ADMIN] User logged in, redirecting...');
+            document.location.href = '/GuruNanakToursandTravels/admin/';
+          });
+        } else {
+          console.log('[ADMIN] User authenticated:', user.user_metadata?.full_name || user.email);
+          updateStatus('Welcome, ' + (user.user_metadata?.full_name || 'Admin') + '!');
+        }
+      });
+
+      netlifyIdentity.on('logout', () => {
+        console.log('[ADMIN] User logged out, redirecting...');
+        document.location.href = '/GuruNanakToursandTravels/';
+      });
+
+      netlifyIdentity.on('error', err => {
+        console.error('[ADMIN] Identity error:', err);
+        updateStatus('Authentication error');
+        showAuthError();
+      });
+    }
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // Ctrl/Cmd + K - Open command palette (if available)
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        console.log('[ADMIN] Command palette shortcut triggered');
-      }
-
-      // Esc - Close modals
-      if (e.key === 'Escape') {
-        console.log('[ADMIN] Escape key pressed');
+        console.log('[ADMIN] Command palette shortcut');
       }
     });
 
@@ -416,14 +328,7 @@
       console.log(`[ADMIN] Dashboard loaded in ${loadTime}ms`);
     });
 
-    // Browser compatibility check
-    const isModernBrowser = 'fetch' in window && 'Promise' in window && 'Symbol' in window;
-    if (!isModernBrowser) {
-      console.warn('[ADMIN] Browser may not be fully compatible');
-      alert('Your browser may not be fully compatible with the admin dashboard. Please use a modern browser like Chrome, Firefox, or Edge.');
-    }
-
-    // Network status monitoring
+    // Network monitoring
     window.addEventListener('online', () => {
       console.log('[ADMIN] Network connection restored');
     });
@@ -433,17 +338,6 @@
       alert('Network connection lost. Changes may not be saved.');
     });
 
-    // Prevent accidental navigation
-    let hasUnsavedChanges = false;
-
-    window.addEventListener('beforeunload', (e) => {
-      if (hasUnsavedChanges) {
-        e.preventDefault();
-        e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
-        return e.returnValue;
-      }
-    });
-
     // Service Worker check
     if ('serviceWorker' in navigator) {
       console.log('[ADMIN] Service Worker supported');
@@ -451,16 +345,5 @@
 
     console.log('[ADMIN] ✅ Admin dashboard scripts loaded');
   </script>
-
-  <!-- Analytics (optional - only for production) -->
-  <!--
-  <script>
-    // Google Analytics or your preferred analytics
-    // window.dataLayer = window.dataLayer || [];
-    // function gtag(){dataLayer.push(arguments);}
-    // gtag('js', new Date());
-    // gtag('config', 'YOUR-GA-ID');
-  </script>
-  -->
 </body>
 </html>
