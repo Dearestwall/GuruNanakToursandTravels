@@ -1,30 +1,30 @@
 {
   "videos": [
     {
-      "id": "uploaded-video-sample1",
-      "title": "Office Opening Ceremony 2024",
-      "description": "Grand opening of our new branch office with ribbon cutting ceremony",
-      "source_type": "upload",
       "video_file": "/content/videos/office-opening-2024.mp4",
-      "thumbnail": "/assets/images/office-opening-thumb.jpg",
-      "category": "Office Tour",
-      "duration": "3:00",
-      "featured": false,
       "active": true,
-      "date": "2024-10-10T10:00:00.000Z"
+      "thumbnail": "/assets/images/office-opening-thumb.jpg",
+      "featured": false,
+      "date": "2024-10-10T10:00:00.000Z",
+      "duration": "3:00",
+      "title": "Customer Review",
+      "id": "uploaded-video-sample1",
+      "description": "Our Customers Saying",
+      "source_type": "upload",
+      "category": "Office Tour"
     },
     {
-      "id": "uploaded-video-sample",
-      "title": "Office Opening Ceremony 2024",
-      "description": "Grand opening of our new branch office with ribbon cutting ceremony",
-      "source_type": "upload",
-      "video_file": "/content/videos/office-opening-2024.mp4",
-      "thumbnail": "/assets/images/office-opening-thumb.jpg",
-      "category": "Office Tour",
-      "duration": "3:00",
-      "featured": false,
+      "video_file": "/content/videos/aqnqaeg4ur3tkpq7ojjyhqyfw2oorgll6gulzvwk7pnxq8-w6ycvjeoq3sgwweys7o5ujl6wdgxcih7k17ngkdspy6qxoo634t6hpqe.mp4",
       "active": true,
-      "date": "2024-10-10T10:00:00.000Z"
+      "thumbnail": "/assets/images/office-opening-thumb.jpg",
+      "featured": false,
+      "date": "2024-10-10T10:00:00.000Z",
+      "duration": "3:00",
+      "title": "Office Tour",
+      "id": "uploaded-video-sample",
+      "description": "Tour of Our Office",
+      "source_type": "upload",
+      "category": "Office Tour"
     }
   ]
 }
