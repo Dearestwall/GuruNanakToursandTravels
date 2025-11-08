@@ -1,13 +1,466 @@
-<!-- admin/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Admin | Guru Nanak Tour & Travels</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-  </head>
-  <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Netlify CMS Admin - Manage GNTT content" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Admin Dashboard — GNTT</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="../assets/images/logo.png" />
+  
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- Custom Admin Styles -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pri: #0a3d62;
+      --brand: #0e5aa7;
+      --sec: #f39c12;
+      --text: #1f2937;
+      --bg: #f5f7fa;
+      --shadow: 0 10px 30px rgba(0,0,0,0.15);
+      --radius: 0.75rem;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* =====================================================
+       LOADING SCREEN
+       ===================================================== */
+    .cms-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--pri) 0%, var(--brand) 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .cms-loading.hidden {
+      display: none;
+    }
+
+    .loading-logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 2rem;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+
+    .cms-loading h1 {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .cms-loading p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-status {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
+
+    /* =====================================================
+       AUTHENTICATION ERROR
+       ===================================================== */
+    .auth-error {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .auth-error.show {
+      display: flex;
+    }
+
+    .auth-error-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .auth-error h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-error p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+      max-width: 400px;
+    }
+
+    .auth-error-btn {
+      padding: 0.75rem 2rem;
+      background: white;
+      color: #dc2626;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .auth-error-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* =====================================================
+       CMS CUSTOM THEME
+       ===================================================== */
+    #nc-root {
+      --nc-primary-color: var(--brand);
+      --nc-accent-color: var(--sec);
+      --nc-background-color: var(--bg);
+    }
+
+    /* Custom CMS header */
+    .nc-appHeader-container {
+      background: linear-gradient(135deg, var(--pri) 0%, var(--brand) 100%) !important;
+      border-bottom: 3px solid var(--sec) !important;
+    }
+
+    .nc-appHeaderButton-button {
+      color: white !important;
+    }
+
+    /* Collection items */
+    .nc-entryListing-card {
+      transition: all 0.3s ease !important;
+      border-radius: var(--radius) !important;
+    }
+
+    .nc-entryListing-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow) !important;
+      border-left: 3px solid var(--sec) !important;
+    }
+
+    /* Buttons */
+    .nc-button-primary {
+      background: var(--brand) !important;
+      border-color: var(--brand) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .nc-button-primary:hover {
+      background: var(--pri) !important;
+      transform: translateY(-2px);
+    }
+
+    /* Form controls */
+    .nc-controlPane-widget {
+      border-radius: var(--radius) !important;
+    }
+
+    /* Toast notifications */
+    .nc-notification {
+      border-radius: var(--radius) !important;
+      box-shadow: var(--shadow) !important;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .cms-loading h1 {
+        font-size: 1.5rem;
+      }
+
+      .loading-logo {
+        width: 80px;
+        height: 80px;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--brand);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--pri);
+    }
+
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen while CMS initializes -->
+  <div id="cms-loading" class="cms-loading">
+    <img 
+      src="https://i.ibb.co/wFXBHmNh/image.png" 
+      alt="GNTT Logo" 
+      class="loading-logo"
+    />
+    <h1>GNTT Admin Dashboard</h1>
+    <p>Loading Netlify CMS...</p>
+    <div class="spinner" role="status" aria-label="Loading">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div class="loading-status" id="loadingStatus">Initializing...</div>
+  </div>
+
+  <!-- Authentication Error Screen -->
+  <div id="auth-error" class="auth-error">
+    <div class="auth-error-icon">🔒</div>
+    <h1>Authentication Required</h1>
+    <p>You must be logged in to access the admin dashboard. Please sign in with your authorized account.</p>
+    <button class="auth-error-btn" onclick="netlifyIdentity.open()">Sign In</button>
+  </div>
+
+  <!-- CMS will render here -->
+  <script src="https://unpkg.com/netlify-cms@^2.10.192/dist/netlify-cms.js"></script>
+
+  <!-- Custom Admin Scripts -->
+  <script>
+    console.log('[ADMIN] Initializing GNTT Admin Dashboard...');
+
+    // DOM elements
+    const loadingScreen = document.getElementById('cms-loading');
+    const authError = document.getElementById('auth-error');
+    const loadingStatus = document.getElementById('loadingStatus');
+
+    // Update loading status
+    function updateStatus(message) {
+      if (loadingStatus) {
+        loadingStatus.textContent = message;
+      }
+      console.log('[ADMIN]', message);
+    }
+
+    // Show/hide screens
+    function showLoading() {
+      loadingScreen.classList.remove('hidden');
+      authError.classList.remove('show');
+    }
+
+    function hideLoading() {
+      loadingScreen.classList.add('hidden');
+    }
+
+    function showAuthError() {
+      loadingScreen.classList.add('hidden');
+      authError.classList.add('show');
+    }
+
+    // Initialize Netlify Identity
+    if (window.netlifyIdentity) {
+      updateStatus('Checking authentication...');
+
+      netlifyIdentity.on('init', user => {
+        updateStatus('Authentication check complete');
+
+        if (!user) {
+          console.log('[ADMIN] No user authenticated');
+          updateStatus('Please sign in');
+          
+          // Redirect to login after 2 seconds
+          setTimeout(() => {
+            showAuthError();
+          }, 2000);
+
+          netlifyIdentity.on('login', () => {
+            console.log('[ADMIN] User logged in, redirecting...');
+            document.location.href = '/admin/';
+          });
+        } else {
+          console.log('[ADMIN] User authenticated:', user.user_metadata?.full_name || user.email);
+          updateStatus('Welcome, ' + (user.user_metadata?.full_name || 'Admin') + '!');
+          
+          // Hide loading screen after CMS loads
+          setTimeout(() => {
+            hideLoading();
+          }, 1500);
+        }
+      });
+
+      netlifyIdentity.on('logout', () => {
+        console.log('[ADMIN] User logged out, redirecting...');
+        document.location.href = '/';
+      });
+
+      netlifyIdentity.on('error', err => {
+        console.error('[ADMIN] Identity error:', err);
+        updateStatus('Authentication error');
+        showAuthError();
+      });
+    } else {
+      console.error('[ADMIN] Netlify Identity not loaded');
+      updateStatus('Error: Identity service not available');
+      setTimeout(showAuthError, 2000);
+    }
+
+    // CMS initialization monitoring
+    if (window.CMS) {
+      CMS.registerEventListener({
+        name: 'prePublish',
+        handler: ({ entry }) => {
+          console.log('[ADMIN] Publishing:', entry.get('title') || entry.get('name'));
+          return entry;
+        }
+      });
+
+      CMS.registerEventListener({
+        name: 'postPublish',
+        handler: ({ entry }) => {
+          console.log('[ADMIN] Published:', entry.get('title') || entry.get('name'));
+        }
+      });
+
+      console.log('[ADMIN] CMS event listeners registered');
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ctrl/Cmd + K - Open command palette (if available)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        console.log('[ADMIN] Command palette shortcut triggered');
+      }
+
+      // Esc - Close modals
+      if (e.key === 'Escape') {
+        console.log('[ADMIN] Escape key pressed');
+      }
+    });
+
+    // Performance monitoring
+    window.addEventListener('load', () => {
+      const perfData = performance.timing;
+      const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+      console.log(`[ADMIN] Dashboard loaded in ${loadTime}ms`);
+    });
+
+    // Browser compatibility check
+    const isModernBrowser = 'fetch' in window && 'Promise' in window && 'Symbol' in window;
+    if (!isModernBrowser) {
+      console.warn('[ADMIN] Browser may not be fully compatible');
+      alert('Your browser may not be fully compatible with the admin dashboard. Please use a modern browser like Chrome, Firefox, or Edge.');
+    }
+
+    // Network status monitoring
+    window.addEventListener('online', () => {
+      console.log('[ADMIN] Network connection restored');
+    });
+
+    window.addEventListener('offline', () => {
+      console.warn('[ADMIN] Network connection lost');
+      alert('Network connection lost. Changes may not be saved.');
+    });
+
+    // Prevent accidental navigation
+    let hasUnsavedChanges = false;
+
+    window.addEventListener('beforeunload', (e) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+        return e.returnValue;
+      }
+    });
+
+    // Service Worker check
+    if ('serviceWorker' in navigator) {
+      console.log('[ADMIN] Service Worker supported');
+    }
+
+    console.log('[ADMIN] ✅ Admin dashboard scripts loaded');
+  </script>
+
+  <!-- Analytics (optional - only for production) -->
+  <!--
+  <script>
+    // Google Analytics or your preferred analytics
+    // window.dataLayer = window.dataLayer || [];
+    // function gtag(){dataLayer.push(arguments);}
+    // gtag('js', new Date());
+    // gtag('config', 'YOUR-GA-ID');
+  </script>
+  -->
+</body>
 </html>
