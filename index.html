@@ -114,6 +114,84 @@
         </div>
       </div>
     </section>
+   <!-- VIDEO REELS SECTION -->
+<section class="video-reels" id="video-reels" aria-labelledby="videos-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="videos-title">🎥 Videos</h2>
+      <p>Watch our office tours, client stories, and travel guides</p>
+    </div>
+    
+    <!-- Horizontal Scrolling Container -->
+    <div class="reels-wrapper">
+      <button class="reels-nav reels-prev" id="reels-prev" aria-label="Previous video">❮</button>
+      <div class="reels-container" id="reels-container">
+        <!-- Dynamic video cards will be inserted here -->
+      </div>
+      <button class="reels-nav reels-next" id="reels-next" aria-label="Next video">❯</button>
+    </div>
+  </div>
+</section>
+
+<!-- Enhanced Video Modal with Suggested Videos & Controls -->
+<div class="video-modal" id="video-modal" style="display:none;">
+  <div class="video-modal-backdrop" onclick="closeVideoModal()"></div>
+  <div class="video-modal-content">
+    <!-- Close Button -->
+    <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video">×</button>
+    
+    <!-- Picture-in-Picture Button (for uploaded videos) -->
+    <button class="video-modal-pip" id="pip-btn" onclick="togglePiP()" style="display:none;" aria-label="Picture in Picture">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+        <rect x="13" y="9" width="7" height="5" rx="1" ry="1"></rect>
+      </svg>
+    </button>
+    
+    <!-- Mute/Unmute Button (for uploaded videos) -->
+    <button class="video-modal-mute" id="mute-btn" onclick="toggleMute()" style="display:none;" aria-label="Toggle Mute" title="Mute/Unmute">
+      🔊
+    </button>
+    
+    <!-- Video Player Wrapper -->
+    <div class="video-modal-player-wrapper">
+      <!-- For embedded videos (YouTube/Vimeo) -->
+      <iframe 
+        id="modal-iframe" 
+        class="modal-player-iframe" 
+        style="display:none;" 
+        frameborder="0" 
+        allowfullscreen 
+        allow="autoplay; picture-in-picture; encrypted-media">
+      </iframe>
+      
+      <!-- For uploaded videos (HTML5) -->
+      <video 
+        id="modal-video" 
+        class="modal-player-video" 
+        controls 
+        controlsList="nodownload"
+        style="display:none;">
+      </video>
+    </div>
+    
+    <!-- Video Information -->
+    <div class="video-modal-info">
+      <span class="video-modal-category" id="modal-category"></span>
+      <h3 class="video-modal-title" id="modal-title"></h3>
+      <p class="video-modal-description" id="modal-description"></p>
+    </div>
+    
+    <!-- Suggested Videos Section -->
+    <div class="modal-suggested">
+      <h4>Up Next</h4>
+      <div id="modal-suggested-videos" class="suggested-videos-grid">
+        <!-- Dynamic suggested videos will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- CTA SECTION -->
     <section class="cta" id="cta" aria-labelledby="cta-title">

@@ -412,3 +412,57 @@ collections:
               - { label: "Link Text", name: "link_text", widget: "string", required: false, hint: "e.g., Learn More" }
               - { label: "Active", name: "active", widget: "boolean", default: true }
               - { label: "Type", name: "type", widget: "select", options: ["info", "success", "warning", "error"], default: "info" }
+
+  # =====================================================
+  # VIDEO SHOWCASE
+  # =====================================================
+  - name: "videos"
+    label: "🎥 Video Showcase"
+    description: "Upload videos or embed from YouTube/Vimeo"
+    format: "json"
+    files:
+      - name: "video_gallery"
+        label: "Videos"
+        file: "data/videos.json"
+        fields:
+          - label: "Video Gallery"
+            name: "videos"
+            widget: "list"
+            collapsed: false
+            summary: "{{fields.title}} - {{fields.source_type}}"
+            add_to_top: true
+            fields:
+              - { label: "Video ID", name: "id", widget: "string", required: true, hint: "e.g., office-tour-2024" }
+              - { label: "Video Title", name: "title", widget: "string", required: true }
+              - { label: "Description", name: "description", widget: "text", required: false }
+              - label: "Video Source Type"
+                name: "source_type"
+                widget: "select"
+                options:
+                  - { label: "Upload Video File", value: "upload" }
+                  - { label: "YouTube Link", value: "youtube" }
+                  - { label: "Vimeo Link", value: "vimeo" }
+                required: true
+                default: "youtube"
+                hint: "Choose how to add the video"
+              - label: "Video File (Upload)"
+                name: "video_file"
+                widget: "file"
+                required: false
+                media_folder: "/content/videos"
+                hint: "Upload MP4, WebM, or MOV (max 50MB). Only for 'Upload Video File'"
+              - label: "Video URL (YouTube/Vimeo)"
+                name: "video_url"
+                widget: "string"
+                required: false
+                hint: "YouTube: https://www.youtube.com/watch?v=xxx | Vimeo: https://vimeo.com/xxx"
+              - { label: "Custom Thumbnail", name: "thumbnail", widget: "image", required: false, hint: "Optional thumbnail image" }
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options: ["Office Tour", "Client Testimonial", "Tour Package", "Behind The Scenes", "Travel Guide", "Promotional", "Other"]
+                default: "Office Tour"
+              - { label: "Duration", name: "duration", widget: "string", required: false, hint: "e.g., 2:30" }
+              - { label: "Featured", name: "featured", widget: "boolean", default: false }
+              - { label: "Active", name: "active", widget: "boolean", default: true }
+              - { label: "Upload Date", name: "date", widget: "datetime", default: "{{now}}" }

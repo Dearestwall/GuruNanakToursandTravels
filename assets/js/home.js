@@ -1,5 +1,6 @@
 // =====================================================
 // HOME.JS - Enhanced home page with Netlify CMS support
+// FINAL VERSION - Production Ready
 // =====================================================
 
 function escapeHtml(s) {
@@ -60,6 +61,7 @@ async function loadHomeData() {
     { key: 'tours', path: '/data/tours.json' },
     { key: 'stats', path: '/data/stats.json' },
     { key: 'testimonials', path: '/data/testimonials.json' },
+    { key: 'videos', path: '/data/videos.json' },
     { key: 'partners', path: '/data/partners.json' },
     { key: 'faqs', path: '/data/faqs.json' },
     { key: 'contact', path: '/data/contact.json' }
@@ -100,6 +102,7 @@ async function loadHomeData() {
       featured_tours: allData.tours?.featured_tours || [],
       stats: allData.stats?.stats || {},
       testimonials: allData.testimonials?.testimonials || [],
+      videos: allData.videos?.videos || [],
       partners: allData.partners?.partners || [],
       faqs: allData.faqs?.faqs || [],
       contact: allData.contact?.contact || {}
@@ -109,7 +112,9 @@ async function loadHomeData() {
     console.log('[HOME] Page rendered');
   } catch (e) {
     console.error('[HOME] Data load error:', e);
-    showToast('Failed to load page content', 'error');
+    if (typeof showToast === 'function') {
+      showToast('Failed to load page content', 'error');
+    }
   }
 }
 
@@ -131,6 +136,7 @@ function renderHome(data) {
   renderFeaturedTours(data.featured_tours);
   renderStats(data.stats);
   renderTestimonials(data.testimonials);
+  renderVideoShowcase(data.videos);
   renderPartners(data.partners);
   renderFAQs(data.faqs);
 }
@@ -540,9 +546,6 @@ const FAQ_REVEAL_STEP = 2;
 let faqContainer = null;
 let showMoreBtn = null;
 
-/**
- * Render initial FAQs (first 4)
- */
 function renderInitialFAQs(faqs) {
   const container = document.getElementById('faq-list');
   if (!container || !Array.isArray(faqs)) return;
@@ -561,7 +564,6 @@ function renderInitialFAQs(faqs) {
   container.innerHTML = html;
   setupFAQAccordion();
 
-  // Add Show More button if needed
   if (faqs.length > FAQ_INITIAL_SHOW) {
     setupShowMoreButton();
   }
@@ -569,14 +571,10 @@ function renderInitialFAQs(faqs) {
   console.log('[HOME] Rendered initial FAQs:', FAQ_INITIAL_SHOW);
 }
 
-/**
- * Setup Show More button
- */
 function setupShowMoreButton() {
   const container = faqContainer.parentElement;
   if (!container) return;
 
-  // Remove existing button
   const existingBtn = container.querySelector('#showMoreFaqs');
   if (existingBtn) existingBtn.remove();
 
@@ -595,9 +593,6 @@ function setupShowMoreButton() {
   console.log('[HOME] Show More button added');
 }
 
-/**
- * Load more FAQs (next batch)
- */
 function loadMoreFAQs() {
   if (!faqContainer || faqsLoaded >= allFaqsData.length) return;
 
@@ -622,7 +617,6 @@ function loadMoreFAQs() {
   faqsLoaded += nextBatch;
   setupFAQAccordion();
 
-  // Update button or hide it
   if (faqsLoaded >= allFaqsData.length) {
     if (showMoreBtn) {
       showMoreBtn.innerHTML = '✓ All FAQs Shown';
@@ -630,7 +624,6 @@ function loadMoreFAQs() {
       showMoreBtn.style.opacity = '0.6';
     }
   } else {
-    // Update button text with remaining count
     const remaining = allFaqsData.length - faqsLoaded;
     if (showMoreBtn) {
       showMoreBtn.innerHTML = `📖 Show ${Math.min(FAQ_REVEAL_STEP, remaining)} More Questions`;
@@ -640,42 +633,33 @@ function loadMoreFAQs() {
   console.log('[HOME] Loaded more FAQs. Total loaded:', faqsLoaded);
 }
 
-/**
- * Setup FAQ accordion (one-open-at-a-time with auto-reveal)
- */
 function setupFAQAccordion() {
   const faqs = faqContainer.querySelectorAll('.faq');
   let faqOpenCount = 0;
 
   faqs.forEach((details) => {
-    // Remove previous listeners to avoid duplicates
     const clone = details.cloneNode(true);
     details.parentNode.replaceChild(clone, details);
 
-    // Re-query since we replaced
     const faqElement = faqContainer.querySelector(`[data-faq-index="${clone.dataset.faqIndex}"]`);
     if (!faqElement) return;
 
     faqElement.addEventListener('toggle', () => {
       if (faqElement.open) {
-        // Close all other FAQs (accordion behavior)
         faqContainer.querySelectorAll('.faq').forEach(otherFaq => {
           if (otherFaq !== faqElement && otherFaq.open) {
             otherFaq.open = false;
           }
         });
 
-        // Add active state
         faqElement.classList.add('open');
 
-        // Progressive reveal: Load more when user opens every 2nd FAQ
         faqOpenCount++;
         if (faqOpenCount % 2 === 0 && faqsLoaded < allFaqsData.length) {
           console.log('[HOME] Auto-revealing more FAQs on open #', faqOpenCount);
           loadMoreFAQs();
         }
 
-        // Auto-scroll to opened FAQ
         setTimeout(() => {
           faqElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
@@ -689,9 +673,6 @@ function setupFAQAccordion() {
   });
 }
 
-/**
- * Main FAQ renderer
- */
 function renderFAQs(faqs) {
   const container = document.getElementById('faq-list');
   if (!container || !Array.isArray(faqs) || faqs.length === 0) {
@@ -704,12 +685,631 @@ function renderFAQs(faqs) {
 }
 
 // =====================================================
-// INITIALIZATION
+// VIDEO REELS - ADVANCED WITH SOUND AUTOPLAY
+// COMPLETE FINAL VERSION - PRODUCTION READY v6.1
 // =====================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('[HOME] Page initialized');
+let currentVideoData = null;
+let currentModalVideoIndex = null;
+let autoScrollInterval = null;
+let currentReelIndex = 0;
+let allVideosData = [];
+let videoObserver = null;
+let currentPlayingVideo = null;
+let currentPlayingCard = null;
+let isModalOpen = false;
+let hasUserInteracted = false;
+let scrollSnapTimeout = null;
+let playPromise = null; // Track play promise to avoid AbortError
+
+// A11y helpers
+function setFocus(el) {
+  if (!el) return;
+  requestAnimationFrame(() => {
+    try { el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: false }); } catch(_) {}
+  });
+}
+
+/**
+ * Extract video ID from YouTube/Vimeo URL
+ */
+function extractVideoId(url, sourceType) {
+  if (!url) return null;
+  try {
+    if (sourceType === 'youtube') {
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?\/]+)/,
+        /youtube\.com\/shorts\/([^&?\/]+)/
+      ];
+      for (const p of patterns) {
+        const m = url.match(p);
+        if (m && m[1]) return m[1];
+      }
+    } else if (sourceType === 'vimeo') {
+      const m = url.match(/vimeo\.com\/(\d+)/);
+      if (m && m[1]) return m[1];
+    }
+  } catch (e) { console.error('[VIDEO] ID parse error:', e); }
+  return null;
+}
+
+/**
+ * Get video source URL
+ */
+function getVideoSource(video) {
+  if (video.source_type === 'upload' && video.video_file) {
+    return { type: 'upload', url: window.__toAbs ? window.__toAbs(video.video_file) : video.video_file };
+  }
+  if (video.source_type === 'youtube' && video.video_url) {
+    const id = extractVideoId(video.video_url, 'youtube');
+    if (id) {
+      return {
+        type: 'youtube',
+        videoId: id,
+        url: `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&enablejsapi=1`
+      };
+    }
+  }
+  if (video.source_type === 'vimeo' && video.video_url) {
+    const id = extractVideoId(video.video_url, 'vimeo');
+    if (id) {
+      return {
+        type: 'vimeo',
+        videoId: id,
+        url: `https://player.vimeo.com/video/${id}?title=0&byline=0&portrait=0&playsinline=1`
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Get video thumbnail
+ */
+function getVideoThumbnail(video) {
+  if (video.thumbnail) return window.__toAbs ? window.__toAbs(video.thumbnail) : video.thumbnail;
+  if (video.source_type === 'youtube' && video.video_url) {
+    const id = extractVideoId(video.video_url, 'youtube');
+    if (id) return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  }
+  return `https://via.placeholder.com/400x600/0e5aa7/ffffff?text=${encodeURIComponent(video.source_type || 'Video')}`;
+}
+
+/**
+ * Render reels
+ */
+function renderVideoShowcase(videos) {
+  const container = document.getElementById('reels-container');
+  if (!container) return;
+
+  if (!Array.isArray(videos) || videos.length === 0) {
+    const section = document.getElementById('video-reels');
+    if (section) section.style.display = 'none';
+    return;
+  }
+
+  const activeVideos = videos
+    .filter(v => v.active !== false)
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+  if (activeVideos.length === 0) {
+    const section = document.getElementById('video-reels');
+    if (section) section.style.display = 'none';
+    return;
+  }
+
+  allVideosData = activeVideos;
+
+  container.innerHTML = activeVideos.map((video, idx) => {
+    const videoSource = getVideoSource(video);
+    const thumbnail = getVideoThumbnail(video);
+    if (!videoSource) return '';
+
+    return `
+      <div class="reel-card" data-video-index="${idx}" data-video-id="${escapeAttr(video.id)}" role="group" aria-label="${escapeAttr(video.title)}">
+        <div class="reel-thumbnail" onclick="enableSoundAndPlay(${idx})" aria-label="Play ${escapeAttr(video.title)}" role="button" tabindex="0">
+          <img src="${escapeAttr(thumbnail)}" alt="${escapeAttr(video.title)}" loading="lazy" class="reel-thumb-img" />
+
+          <button class="reel-mute-btn" onclick="toggleReelMute(${idx}); event.stopPropagation();" style="display:none;" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+
+          <div class="reel-preview-player" style="display:none;">
+            ${videoSource.type === 'upload' ? `
+              <video class="reel-video-preview" loop playsinline muted preload="metadata" data-video-index="${idx}">
+                <source src="${escapeAttr(videoSource.url)}" type="video/mp4">
+              </video>
+            ` : `
+              <iframe 
+                class="reel-iframe-preview"
+                src=""
+                data-src="${escapeAttr(videoSource.url)}&autoplay=1&mute=1&loop=1&controls=0"
+                frameborder="0"
+                title="${escapeAttr(video.title)}"
+                allow="autoplay; picture-in-picture; encrypted-media"
+                referrerpolicy="no-referrer-when-downgrade"
+                loading="lazy"
+                data-video-index="${idx}"
+              ></iframe>
+            `}
+          </div>
+
+          <div class="reel-play-icon" aria-hidden="true">
+            <svg width="60" height="60" viewBox="0 0 60 60">
+              <circle cx="30" cy="30" r="28" fill="rgba(255,255,255,0.9)" />
+              <polygon points="24,18 24,42 42,30" fill="#0e5aa7" />
+            </svg>
+          </div>
+
+          <button class="reel-watch-more" onclick="openVideoModal(${idx}); event.stopPropagation();" title="Watch full video with controls & more info" aria-label="Watch full video">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.5rem;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"></polygon>
+            </svg>
+            Watch Full Video
+          </button>
+
+          ${video.duration ? `<span class="reel-duration" aria-label="Duration ${escapeHtml(video.duration)}">${escapeHtml(video.duration)}</span>` : ''}
+        </div>
+
+        <div class="reel-info">
+          ${video.category ? `<span class="reel-category">${escapeHtml(video.category)}</span>` : ''}
+          <h4 class="reel-title">${escapeHtml(video.title)}</h4>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  initReelsCarousel();
+  initVideoAutoplay();
+  wireKeyboardTrap();
+}
+
+/**
+ * Enable sound and play (first interaction)
+ */
+window.enableSoundAndPlay = function(videoIndex) {
+  hasUserInteracted = true;
+  const card = document.querySelectorAll('.reel-card')[videoIndex];
+  if (card) playVideo(card, true);
+};
+
+/**
+ * Toggle reel video mute
+ */
+window.toggleReelMute = function(videoIndex) {
+  const card = document.querySelectorAll('.reel-card')[videoIndex];
+  if (!card) return;
+  const videoEl = card.querySelector('.reel-video-preview');
+  const muteBtn = card.querySelector('.reel-mute-btn');
+  if (videoEl) {
+    videoEl.muted = !videoEl.muted;
+    if (muteBtn) {
+      muteBtn.innerHTML = videoEl.muted ? '🔇' : '🔊';
+      muteBtn.title = videoEl.muted ? 'Unmute' : 'Mute';
+      muteBtn.setAttribute('aria-label', videoEl.muted ? 'Unmute' : 'Mute');
+    }
+  }
+};
+
+/**
+ * Stop all playing videos (with promise handling)
+ */
+async function stopAllVideos() {
+  // Wait for any pending play promise before pausing
+  if (playPromise) {
+    try {
+      await playPromise;
+    } catch(e) {
+      console.log('[VIDEO] Play promise rejected:', e);
+    }
+    playPromise = null;
+  }
+
+  document.querySelectorAll('.reel-card').forEach(card => card.classList.remove('playing'));
   
+  document.querySelectorAll('.reel-video-preview').forEach(v => { 
+    if (!v.paused) {
+      v.pause(); 
+    }
+    v.currentTime = 0; 
+    v.muted = true; 
+  });
+  
+  document.querySelectorAll('.reel-iframe-preview').forEach(iframe => { iframe.src = ''; });
+  document.querySelectorAll('.reel-preview-player').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.reel-thumb-img').forEach(t => t.style.display = 'block');
+  document.querySelectorAll('.reel-play-icon').forEach(i => i.style.opacity = '1');
+  document.querySelectorAll('.reel-mute-btn').forEach(btn => btn.style.display = 'none');
+  
+  currentPlayingVideo = null;
+  currentPlayingCard = null;
+}
+
+/**
+ * Play card (optionally with sound) - FIXED VERSION
+ */
+async function playVideo(cardElement, enableSound = false) {
+  const videoIndex = parseInt(cardElement.dataset.videoIndex);
+  
+  // Prevent playing the same video twice
+  if (currentPlayingCard === cardElement && currentPlayingVideo) {
+    console.log('[VIDEO] Already playing this card');
+    return;
+  }
+
+  const previewPlayer = cardElement.querySelector('.reel-preview-player');
+  const thumbImg = cardElement.querySelector('.reel-thumb-img');
+  const playIcon = cardElement.querySelector('.reel-play-icon');
+  const videoEl = cardElement.querySelector('.reel-video-preview');
+  const iframeEl = cardElement.querySelector('.reel-iframe-preview');
+  const muteBtn = cardElement.querySelector('.reel-mute-btn');
+
+  await stopAllVideos();
+  
+  cardElement.classList.add('playing');
+
+  if (thumbImg) thumbImg.style.display = 'none';
+  if (playIcon) playIcon.style.opacity = '0.5';
+  if (previewPlayer) previewPlayer.style.display = 'block';
+
+  if (videoEl) {
+    videoEl.muted = !(enableSound || hasUserInteracted);
+    
+    // Store play promise to prevent AbortError
+    playPromise = videoEl.play();
+    
+    playPromise
+      .then(() => {
+        console.log('[VIDEO] Playing successfully:', videoIndex);
+        currentPlayingVideo = videoEl;
+        currentPlayingCard = cardElement;
+        currentReelIndex = videoIndex;
+      })
+      .catch(e => {
+        console.log('[VIDEO] Autoplay blocked, trying muted:', e);
+        videoEl.muted = true;
+        playPromise = videoEl.play();
+        playPromise
+          .then(() => {
+            currentPlayingVideo = videoEl;
+            currentPlayingCard = cardElement;
+          })
+          .catch(e2 => console.log('[VIDEO] Autoplay failed completely:', e2));
+      });
+
+    if (muteBtn) {
+      muteBtn.style.display = 'flex';
+      muteBtn.innerHTML = videoEl.muted ? '🔇' : '🔊';
+      muteBtn.title = videoEl.muted ? 'Unmute' : 'Mute';
+    }
+
+    videoEl.onended = () => { if (!isModalOpen) advanceToNextVideo(); };
+  } else if (iframeEl) {
+    const base = iframeEl.dataset.src || '';
+    const wantSound = enableSound || hasUserInteracted;
+    const url = base.replace(/(&|\?)mute=\d/g, '') + (base.includes('?') ? '&' : '?') + `mute=${wantSound ? '0' : '1'}`;
+    iframeEl.src = url;
+    currentPlayingVideo = iframeEl;
+    currentPlayingCard = cardElement;
+    currentReelIndex = videoIndex;
+  }
+}
+
+/**
+ * Advance to next video
+ */
+function advanceToNextVideo() {
+  const container = document.getElementById('reels-container');
+  if (!container) return;
+  const cards = container.querySelectorAll('.reel-card');
+  const nextIndex = (currentReelIndex + 1) % cards.length;
+  if (cards[nextIndex]) {
+    cards[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    setTimeout(() => playVideo(cards[nextIndex], hasUserInteracted), 600);
+  }
+}
+
+/**
+ * IntersectionObserver autoplay
+ */
+function initVideoAutoplay() {
+  if (videoObserver) videoObserver.disconnect();
+  const options = { root: null, rootMargin: '0px', threshold: 0.75 };
+  videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !currentPlayingVideo && !isModalOpen) {
+        playVideo(entry.target, hasUserInteracted);
+      }
+    });
+  }, options);
+  document.querySelectorAll('.reel-card').forEach(card => videoObserver.observe(card));
+}
+
+/**
+ * Carousel with snap and keyboard shortcuts
+ */
+function initReelsCarousel() {
+  const container = document.getElementById('reels-container');
+  const prevBtn = document.getElementById('reels-prev');
+  const nextBtn = document.getElementById('reels-next');
+  if (!container) return;
+
+  const cardWidth = () => {
+    const first = container.querySelector('.reel-card');
+    if (!first) return 320;
+    const style = getComputedStyle(first);
+    return first.getBoundingClientRect().width + parseFloat(style.marginRight || 16);
+  };
+
+  function snapToNearest() {
+    const w = cardWidth();
+    const index = Math.round(container.scrollLeft / w);
+    const cards = container.querySelectorAll('.reel-card');
+    const clamped = Math.max(0, Math.min(index, cards.length - 1));
+    currentReelIndex = clamped;
+    if (!isModalOpen && cards[clamped]) {
+      setTimeout(() => playVideo(cards[clamped], hasUserInteracted), 400);
+    }
+  }
+
+  function scrollReels(dir) {
+    const w = cardWidth();
+    container.scrollTo({ left: container.scrollLeft + (dir === 'next' ? w : -w), behavior: 'smooth' });
+    clearTimeout(scrollSnapTimeout);
+    scrollSnapTimeout = setTimeout(snapToNearest, 400);
+  }
+
+  container.addEventListener('scroll', () => {
+    clearTimeout(scrollSnapTimeout);
+    scrollSnapTimeout = setTimeout(snapToNearest, 400);
+  }, { passive: true });
+
+  prevBtn?.addEventListener('click', () => { hasUserInteracted = true; scrollReels('prev'); });
+  nextBtn?.addEventListener('click', () => { hasUserInteracted = true; scrollReels('next'); });
+
+  container.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { hasUserInteracted = true; e.preventDefault(); scrollReels('next'); }
+    if (e.key === 'ArrowLeft') { hasUserInteracted = true; e.preventDefault(); scrollReels('prev'); }
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const cards = container.querySelectorAll('.reel-card');
+      const active = cards[currentReelIndex];
+      if (active) playVideo(active, true);
+    }
+  });
+  container.setAttribute('tabindex', '0');
+  container.setAttribute('role', 'listbox');
+}
+
+/**
+ * Suggested videos (modal)
+ */
+function renderSuggestedVideos(currentIndex) {
+  const wrap = document.getElementById('modal-suggested-videos');
+  if (!wrap) return;
+  const suggested = allVideosData.filter((_, i) => i !== currentIndex).slice(0, 3);
+  wrap.innerHTML = suggested.map(v => {
+    const idx = allVideosData.findIndex(x => x.id === v.id);
+    const thumb = getVideoThumbnail(v);
+    return `
+      <button class="suggested-video-card" onclick="loadVideoInModal(${idx})" aria-label="Play ${escapeAttr(v.title)}">
+        <div class="suggested-video-thumbnail">
+          <img src="${escapeAttr(thumb)}" alt="${escapeAttr(v.title)}" />
+          <div class="suggested-play-icon">▶</div>
+        </div>
+        <div class="suggested-video-info">
+          <h5>${escapeHtml(v.title)}</h5>
+          ${v.category ? `<span class="suggested-category">${escapeHtml(v.category)}</span>` : ''}
+          ${v.duration ? `<span class="suggested-duration">⏱️ ${escapeHtml(v.duration)}</span>` : ''}
+        </div>
+      </button>
+    `;
+  }).join('');
+}
+
+/**
+ * Load video in modal
+ */
+window.loadVideoInModal = function(videoIndex) {
+  const video = allVideosData[videoIndex];
+  if (!video) return;
+  currentModalVideoIndex = videoIndex;
+  const src = getVideoSource(video);
+  if (!src) return;
+
+  const modalIframe = document.getElementById('modal-iframe');
+  const modalVideo = document.getElementById('modal-video');
+  const pipBtn = document.getElementById('pip-btn');
+  const muteBtn = document.getElementById('mute-btn');
+
+  document.getElementById('modal-category').textContent = video.category || '';
+  document.getElementById('modal-title').textContent = video.title || '';
+  document.getElementById('modal-description').textContent = video.description || '';
+
+  if (src.type === 'upload') {
+    modalIframe.style.display = 'none';
+    modalVideo.style.display = 'block';
+    modalVideo.src = src.url;
+    modalVideo.controls = true;
+    modalVideo.muted = false;
+    modalVideo.play().catch(()=>{});
+    pipBtn.style.display = 'flex';
+    muteBtn.style.display = 'flex';
+    modalVideo.onended = () => playNextVideoInModal();
+    setFocus(modalVideo);
+  } else {
+    modalVideo.style.display = 'none';
+    modalIframe.style.display = 'block';
+    modalIframe.src = src.url + (src.url.includes('?') ? '&' : '?') + 'autoplay=1';
+    pipBtn.style.display = 'none';
+    muteBtn.style.display = 'none';
+    setFocus(modalIframe);
+  }
+
+  renderSuggestedVideos(videoIndex);
+  updateMuteButtonState();
+};
+
+/**
+ * Modal next
+ */
+function playNextVideoInModal() {
+  const next = (currentModalVideoIndex + 1) % allVideosData.length;
+  loadVideoInModal(next);
+}
+
+/**
+ * Open modal
+ */
+window.openVideoModal = function(videoIndex) {
+  stopAllVideos();
+  isModalOpen = true;
+  hasUserInteracted = true;
+  currentModalVideoIndex = videoIndex;
+
+  const modal = document.getElementById('video-modal');
+  modal.style.display = 'flex';
+  document.body.classList.add('modal-open');
+  loadVideoInModal(videoIndex);
+  wireKeyboardTrap(true);
+};
+
+/**
+ * Close modal
+ */
+window.closeVideoModal = function() {
+  const modal = document.getElementById('video-modal');
+  const modalIframe = document.getElementById('modal-iframe');
+  const modalVideo = document.getElementById('modal-video');
+
+  modalIframe.src = '';
+  modalVideo.pause();
+  modalVideo.src = '';
+
+  modal.style.display = 'none';
+  document.body.classList.remove('modal-open');
+  isModalOpen = false;
+  currentModalVideoIndex = null;
+  wireKeyboardTrap(false);
+
+  setFocus(document.getElementById('reels-container'));
+};
+
+/**
+ * Toggle modal mute
+ */
+window.toggleMute = function() {
+  const modalVideo = document.getElementById('modal-video');
+  if (modalVideo && modalVideo.style.display === 'block') {
+    modalVideo.muted = !modalVideo.muted;
+    updateMuteButtonState();
+  }
+};
+
+function updateMuteButtonState() {
+  const modalVideo = document.getElementById('modal-video');
+  const muteBtn = document.getElementById('mute-btn');
+  if (muteBtn && modalVideo) {
+    const muted = !!modalVideo.muted;
+    muteBtn.innerHTML = muted ? '🔇' : '🔊';
+    muteBtn.title = muted ? 'Unmute' : 'Mute';
+    muteBtn.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+  }
+}
+
+/**
+ * Picture-in-Picture
+ */
+window.togglePiP = async function() {
+  const modalVideo = document.getElementById('modal-video');
+  if (!document.pictureInPictureEnabled || !modalVideo || modalVideo.style.display !== 'block') {
+    alert('Picture-in-Picture not supported here');
+    return;
+  }
+  try {
+    if (document.pictureInPictureElement) await document.exitPictureInPicture();
+    else await modalVideo.requestPictureInPicture();
+  } catch (e) { console.error('[VIDEO] PiP error:', e); }
+};
+
+// Global keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (isModalOpen) closeVideoModal();
+    else stopAllVideos();
+  }
+  if (!isModalOpen) {
+    if (e.key === 'ArrowRight') { hasUserInteracted = true; document.getElementById('reels-next')?.click(); }
+    if (e.key === 'ArrowLeft') { hasUserInteracted = true; document.getElementById('reels-prev')?.click(); }
+  }
+});
+
+// Modal media keys & shortcuts
+document.addEventListener('keydown', (e) => {
+  if (!isModalOpen) return;
+  const video = document.getElementById('modal-video');
+  if ((e.code === 'Space' || e.key.toLowerCase() === 'k') && video && video.style.display === 'block') {
+    e.preventDefault();
+    if (video.paused) video.play();
+    else video.pause();
+  }
+  if ((e.key.toLowerCase() === 'j' || e.key.toLowerCase() === 'l') && video && video.style.display === 'block') {
+    e.preventDefault();
+    const delta = e.key.toLowerCase() === 'j' ? -10 : 10;
+    video.currentTime = Math.max(0, Math.min(video.duration || 0, video.currentTime + delta));
+  }
+  if (e.key.toLowerCase() === 'f') {
+    e.preventDefault();
+    const wrapper = document.querySelector('.video-modal-player-wrapper');
+    if (!document.fullscreenElement) wrapper?.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }
+  if (e.key.toLowerCase() === 'm') {
+    e.preventDefault();
+    toggleMute();
+  }
+});
+
+/**
+ * Focus trap within modal
+ */
+function wireKeyboardTrap(enable = false) {
+  const modal = document.getElementById('video-modal');
+  if (!enable) {
+    modal.removeAttribute('aria-modal');
+    modal.removeAttribute('role');
+    return;
+  }
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('role', 'dialog');
+
+  const focusable = () => Array.from(modal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  )).filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+
+  function trap(e) {
+    if (e.key !== 'Tab') return;
+    const nodes = focusable();
+    if (!nodes.length) return;
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  modal.addEventListener('keydown', trap);
+}
+
+// Interaction flags
+document.addEventListener('click', () => { hasUserInteracted = true; }, { once: true });
+document.addEventListener('touchstart', () => { hasUserInteracted = true; }, { once: true });
+
+// Cleanup
+window.addEventListener('beforeunload', () => {
+  clearInterval(autoScrollInterval);
+  if (videoObserver) videoObserver.disconnect();
+  stopAllVideos();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('[VIDEO] Page initialized');
   try {
     const navEntries = performance.getEntriesByType('navigation');
     const type = navEntries && navEntries[0] ? navEntries[0].type : 'navigate';
@@ -717,14 +1317,15 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   } catch (_) {}
-
   setTimeout(loadHomeData, 100);
 });
 
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     setTimeout(loadHomeData, 500);
+  } else {
+    if (!isModalOpen) stopAllVideos();
   }
 });
 
-console.log('[HOME] ✅ Script loaded');
+console.log('[VIDEO] ✅ Advanced player v6.1 - AbortError fixed');

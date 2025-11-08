@@ -1,0 +1,30 @@
+{
+  "videos": [
+    {
+      "id": "uploaded-video-sample1",
+      "title": "Office Opening Ceremony 2024",
+      "description": "Grand opening of our new branch office with ribbon cutting ceremony",
+      "source_type": "upload",
+      "video_file": "/content/videos/office-opening-2024.mp4",
+      "thumbnail": "/assets/images/office-opening-thumb.jpg",
+      "category": "Office Tour",
+      "duration": "3:00",
+      "featured": false,
+      "active": true,
+      "date": "2024-10-10T10:00:00.000Z"
+    },
+    {
+      "id": "uploaded-video-sample",
+      "title": "Office Opening Ceremony 2024",
+      "description": "Grand opening of our new branch office with ribbon cutting ceremony",
+      "source_type": "upload",
+      "video_file": "/content/videos/office-opening-2024.mp4",
+      "thumbnail": "/assets/images/office-opening-thumb.jpg",
+      "category": "Office Tour",
+      "duration": "3:00",
+      "featured": false,
+      "active": true,
+      "date": "2024-10-10T10:00:00.000Z"
+    }
+  ]
+}
