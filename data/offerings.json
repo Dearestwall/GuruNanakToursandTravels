@@ -1,76 +1,138 @@
 {
   "offerings": [
     {
-      "id": "flight-bookings",
-      "icon": "✈️",
-      "title": "Flight Bookings",
-      "description": "Best prices on domestic and international flights with instant confirmation",
-      "long_description": "Book flights to 200+ destinations worldwide. We offer competitive pricing, quick confirmations, and 24/7 customer support for all your flight needs.",
-      "features": ["Competitive pricing on domestic flights", "International flight bookings", "Instant confirmation via email/SMS", "Flexible date changes", "Travel insurance add-on available"],
-      "benefits": ["Save up to 40% on airline tickets", "Zero hidden charges", "Free cancellation up to 7 days before", "Priority customer support"],
+      "meta_keywords": "visa, passport, travel permit, documentation",
       "link_label": "Learn More",
       "link_href": "/details/",
-      "meta_keywords": "flight booking, airlines, tickets, travel"
-    },
-    {
-      "id": "hotel-stays",
-      "icon": "🏨",
-      "title": "Hotels & Stays",
-      "description": "Comfortable accommodations and resorts worldwide",
-      "long_description": "Choose from luxury 5-star resorts to budget-friendly hotels. We've partnered with over 50,000 properties globally to ensure best rates.",
-      "features": ["3-5 star hotels in major cities", "Budget and luxury options", "Resorts and home stays", "Group accommodation discounts", "Last-minute deals available"],
-      "benefits": ["Best price guarantee", "Free cancellation on most bookings", "Exclusive member discounts", "24/7 hotel support"],
-      "link_label": "Learn More",
-      "link_href": "/details/",
-      "meta_keywords": "hotels, accommodations, resorts, stay"
-    },
-    {
-      "id": "tour-packages",
-      "icon": "🗺️",
-      "title": "Tour Packages",
-      "description": "Customized tours for every budget and preference",
-      "long_description": "From budget backpacking to luxury tours, we design personalized itineraries for individual travelers, families, and groups.",
-      "features": ["Pre-planned tour packages", "Fully customizable itineraries", "Group tour discounts", "Adventure and leisure packages", "Family-friendly options"],
-      "benefits": ["All-inclusive package pricing", "Expert local guides", "Hassle-free planning", "Flexible dates and extensions"],
-      "link_label": "Learn More",
-      "link_href": "/details/",
-      "meta_keywords": "tour packages, holidays, travel, itinerary"
-    },
-    {
-      "id": "visa-assistance",
+      "title": "Courier Services",
       "icon": "📋",
-      "title": "Visa Assistance",
-      "description": "Expert visa support and documentation for 50+ countries",
       "long_description": "Get expert guidance on visa requirements, documentation, and application processes for major travel destinations.",
-      "features": ["Visa consultations for 50+ countries", "Complete documentation support", "Embassy liaison services", "Fast-track processing available", "Multi-year visa assistance"],
-      "benefits": ["98% visa approval rate", "Free consultation", "Expert documentation review", "Embassy connections"],
-      "link_label": "Learn More",
-      "link_href": "/details/",
-      "meta_keywords": "visa, passport, travel permit, documentation"
+      "id": "Courier-services",
+      "benefits": [
+        "Fast delivery"
+      ],
+      "description": "Expert Courier services and documentation for 50+ countries",
+      "features": [
+        "Courier Services for 50+ countries",
+        "Collaborated with top courier partnerz",
+        "Licensed services",
+        "Fast-track processing available"
+      ]
     },
     {
-      "id": "cab-rentals",
-      "icon": "🚗",
+      "meta_keywords": "flight booking, airlines, tickets, travel",
+      "link_label": "Learn More",
+      "link_href": "/details/",
+      "title": "Flight Bookings",
+      "icon": "✈️",
+      "long_description": "Book flights to 200+ destinations worldwide. We offer competitive pricing, quick confirmations, and 24/7 customer support for all your flight needs.",
+      "id": "flight-bookings",
+      "benefits": [
+        "Save up to 40% on airline tickets",
+        "Zero hidden charges",
+        "Free cancellation up to 7 days before",
+        "Priority customer support"
+      ],
+      "description": "Best prices on domestic and international flights with instant confirmation",
+      "features": [
+        "Competitive pricing on domestic flights",
+        "International flight bookings",
+        "Instant confirmation via email/SMS",
+        "Flexible date changes",
+        "Travel insurance add-on available"
+      ]
+    },
+    {
+      "meta_keywords": "hotels, accommodations, resorts, stay",
+      "link_label": "Learn More",
+      "link_href": "/details/",
+      "title": "Hotels & Stays",
+      "icon": "🏨",
+      "long_description": "Choose from luxury 5-star resorts to budget-friendly hotels. We've partnered with over 50,000 properties globally to ensure best rates.",
+      "id": "hotel-stays",
+      "benefits": [
+        "Best price guarantee",
+        "Free cancellation on most bookings",
+        "Exclusive member discounts",
+        "24/7 hotel support"
+      ],
+      "description": "Comfortable accommodations and resorts worldwide",
+      "features": [
+        "3-5 star hotels in major cities",
+        "Budget and luxury options",
+        "Resorts and home stays",
+        "Group accommodation discounts",
+        "Last-minute deals available"
+      ]
+    },
+    {
+      "meta_keywords": "tour packages, holidays, travel, itinerary",
+      "link_label": "Learn More",
+      "link_href": "/details/",
+      "title": "Tour Packages",
+      "icon": "🗺️",
+      "long_description": "Get expert guidance on courier requirements. Legible rates.",
+      "id": "tour-packages",
+      "benefits": [
+        "All-inclusive package pricing",
+        "Expert local guides",
+        "Hassle-free planning",
+        "Flexible dates and extensions"
+      ],
+      "description": "Customized tours for every budget and preference",
+      "features": [
+        "Pre-planned tour packages",
+        "Fully customizable itineraries",
+        "Group tour discounts",
+        "Adventure and leisure packages",
+        "Family-friendly options"
+      ]
+    },
+    {
+      "meta_keywords": "cab rental, transport, vehicle, driver",
+      "link_label": "Learn More",
+      "link_href": "/details/",
       "title": "Cab & Transport",
-      "description": "Reliable ground transportation across India and abroad",
+      "icon": "🚗",
       "long_description": "Premium cab rental services with experienced drivers for city tours, intercity travel, and airport transfers.",
-      "features": ["Airport transfers", "City sightseeing tours", "Intercity cab services", "Multiple vehicle categories", "Professional drivers"],
-      "benefits": ["Best rental prices", "Experienced drivers", "Real-time GPS tracking", "24/7 roadside assistance"],
-      "link_label": "Learn More",
-      "link_href": "/details/",
-      "meta_keywords": "cab rental, transport, vehicle, driver"
+      "id": "cab-rentals",
+      "benefits": [
+        "Best rental prices",
+        "Experienced drivers",
+        "Real-time GPS tracking",
+        "24/7 roadside assistance"
+      ],
+      "description": "Reliable ground transportation across India and abroad",
+      "features": [
+        "Airport transfers",
+        "City sightseeing tours",
+        "Intercity cab services",
+        "Multiple vehicle categories",
+        "Professional drivers"
+      ]
     },
     {
-      "id": "holiday-packages",
-      "icon": "🎉",
-      "title": "Holiday Packages",
-      "description": "Special packages for festivals, New Year, and holidays",
-      "long_description": "Celebrate special occasions with our curated holiday packages including accommodations, meals, and activities.",
-      "features": ["Diwali special packages", "New Year celebrations", "Christmas holiday bundles", "Wedding destination services", "Corporate team outings"],
-      "benefits": ["Up to 30% savings on holiday deals", "Group discounts available", "Custom celebration arrangements", "All-inclusive pricing"],
+      "meta_keywords": "holiday packages, festivals, celebrations, special offers",
       "link_label": "Learn More",
       "link_href": "/details/",
-      "meta_keywords": "holiday packages, festivals, celebrations, special offers"
+      "title": "Holiday Packages",
+      "icon": "🎉",
+      "long_description": "Celebrate special occasions with our curated holiday packages including accommodations, meals, and activities.",
+      "id": "holiday-packages",
+      "benefits": [
+        "Up to 30% savings on holiday deals",
+        "Group discounts available",
+        "Custom celebration arrangements",
+        "All-inclusive pricing"
+      ],
+      "description": "Special packages for festivals, New Year, and holidays",
+      "features": [
+        "Diwali special packages",
+        "New Year celebrations",
+        "Christmas holiday bundles",
+        "Wedding destination services",
+        "Corporate team outings"
+      ]
     }
   ]
 }
