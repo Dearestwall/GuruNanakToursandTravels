@@ -688,7 +688,7 @@ function renderFAQs(faqs) {
 // VIDEO REELS - ADVANCED WITH SOUND AUTOPLAY
 // COMPLETE FINAL VERSION - PRODUCTION READY v6.1
 // =====================================================
-
+let isPlayingLocked = false;
 let currentVideoData = null;
 let currentModalVideoIndex = null;
 let autoScrollInterval = null;
@@ -709,7 +709,179 @@ function setFocus(el) {
     try { el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: false }); } catch(_) {}
   });
 }
+/**
+ * IntersectionObserver autoplay - STRICT ONE AT A TIME
+ */
+function initVideoAutoplay() {
+  if (videoObserver) videoObserver.disconnect();
+  
+  const options = { 
+    root: null, 
+    rootMargin: '-20% 0px -20% 0px', // Only trigger when centered
+    threshold: 0.9 // 90% visible
+  };
+  
+  videoObserver = new IntersectionObserver((entries) => {
+    // Find the most visible entry
+    let mostVisible = null;
+    let maxRatio = 0;
+    
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > maxRatio) {
+        maxRatio = entry.intersectionRatio;
+        mostVisible = entry;
+      }
+    });
+    
+    // Only play if this is the most visible AND no video is playing
+    if (mostVisible && mostVisible.isIntersecting && !currentPlayingVideo && !isModalOpen && !isPlayingLocked) {
+      playVideo(mostVisible.target, hasUserInteracted);
+    }
+  }, options);
+  
+  document.querySelectorAll('.reel-card').forEach(card => videoObserver.observe(card));
+}
 
+/**
+ * Play card (optionally with sound) - ONE AT A TIME ENFORCED
+ */
+async function playVideo(cardElement, enableSound = false) {
+  // Lock to prevent concurrent plays
+  if (isPlayingLocked) {
+    console.log('[VIDEO] Play locked - already playing');
+    return;
+  }
+  
+  const videoIndex = parseInt(cardElement.dataset.videoIndex);
+  
+  // Prevent playing the same video twice
+  if (currentPlayingCard === cardElement && currentPlayingVideo) {
+    console.log('[VIDEO] Already playing this card');
+    return;
+  }
+
+  isPlayingLocked = true; // Lock immediately
+
+  const previewPlayer = cardElement.querySelector('.reel-preview-player');
+  const thumbImg = cardElement.querySelector('.reel-thumb-img');
+  const playIcon = cardElement.querySelector('.reel-play-icon');
+  const videoEl = cardElement.querySelector('.reel-video-preview');
+  const iframeEl = cardElement.querySelector('.reel-iframe-preview');
+  const muteBtn = cardElement.querySelector('.reel-mute-btn');
+
+  await stopAllVideos();
+  
+  cardElement.classList.add('playing');
+
+  if (thumbImg) thumbImg.style.display = 'none';
+  if (playIcon) playIcon.style.opacity = '0.5';
+  if (previewPlayer) previewPlayer.style.display = 'block';
+
+  if (videoEl) {
+    videoEl.muted = !(enableSound || hasUserInteracted);
+    
+    playPromise = videoEl.play();
+    
+    playPromise
+      .then(() => {
+        console.log('[VIDEO] ✅ Playing:', videoIndex, allVideosData[videoIndex]?.title);
+        currentPlayingVideo = videoEl;
+        currentPlayingCard = cardElement;
+        currentReelIndex = videoIndex;
+        isPlayingLocked = false; // Unlock after successful play
+      })
+      .catch(e => {
+        console.log('[VIDEO] Autoplay blocked, trying muted:', e);
+        videoEl.muted = true;
+        playPromise = videoEl.play();
+        playPromise
+          .then(() => {
+            currentPlayingVideo = videoEl;
+            currentPlayingCard = cardElement;
+            currentReelIndex = videoIndex;
+            isPlayingLocked = false;
+          })
+          .catch(e2 => {
+            console.log('[VIDEO] Autoplay failed completely:', e2);
+            isPlayingLocked = false; // Unlock even on failure
+          });
+      });
+
+    if (muteBtn) {
+      muteBtn.style.display = 'flex';
+      muteBtn.innerHTML = videoEl.muted ? '🔇' : '🔊';
+      muteBtn.title = videoEl.muted ? 'Unmute' : 'Mute';
+    }
+
+    videoEl.onended = () => { if (!isModalOpen) advanceToNextVideo(); };
+  } else if (iframeEl) {
+    const base = iframeEl.dataset.src || '';
+    const wantSound = enableSound || hasUserInteracted;
+    const url = base.replace(/(&|\?)mute=\d/g, '') + (base.includes('?') ? '&' : '?') + `mute=${wantSound ? '0' : '1'}`;
+    iframeEl.src = url;
+    currentPlayingVideo = iframeEl;
+    currentPlayingCard = cardElement;
+    currentReelIndex = videoIndex;
+    isPlayingLocked = false; // Unlock for iframes
+    console.log('[VIDEO] ✅ Playing iframe:', videoIndex);
+  }
+}
+
+/**
+ * Stop all playing videos (with lock reset)
+ */
+async function stopAllVideos() {
+  // Wait for any pending play promise
+  if (playPromise) {
+    try {
+      await playPromise;
+    } catch(e) {
+      console.log('[VIDEO] Play promise rejected:', e);
+    }
+    playPromise = null;
+  }
+
+  document.querySelectorAll('.reel-card').forEach(card => card.classList.remove('playing'));
+  
+  document.querySelectorAll('.reel-video-preview').forEach(v => { 
+    if (!v.paused) {
+      v.pause(); 
+    }
+    v.currentTime = 0; 
+    v.muted = true; 
+  });
+  
+  document.querySelectorAll('.reel-iframe-preview').forEach(iframe => { iframe.src = ''; });
+  document.querySelectorAll('.reel-preview-player').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.reel-thumb-img').forEach(t => t.style.display = 'block');
+  document.querySelectorAll('.reel-play-icon').forEach(i => i.style.opacity = '1');
+  document.querySelectorAll('.reel-mute-btn').forEach(btn => btn.style.display = 'none');
+  
+  currentPlayingVideo = null;
+  currentPlayingCard = null;
+  isPlayingLocked = false; // Reset lock when stopping
+}
+
+/**
+ * Advance to next video - WITH LOCK
+ */
+function advanceToNextVideo() {
+  if (isPlayingLocked) {
+    console.log('[VIDEO] Cannot advance - play locked');
+    return;
+  }
+  
+  const container = document.getElementById('reels-container');
+  if (!container) return;
+  
+  const cards = container.querySelectorAll('.reel-card');
+  const nextIndex = (currentReelIndex + 1) % cards.length;
+  
+  if (cards[nextIndex]) {
+    cards[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    setTimeout(() => playVideo(cards[nextIndex], hasUserInteracted), 700); // Longer delay
+  }
+}
 /**
  * Extract video ID from YouTube/Vimeo URL
  */

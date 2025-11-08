@@ -1925,3 +1925,13 @@ body.modal-open {
 @media (max-width: 640px) {
   .suggested-videos-grid { grid-template-columns: 1fr; }
 }
+/* Scroll snap for perfect one-at-a-time */
+.reels-container {
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 calc(50% - 150px);
+}
+
+.reel-card {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
