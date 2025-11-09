@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Watch our latest travel videos, tour guides, and office updates from Guru Nanak Tours and Travels">
+  <meta name="keywords" content="travel videos, tour guides, office tours, client stories">
+  
+  <title>Videos | Guru Nanak Tours and Travels</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://img.youtube.com">
+  <link rel="preconnect" href="https://i.vimeocdn.com">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <link rel="stylesheet" href="../assets/css/footer.css">
+  <link rel="stylesheet" href="../assets/css/video-player.css">
+  <link rel="stylesheet" href="../assets/css/videos.css">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Videos | Guru Nanak Tours and Travels">
+  <meta property="og:description" content="Watch our latest travel videos and tour guides">
+  <meta property="og:image" content="../assets/images/og-video.jpg">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGallery",
+    "name": "Guru Nanak Tours and Travels Videos",
+    "description": "Travel videos, tour guides, and office updates"
+  }
+  </script>
+</head>
+<body class="videos-page">
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Page Header -->
+    <section class="videos-page-header">
+      <div class="container">
+        <h1>🎥 Our Video Gallery</h1>
+        <p>Watch our latest travel videos, tour guides, and client stories</p>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="videos-filters">
+      <div class="filters-container">
+        <div class="filters-row">
+          <div class="search-box">
+            <input type="search" 
+                   id="video-search" 
+                   placeholder="Search videos..." 
+                   aria-label="Search videos">
+          </div>
+
+          <div class="sort-box">
+            <select id="video-sort" aria-label="Sort videos">
+              <option value="latest">Latest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="title">Title (A-Z)</option>
+              <option value="views">Most Viewed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="category-filters" id="category-filters">
+          <!-- Categories dynamically inserted by videos.js -->
+          <div class="loading-placeholder" style="padding: 1rem;">
+            <div class="spinner" style="width: 30px; height: 30px;"></div>
+          </div>
+        </div>
+
+        <div class="videos-stats" id="videos-stats">
+          <!-- Stats dynamically inserted by videos.js -->
+          <span>Loading...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Videos Grid -->
+    <section class="videos-grid-section">
+      <div class="videos-grid" id="videos-grid">
+        <!-- Videos dynamically inserted by videos.js -->
+        <div class="loading-placeholder">
+          <div class="spinner"></div>
+          <p>Loading videos...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+ <!-- Enhanced Video Modal with Navigation -->
+<div class="video-modal" id="video-modal" style="display:none;">
+  <div class="video-modal-backdrop" onclick="closeVideoModal()"></div>
+  <div class="video-modal-content">
+    
+    <!-- Return Home Button (NEW) -->
+    <button class="video-modal-return" id="modal-return-btn" onclick="returnToSource()" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Back</span>
+    </button>
+
+    <!-- Close Button -->
+    <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video" type="button">×</button>
+    
+    <!-- PiP Button -->
+    <button class="video-modal-pip" id="pip-btn" onclick="togglePiP()" style="display:none;" aria-label="Picture in Picture" type="button">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+        <rect x="13" y="9" width="7" height="5" rx="1" ry="1"></rect>
+      </svg>
+    </button>
+    
+    <!-- Mute Button -->
+    <button class="video-modal-mute" id="mute-btn" onclick="toggleMute()" style="display:none;" aria-label="Toggle Mute" type="button">🔊</button>
+
+    <!-- Video Player -->
+    <div class="video-modal-player-wrapper">
+      <iframe id="modal-iframe" class="modal-player-iframe" style="display:none;" frameborder="0" allowfullscreen allow="autoplay; picture-in-picture; encrypted-media"></iframe>
+      <video id="modal-video" class="modal-player-video" controls controlsList="nodownload" preload="metadata" style="display:none;"></video>
+    </div>
+
+    <!-- Video Info -->
+    <div class="video-modal-info">
+      <span class="video-modal-category" id="modal-category"></span>
+      <h3 class="video-modal-title" id="modal-title"></h3>
+      <p class="video-modal-description" id="modal-description"></p>
+      
+      <!-- View All Videos Button (NEW) -->
+      <button class="video-modal-view-all" onclick="goToVideosPage()" type="button" id="view-all-videos-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+          <polyline points="17 2 12 7 7 2"></polyline>
+        </svg>
+        View All Videos
+      </button>
+    </div>
+
+    <!-- Suggested Videos -->
+    <div class="modal-suggested">
+      <h4>Up Next</h4>
+      <div id="modal-suggested-videos" class="suggested-videos-grid"></div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/header.js"></script>
+  <script src="../assets/js/footer.js"></script>
+  <script src="../assets/js/video-player.js"></script>
+  <script src="../assets/js/videos.js"></script>
+
+  <!-- Analytics (optional) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('[VIDEOS PAGE] DOM ready');
+      
+      // Track page view
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+          page_title: 'Videos Page',
+          page_location: window.location.href,
+          page_path: window.location.pathname
+        });
+      }
+    });
+  </script>
+</body>
+</html>
